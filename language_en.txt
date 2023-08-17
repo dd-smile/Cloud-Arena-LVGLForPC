@@ -1,0 +1,4 @@
+mode_names_en_0 = Smart Mode
+mode_names_en_1 = Energy Saving Mode
+mode_names_en_2 = Manual Mode
+mode_names_en_3 = Vacation Mode

@@ -1,0 +1,36 @@
+        if (strcmp(cell_value, "异常") == 0)
+        {
+            dsc->label_dsc->color = lv_palette_main(LV_PALETTE_RED);
+            // const char *solution = lv_table_get_cell_value(obj, row, 2);
+            // const char *result = lv_table_get_cell_value(obj, row, 4);
+            // if (strcmp(solution, "维修") == 0)
+            // {
+            //     dsc->label_dsc->color = lv_palette_main(LV_PALETTE_GREEN);
+            // }
+            // else if (strcmp(solution, "安排维修") == 0)
+            // {
+            //     dsc->label_dsc->color = lv_palette_main(LV_PALETTE_RED);
+            // }
+            // if (strcmp(result, "已解决") == 0)
+            // {
+            //     dsc->label_dsc->color = lv_palette_main(LV_PALETTE_GREEN);
+            // }
+            // else if (strcmp(result, "未解决") == 0)
+            // {
+            //     dsc->label_dsc->color = lv_palette_main(LV_PALETTE_RED);
+            // }
+        }
+        // const char *Celsolution = lv_table_get_cell_value(obj, row, col);
+        // if (strcmp(Celsolution, "维修") == 0)
+        //     dsc->label_dsc->color = lv_palette_main(LV_PALETTE_GREEN);
+
+        // if (strcmp(Celsolution, "安排维修") == 0)
+        //     dsc->label_dsc->color = lv_palette_main(LV_PALETTE_RED);
+
+        // const char *Celresult = lv_table_get_cell_value(obj, row, col);
+        // if (strcmp(Celresult, "已解决") == 0)
+        //     dsc->label_dsc->color = lv_palette_main(LV_PALETTE_GREEN);
+
+        // if (strcmp(Celresult, "未解决") == 0)
+        //     dsc->label_dsc->color = lv_palette_main(LV_PALETTE_RED);
+    

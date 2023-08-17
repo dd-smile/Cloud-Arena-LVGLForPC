@@ -1,0 +1,4 @@
+mode_names_cn_0 = 智能模式
+mode_names_cn_1 = 节能模式
+mode_names_cn_2 = 手动模式
+mode_names_cn_3 = 长假模式
