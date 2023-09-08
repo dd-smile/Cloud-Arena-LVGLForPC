@@ -28,9 +28,9 @@ struct _lv_obj_class_t;
 
 /** Cover check results.*/
 typedef enum {
-    LV_COVER_RES_COVER      = 0,
-    LV_COVER_RES_NOT_COVER  = 1,
-    LV_COVER_RES_MASKED     = 2,
+    LV_COVER_RES_COVER      = 0,  //表示对象被完全覆盖
+    LV_COVER_RES_NOT_COVER  = 1,  //表示对象没有被覆盖
+    LV_COVER_RES_MASKED     = 2,  //表示对象被部分覆盖，可以使用遮罩进行绘制
 } lv_cover_res_t;
 
 typedef struct {

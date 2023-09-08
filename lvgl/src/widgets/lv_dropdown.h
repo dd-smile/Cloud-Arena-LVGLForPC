@@ -63,9 +63,9 @@ extern const  lv_obj_class_t lv_dropdownlist_class;
  **********************/
 
 /**
- * Create a drop-down list object
- * @param parent pointer to an object, it will be the parent of the new drop-down list
- * @return pointer to the created drop-down list
+ * Create a drop-down list object 创建一个下拉列表对象
+ * @param parent pointer to an object, it will be the parent of the new drop-down list 指向对象的指针，它将是新下拉列表的父对象 
+ * @return pointer to the created drop-down list 指向已创建的下拉列表的指针
  */
 lv_obj_t * lv_dropdown_create(lv_obj_t * parent);
 
@@ -83,10 +83,10 @@ lv_obj_t * lv_dropdown_create(lv_obj_t * parent);
 void lv_dropdown_set_text(lv_obj_t * obj, const char * txt);
 
 /**
- * Set the options in a drop-down list from a string.
- * The options will be copied and saved in the object so the `options` can be destroyed after calling this function
- * @param obj       pointer to drop-down list object
- * @param options   a string with '\n' separated options. E.g. "One\nTwo\nThree"
+ * Set the options in a drop-down list from a string. 从字符串中设置下拉列表中的选项 
+ * The options will be copied and saved in the object so the `options` can be destroyed after calling this function 选项将被复制并保存在对象中，因此' options '可以在调用此函数后销毁
+ * @param obj       pointer to drop-down list object 指向下拉列表对象的指针
+ * @param options   a string with '\n' separated options. E.g. "One\nTwo\nThree" 一个带有'\n'分隔选项的字符串
  */
 void lv_dropdown_set_options(lv_obj_t * obj, const char * options);
 
@@ -127,11 +127,11 @@ void lv_dropdown_set_selected(lv_obj_t * obj, uint16_t sel_opt);
 void lv_dropdown_set_dir(lv_obj_t * obj, lv_dir_t dir);
 
 /**
- * Set an arrow or other symbol to display when on drop-down list's button. Typically a down caret or arrow.
- * @param obj       pointer to drop-down list object
- * @param symbol    a text like `LV_SYMBOL_DOWN`, an image (pointer or path) or NULL to not draw symbol icon
- * @note angle and zoom transformation can be applied if the symbol is an image.
- * E.g. when drop down is checked (opened) rotate the symbol by 180 degree
+ * Set an arrow or other symbol to display when on drop-down list's button. Typically a down caret or arrow. 设置下拉列表按钮时显示的箭头或其他符号。 通常是下插入符号或箭头
+ * @param obj       pointer to drop-down list object 指向下拉列表对象的指针
+ * @param symbol    a text like `LV_SYMBOL_DOWN`, an image (pointer or path) or NULL to not draw symbol icon 你想设置的符号。在LVGL中，符号通常是特殊的字符，定义在符号字体中。LVGL预定义了许多这样的符号，你可以从 lv_symbol_def.h 头文件中找到它们。这些符号以LV_SYMBOL_前缀开始。
+ * @note angle and zoom transformation can be applied if the symbol is an image. 如果符号是图像，则可以应用角度和缩放变换 
+ * E.g. when drop down is checked (opened) rotate the symbol by 180 degree 例如，当选中(打开)下拉框时，将符号旋转180度 
  */
 void lv_dropdown_set_symbol(lv_obj_t * obj, const void * symbol);
 
@@ -147,16 +147,16 @@ void lv_dropdown_set_selected_highlight(lv_obj_t * obj, bool en);
  *====================*/
 
 /**
- * Get the list of a drop-down to allow styling or other modifications
- * @param obj       pointer to a drop-down list object
- * @return          pointer to the list of the drop-down
+ * Get the list of a drop-down to allow styling or other modifications 获取下拉列表以允许进行样式化或其他修改 
+ * @param obj       pointer to a drop-down list object 指向下拉列表对象的指针
+ * @return          pointer to the list of the drop-down 返回指向下拉列表的指针
  */
 lv_obj_t * lv_dropdown_get_list(lv_obj_t * obj);
 
 /**
- * Get text of the drop-down list's button.
- * @param obj   pointer to a drop-down list object
- * @return      the text as string, `NULL` if no text
+ * Get text of the drop-down list's button. 获取下拉列表按钮的文本
+ * @param obj   pointer to a drop-down list object 指向下拉列表对象的指针
+ * @return      the text as string, `NULL` if no text 
  */
 const char * lv_dropdown_get_text(lv_obj_t * obj);
 

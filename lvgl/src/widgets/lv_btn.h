@@ -37,9 +37,9 @@ extern const lv_obj_class_t lv_btn_class;
  **********************/
 
 /**
- * Create a button object
- * @param parent    pointer to an object, it will be the parent of the new button
- * @return          pointer to the created button
+ * Create a button object 创建一个按钮对象
+ * @param parent    pointer to an object, it will be the parent of the new button 指向一个对象的指针，它将是新按钮的父节点 
+ * @return          pointer to the created button 指向已创建按钮的指针
  */
 lv_obj_t * lv_btn_create(lv_obj_t * parent);
 

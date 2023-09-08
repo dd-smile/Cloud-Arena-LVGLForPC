@@ -323,11 +323,11 @@ typedef struct {
 
 
 /**
- * Initialize a style
- * @param style pointer to a style to initialize
+ * Initialize a style 初始化样式
+ * @param style pointer to a style to initialize 指向要初始化的样式的指针
  * @note Do not call `lv_style_init` on styles that already have some properties
  *       because this function won't free the used memory, just sets a default state for the style.
- *       In other words be sure to initialize styles only once!
+ *       In other words be sure to initialize styles only once!  确保只初始化一次样式!
  */
 void lv_style_init(lv_style_t * style);
 
@@ -473,6 +473,11 @@ static inline void lv_style_set_size(lv_style_t * style, lv_coord_t value)
     lv_style_set_height(style, value);
 }
 
+/**
+ * 是一个快速设置样式中所有填充（上、下、左、右）的方法。填充是对象内容与其边界之间的空间。 
+ * @param style        要修改的样式对象    
+ * @param value        要设置的填充值（单位通常为像素）
+ * */
 static inline void lv_style_set_pad_all(lv_style_t * style, lv_coord_t value)
 {
     lv_style_set_pad_left(style, value);

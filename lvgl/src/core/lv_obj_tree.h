@@ -41,18 +41,18 @@ typedef lv_obj_tree_walk_res_t (*lv_obj_tree_walk_cb_t)(struct _lv_obj_t *, void
  **********************/
 
 /**
- * Delete an object and all of its children.
- * Also remove the objects from their group and remove all animations (if any).
- * Send `LV_EVENT_DELETED` to deleted objects.
- * @param obj       pointer to an object
+ * Delete an object and all of its children. 删除对象及其所有子对象
+ * Also remove the objects from their group and remove all animations (if any). 同时从它们的组中删除对象，并删除所有动画(如果有的话)
+ * Send `LV_EVENT_DELETED` to deleted objects. 发送' LV_EVENT_DELETED '给已删除的对象
+ * @param obj       pointer to an object 指向对象的指针
  */
 void lv_obj_del(struct _lv_obj_t * obj);
 
 /**
- * Delete all children of an object.
- * Also remove the objects from their group and remove all animations (if any).
- * Send `LV_EVENT_DELETED` to deleted objects.
- * @param obj       pointer to an object
+ * Delete all children of an object. 删除对象的所有子节点
+ * Also remove the objects from their group and remove all animations (if any). 同时从它们的组中删除对象，并删除所有动画(如果有的话)
+ * Send `LV_EVENT_DELETED` to deleted objects. 
+ * @param obj       pointer to an object 指向对象的指针
  */
 void lv_obj_clean(struct _lv_obj_t * obj);
 

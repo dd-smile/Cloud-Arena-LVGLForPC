@@ -55,9 +55,9 @@ typedef uint8_t lv_scroll_snap_t;
  *====================*/
 
 /**
- * Set how the scrollbars should behave.
- * @param obj       pointer to an object
- * @param mode      LV_SCROLL_MODE_ON/OFF/AUTO/ACTIVE
+ * Set how the scrollbars should behave. 设置滚动条的行为。
+ * @param obj       pointer to an object 指向对象的指针
+ * @param mode      LV_SCROLL_MODE_ON/OFF/AUTO/ACTIVE 打开 /关闭/自动/活跃
  */
 void lv_obj_set_scrollbar_mode(struct _lv_obj_t * obj, lv_scrollbar_mode_t mode);
 

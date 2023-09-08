@@ -11,12 +11,12 @@
 
 
 typedef struct {
-    int x_pos;
-    int y_pos;
-    void (*card_func)(lv_obj_t *card);
-    lv_event_cb_t event_cb;
+    int x_pos;    //ｘ坐标
+    int y_pos;    //ｙ坐标
+    void (*card_func)(lv_obj_t *card);   //功能函数
+    lv_event_cb_t event_cb;    //注册的事件
 
-} card_info_t;
+} card_info_t; //设置页面卡片数组
 
 
 

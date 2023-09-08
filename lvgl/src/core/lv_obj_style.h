@@ -65,12 +65,12 @@ typedef struct {
 void _lv_obj_style_init(void);
 
 /**
- * Add a style to an object.
- * @param obj       pointer to an object
- * @param style     pointer to a style to add
- * @param selector  OR-ed value of parts and state to which the style should be added
- * @example         lv_obj_add_style(btn, &style_btn, 0); //Default button style
- * @example         lv_obj_add_style(btn, &btn_red, LV_STATE_PRESSED); //Overwrite only some colors to red when pressed
+ * Add a style to an object. 向对象添加样式
+ * @param obj       pointer to an object 指向对象的指针
+ * @param style     pointer to a style to add 指向要添加的样式的指针
+ * @param selector  OR-ed value of parts and state to which the style should be added 应该向其添加样式的部件和状态的or值
+ * @example         lv_obj_add_style(btn, &style_btn, 0); //Default button style 默认按钮样式
+ * @example         lv_obj_add_style(btn, &btn_red, LV_STATE_PRESSED); //Overwrite only some colors to red when pressed 按下时，只将某些颜色覆盖为红色
  */
 void lv_obj_add_style(struct _lv_obj_t * obj, lv_style_t * style, lv_style_selector_t selector);
 
@@ -86,7 +86,7 @@ void lv_obj_add_style(struct _lv_obj_t * obj, lv_style_t * style, lv_style_selec
 void lv_obj_remove_style(struct _lv_obj_t * obj, lv_style_t * style, lv_style_selector_t selector);
 
 /**
- * Remove all styles from an object
+ * Remove all styles from an object 从对象中移除所有样式
  * @param obj       pointer to an object
  */
 static inline void lv_obj_remove_style_all(struct _lv_obj_t * obj)

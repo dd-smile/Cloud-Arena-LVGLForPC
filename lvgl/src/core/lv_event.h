@@ -52,19 +52,19 @@ typedef enum {
     LV_EVENT_HIT_TEST,            /**< Perform advanced hit-testing*/
 
     /** Drawing events*/
-    LV_EVENT_COVER_CHECK,        /**< Check if the object fully covers an area. The event parameter is `lv_cover_check_info_t *`.*/
+    LV_EVENT_COVER_CHECK,        /**< Check if the object fully covers an area. The event parameter is `lv_cover_check_info_t *`. 检查物体是否完全或部分覆盖。事件参数为“lv_cover_check_info_t *”*/
     LV_EVENT_REFR_EXT_DRAW_SIZE, /**< Get the required extra draw area around the object (e.g. for shadow). The event parameter is `lv_coord_t *` to store the size.*/
-    LV_EVENT_DRAW_MAIN_BEGIN,    /**< Starting the main drawing phase*/
+    LV_EVENT_DRAW_MAIN_BEGIN,    /**< Starting the main drawing phase 这个事件在对象的主要部分开始绘制之前触发。它在 LV_EVENT_DRAW_MAIN 之前发生*/
     LV_EVENT_DRAW_MAIN,          /**< Perform the main drawing*/
     LV_EVENT_DRAW_MAIN_END,      /**< Finishing the main drawing phase*/
     LV_EVENT_DRAW_POST_BEGIN,    /**< Starting the post draw phase (when all children are drawn)*/
     LV_EVENT_DRAW_POST,          /**< Perform the post draw phase (when all children are drawn)*/
-    LV_EVENT_DRAW_POST_END,      /**< Finishing the post draw phase (when all children are drawn)*/
+    LV_EVENT_DRAW_POST_END,      /**< Finishing the post draw phase (when all children are drawn) 完成绘制后阶段(当所有子节点都绘制完成时)*/
     LV_EVENT_DRAW_PART_BEGIN,    /**< Starting to draw a part. The event parameter is `lv_obj_draw_dsc_t *`. */
     LV_EVENT_DRAW_PART_END,      /**< Finishing to draw a part. The event parameter is `lv_obj_draw_dsc_t *`. */
 
     /** Special events*/
-    LV_EVENT_VALUE_CHANGED,       /**< The object's value has changed (i.e. slider moved)*/
+    LV_EVENT_VALUE_CHANGED,       /**< The object's value has changed (i.e. slider moved) 对象的值发生了变化(即滑块移动)*/
     LV_EVENT_INSERT,              /**< A text is inserted to the object. The event data is `char *` being inserted.*/
     LV_EVENT_REFRESH,             /**< Notify the object to refresh something on it (for the user)*/
     LV_EVENT_READY,               /**< A process has finished*/
@@ -154,38 +154,38 @@ lv_res_t lv_event_send(struct _lv_obj_t * obj, lv_event_code_t event_code, void 
 lv_res_t lv_obj_event_base(const lv_obj_class_t * class_p, lv_event_t * e);
 
 /**
- * Get the object originally targeted by the event. It's the same even if the event is bubbled.
+ * Get the object originally targeted by the event. It's the same even if the event is bubbled. 获取事件最初针对的对象。即使事件是冒泡的，这个目标都是固定的。
  * @param e     pointer to the event descriptor
  * @return      the target of the event_code
  */
 struct _lv_obj_t * lv_event_get_target(lv_event_t * e);
 
 /**
- * Get the current target of the event. It's the object which event handler being called.
- * If the event is not bubbled it's the same as "normal" target.
+ * Get the current target of the event. It's the object which event handler being called. 获取事件的当前目标,这个函数返回当前处理事件的对象 
+ * If the event is not bubbled it's the same as "normal" target. 如果事件没有冒泡，则与“正常”目标相同。 
  * @param e     pointer to the event descriptor
  * @return      pointer to the current target of the event_code
  */
 struct _lv_obj_t * lv_event_get_current_target(lv_event_t * e);
 
 /**
- * Get the event code of an event
- * @param e     pointer to the event descriptor
- * @return      the event code. (E.g. `LV_EVENT_CLICKED`, `LV_EVENT_FOCUSED`, etc)
+ * Get the event code of an event 获取事件的事件代码
+ * @param e     pointer to the event descriptor 指向事件描述符的指针
+ * @return      the event code. (E.g. `LV_EVENT_CLICKED`, `LV_EVENT_FOCUSED`, etc) 事件代码。(如。' LV_EVENT_CLICKED '， ' LV_EVENT_FOCUSED '等)
  */
 lv_event_code_t lv_event_get_code(lv_event_t * e);
 
 /**
- * Get the parameter passed when the event was sent
- * @param e     pointer to the event descriptor
+ * Get the parameter passed when the event was sent 获取发送事件时传递的参数
+ * @param e     pointer to the event descriptor 指向事件描述符的指针
  * @return      pointer to the parameter
  */
 void * lv_event_get_param(lv_event_t * e);
 
 /**
- * Get the user_data passed when the event was registered on the object
+ * Get the user_data passed when the event was registered on the object 获取在对象上注册事件时传递的user_data
  * @param e     pointer to the event descriptor
- * @return      pointer to the user_data
+ * @return      pointer to the user_data 指向user_data的指针
  */
 void * lv_event_get_user_data(lv_event_t * e);
 
@@ -225,14 +225,14 @@ void _lv_event_mark_deleted(struct _lv_obj_t * obj);
 
 
 /**
- * Add an event handler function for an object.
- * Used by the user to react on event which happens with the object.
- * An object can have multiple event handler. They will be called in the same order as they were added.
- * @param obj       pointer to an object
- * @param filter    and event code (e.g. `LV_EVENT_CLICKED`) on which the event should be called. `LV_EVENT_ALL` can be sued the receive all the events.
- * @param event_cb  the new event function
- * @param           user_data custom data data will be available in `event_cb`
- * @return          a pointer the event descriptor. Can be used in ::lv_obj_remove_event_dsc
+ * Add an event handler function for an object. 为对象添加事件处理程序函数。
+ * Used by the user to react on event which happens with the object. 由用户用来对发生在对象上的事件作出反应。
+ * An object can have multiple event handler. They will be called in the same order as they were added. 一个对象可以有多个事件处理程序。它们将按照添加的顺序被调用。
+ * @param obj       pointer to an object 指向对象的指针
+ * @param event_cb  the new event function 新的事件函数
+ * @param filter    and event code (e.g. `LV_EVENT_CLICKED`) on which the event should be called. `LV_EVENT_ALL` can be sued the receive all the events. 和事件代码(例如:' LV_EVENT_CLICKED ')，应该调用该事件。' LV_EVENT_ALL '可以用来接收所有事件。
+ * @param user_data custom data data will be available in `event_cb` 自定义数据,数据将在' event_cb '中可用
+ * @return          a pointer the event descriptor. Can be used in ::lv_obj_remove_event_dsc 事件描述符的指针。可以在::lv_obj_remove_event_dsc中使用
  */
 struct _lv_event_dsc_t * lv_obj_add_event_cb(struct _lv_obj_t * obj, lv_event_cb_t event_cb, lv_event_code_t filter,
                                              void * user_data);
@@ -346,7 +346,7 @@ lv_hit_test_info_t * lv_event_get_hit_test_info(lv_event_t * e);
 const lv_area_t * lv_event_get_cover_area(lv_event_t * e);
 
 /**
- * Set the result of cover checking. Can be used in `LV_EVENT_COVER_CHECK`
+ * Set the result of cover checking. Can be used in `LV_EVENT_COVER_CHECK`  为了确定一个对象是否被覆盖，你可以使用 lv_event_set_cover_res() 函数来设置覆盖的结果
  * @param e     pointer to an event
  * @param res   an element of ::lv_cover_check_info_t
  */

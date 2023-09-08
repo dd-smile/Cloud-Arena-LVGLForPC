@@ -1,16 +1,20 @@
 /*
- * @Description:
+ * @Description:地埋翻折座椅
  * @Author: mai
- * @LastEditors: mai
+ * @LastEditors: da
  * @Date: 2023-07-03 17:15:24
- * @LastEditTime: 2023-07-05 11:37:54
+ * @LastEditTime: 2023-08-24 11:37:54
  * @FilePath: /new_home_smart/lv_node/src/device/SmartSeat.c
  */
 #include "ui_app.h"
 
+/**
+ * 创建设备详情页面文字说明         
+ * */
 void CreateSmartSeatPage(void)
 {
 
+  //基本说明初始化
   DevicePageData data;
   data.deviceName = "Underground Seating System";
   data.intro = "Overview: 使用纹路防滑,加纤材\n"

@@ -41,10 +41,10 @@ extern const lv_obj_class_t lv_line_class;
  * GLOBAL PROTOTYPES
  **********************/
 
-/**
- * Create a line object
- * @param parent pointer to an object, it will be the parent of the new line
- * @return pointer to the created line
+/** 
+ * Create a line object 创建一个直线对象
+ * @param parent pointer to an object, it will be the parent of the new line 指针指向一个对象，它将是新线的父行
+ * @return pointer to the created line 指向已创建线的指针
  */
 lv_obj_t * lv_line_create(lv_obj_t * parent);
 
@@ -53,10 +53,10 @@ lv_obj_t * lv_line_create(lv_obj_t * parent);
  *====================*/
 
 /**
- * Set an array of points. The line object will connect these points.
- * @param obj           pointer to a line object
- * @param points        an array of points. Only the address is saved, so the array needs to be alive while the line exists
- * @param point_num     number of points in 'point_a'
+ * Set an array of points. The line object will connect these points. 定义线对象的坐标点。这允许你创建不仅仅是直线，而是任何由连续线段组成的形状。
+ * @param obj           pointer to a line object 一个已经创建的线对象的指针
+ * @param points        an array of points. Only the address is saved, so the array needs to be alive while the line exists  一个包含线段坐标点的数组。lv_point_t是一个结构体，有两个字段：x和y，分别表示点的x和y坐标。
+ * @param point_num     number of points in 'point_a' 表示points数组的大小
  */
 void lv_line_set_points(lv_obj_t * obj, const lv_point_t points[], uint16_t point_num);
 

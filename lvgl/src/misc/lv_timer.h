@@ -76,13 +76,13 @@ LV_ATTRIBUTE_TIMER_HANDLER uint32_t lv_timer_handler(void);
 lv_timer_t * lv_timer_create_basic(void);
 
 /**
- * Create a new lv_timer
- * @param timer_xcb a callback to call periodically.
+ * Create a new lv_timer 创建一个新的lv_timer
+ * @param timer_xcb a callback to call periodically. 周期性调用的回调
  *                 (the 'x' in the argument name indicates that it's not a fully generic function because it not follows
  *                  the `func_name(object, callback, ...)` convention)
- * @param period call period in ms unit
- * @param user_data custom parameter
- * @return pointer to the new timer
+ * @param period call period in ms unit 以毫秒为单位的调用周期
+ * @param user_data custom parameter 自定义参数
+ * @return pointer to the new timer 指向新计时器的指针
  */
 lv_timer_t * lv_timer_create(lv_timer_cb_t timer_xcb, uint32_t period, void * user_data);
 

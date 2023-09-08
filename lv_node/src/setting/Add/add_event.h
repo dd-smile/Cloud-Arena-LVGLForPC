@@ -12,6 +12,6 @@
 lv_obj_t *CreateDropDownList(lv_obj_t *parent);
 lv_obj_t *CreateDownListLabel(lv_obj_t *parent, const char *text, lv_coord_t y);
 lv_obj_t *lv_device_textarea(lv_obj_t *parent, uint32_t c, lv_coord_t x_ofs, lv_coord_t y_ofs, lv_event_cb_t event_cb);
-void lv_device_type(lv_obj_t *parent, const char *options, lv_coord_t x_ofs, lv_coord_t y_ofs, lv_event_cb_t event_cb);
+void CreateDeviceType(lv_obj_t *parent, const char *options, lv_coord_t x_ofs, lv_coord_t y_ofs, lv_event_cb_t event_cb);
 
 #endif

@@ -11,35 +11,35 @@
 
 
 typedef struct {
-    const char *deviceName;
-    const char *intro;
-    const char *date;
-    const char *period;
-    const char *phoneNumber;
-    const char *title;
-    const lv_img_dsc_t *image;
-    const char *expandBtnText;
-    const char *emergencyStopBtnText;
-    const char *collapseBtnText;
+    const char *deviceName;   //设备名称
+    const char *intro;  //设备简介
+    const char *date;   //设备购置日期
+    const char *period; //设备检修周期
+    const char *phoneNumber;   //制造商服务电话
+    const char *title;   
+    const lv_img_dsc_t *image;  //设备图片
+    const char *expandBtnText;  //展开按钮文本
+    const char *emergencyStopBtnText;  //急停按钮文本
+    const char *collapseBtnText;   //收合按钮文本
 
-    const char *StandOpenBtnText;
-    const char *StandClosureBtnText;
-    const char *SeatRiseBtnText;
-    const char *SeatTipBtnText;
+    const char *StandOpenBtnText;  //看台展开按钮文本
+    const char *StandClosureBtnText; //看台收合按钮文本
+    const char *SeatRiseBtnText;  //座椅展开按钮文本
+    const char *SeatTipBtnText;   //座椅收合按钮文本
 
-    const char *ManufacturingTel;
-    const char *SalehAfterotline;
-    const char *SolveProblem;
-    const char *Description;
-    const char *PopupTitlie;
-    const char *PopupContent;
+    const char *ManufacturingTel;   //制造商服务电话
+    const char *SalehAfterotline;   //制造商售后电话
+    const char *SolveProblem;    //解决措施初始文本
+    const char *Description;     //设备故障现象描述初始文本
+    const char *PopupTitlie;     //检修正常申报标题
+    const char *PopupContent;    //检修正常申报内容
 
-} DevicePageData;
-extern  DevicePageData *pPageData;
+} DevicePageData;    //设备页面数据结构体
+extern DevicePageData *pPageData;
 extern lv_obj_t *Input_label;
 
 
 lv_obj_t *CreateDevicePageBg(const DevicePageData *data);
 lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent);
- lv_obj_t *CreateInspectTable(lv_obj_t *parent);
+lv_obj_t *CreateInspectTable(lv_obj_t *parent);
 #endif // __DEVICE_COMMON_H__

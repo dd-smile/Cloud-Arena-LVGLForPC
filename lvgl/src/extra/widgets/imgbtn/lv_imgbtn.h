@@ -70,20 +70,20 @@ lv_obj_t * lv_imgbtn_create(lv_obj_t * parent);
  * @param imgbtn pointer to an image button object 指向图像按钮对象的指针
  * @param state for which state set the new image 为哪个状态设置新映像
  * @param src_left pointer to an image source for the left side of the button (a C array or path to
- * a file)
+ * a file) 指向按钮左侧图像源的指针(指向的C数组或路径)  
  * @param src_mid pointer to an image source for the middle of the button (ideally 1px wide) (a C
- * array or path to a file)
+ * array or path to a file) 指针指向按钮中间的图像源(理想情况下1px宽)
  * @param src_right pointer to an image source for the right side of the button (a C array or path
- * to a file)
+ * to a file) 指向按钮右侧图像源的指针(指向的C数组或路径) 
  */
 void lv_imgbtn_set_src(lv_obj_t * imgbtn, lv_imgbtn_state_t state, const void * src_left, const void * src_mid,
                        const void * src_right);
 
 
 /**
- * Use this function instead of `lv_obj_add/clear_state` to set a state manually
- * @param imgbtn pointer to an image button object
- * @param state  the new state
+ * Use this function instead of `lv_obj_add/clear_state` to set a state manually 使用这个函数代替' lv_obj_add/clear_state '手动设置状态
+ * @param imgbtn pointer to an image button object 指向图像按钮对象的指针
+ * @param state  the new state 新状态
  */
 void lv_imgbtn_set_state(lv_obj_t * imgbtn, lv_imgbtn_state_t state);
 

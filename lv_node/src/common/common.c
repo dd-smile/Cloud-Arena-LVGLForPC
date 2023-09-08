@@ -425,7 +425,14 @@ static void lv_c_style_set_style_mask(lv_obj_t *obj)
     lv_obj_add_style(obj, &style_bg_mask, LV_PART_MAIN);
 }
 
-/*创建一个图片*/
+/**
+ * 创建一个图片
+ * @param parent        指向父对象的指针
+ * @param src           要显示的图像数据
+ * @param x             x轴的偏移量
+ * @param y             y轴的偏移量
+ * @return              
+ * */
 lv_obj_t *image_create(lv_obj_t *parent, const void *src, lv_coord_t x, lv_coord_t y)
 {
     lv_obj_t *img = lv_img_create(parent);
@@ -602,7 +609,10 @@ lv_obj_t *lv_c_create_mask_box(lv_obj_t *parent)
 
 /*-----------------------------------------------创建键盘---------------------------------------------------------*/
 
-// 返回上一级
+/**
+ * 返回上一级事件
+ * @param e             指向事件描述符的指针     
+ * */
 void lv_back(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -613,21 +623,29 @@ void lv_back(lv_event_t *e)
     }
 }
 
-// 创建按钮
+/**
+ * 创建按钮
+ * @param parent             指向父对象的指针  
+ * @param on_back            按钮类型，ｔｒｕｅ是返回按钮，ｆａｌｓｅ不是返回按钮
+ * @param confirm_text       按钮文本
+ * @param x_ofs              x轴的偏移量
+ * @param y_ofs              y轴的偏移量
+ * @return                   返回已创建按钮的指针 
+ * */
 lv_obj_t *btn_create_text(lv_obj_t *parent, bool on_back, const char *confirm_text, lv_coord_t x_ofs, lv_coord_t y_ofs)
 {
-    lv_obj_t *confirm_btn = lv_btn_create(parent);
+    lv_obj_t *confirm_btn = lv_btn_create(parent);   //创建按钮
     lv_obj_set_size(confirm_btn, 85, 35);
     lv_obj_clear_flag(confirm_btn, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_align(confirm_btn, LV_ALIGN_TOP_LEFT, x_ofs, y_ofs);
     lv_obj_set_style_radius(confirm_btn, 5, LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(confirm_btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(confirm_btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(confirm_btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);  //按下状态
     lv_obj_set_style_border_opa(confirm_btn, 80, LV_PART_MAIN);
     // lv_obj_set_style_bg_grad_dir(confirm_btn, LV_GRAD_DIR_VER, LV_STATE_DEFAULT);
 
     lv_obj_t *confirm_label = lv_label_create(confirm_btn);
-    lv_label_set_text(confirm_label, confirm_text);
+    lv_label_set_text(confirm_label, confirm_text);    //设置按钮文本
     lv_obj_set_style_text_color(confirm_label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(confirm_label, &PuHuiTi_Regular_20, LV_STATE_DEFAULT);
     lv_obj_align(confirm_label, LV_ALIGN_CENTER, 0, 0);
@@ -664,7 +682,10 @@ static void add_event_btn(lv_event_t *e)
 }
 
 
-// 创建一个点击设备名称的输入框弹出键盘的页面（带拼音的）   lv_obj_t *lv_keypage_create(lv_obj_t *parent,lv_obj_t *input_label)
+/**
+ * 创建一个点击设备名称的输入框弹出键盘的页面（带拼音的）
+ * @param parent               指向父对象的指针
+ * */
 lv_obj_t *lv_keypage_create(lv_obj_t *parent)
 {
     lv_obj_t *keypage = lv_obj_create(parent);
@@ -723,8 +744,18 @@ void lv_back_Mask(lv_event_t *e)
     }
 }
 
+/**
+ * 创建一个弹出框
+ * @param parent                 指向父对象的指针
+ * @param title                  标题文本，以'\0'结尾的字符串
+ * @param confirm_text           确认按钮文本
+ * @param back_text              返回按钮文本
+ * @param text                   正文内容，要设置文本字体的
+ * @param event_cb               要注册的事件
+ * @param user_data              自定义数据,数据将在' event_cb '中可用
+ * @return                       返回指向图标的指针       
+ * */
 lv_obj_t *create_popup(lv_obj_t *parent, const char *title, const char *confirm_text, const char *back_text, const char *text, lv_event_cb_t event_cb, void *user_data)
-// 创建一个弹出框
 {
     lv_obj_t *mask = lv_c_create_mask_box(parent);     // 创建遮罩
     lv_obj_t *iamge = image_create(mask, &Mask, 0, 0); // 创建图标
@@ -745,7 +776,11 @@ lv_obj_t *create_popup(lv_obj_t *parent, const char *title, const char *confirm_
 
 /*-----------------------------------------------创建设置页面---------------------------------------------------------*/
 
-/*创建一个设置页面的卡片*/
+/**
+ * 创建一个设置页面的卡片
+ * @param parent        指向父对象的指针
+ * @return              返回指向卡片的指针
+ * */
 lv_obj_t *Createcard(lv_obj_t *parent)
 {
     lv_obj_t *card = lv_obj_create(parent);
@@ -756,7 +791,7 @@ lv_obj_t *Createcard(lv_obj_t *parent)
     return card;
 }
 
-// 创建一个类型进度条的东西
+// 创建一个类似进度条的东西
 lv_obj_t *CreateSlider(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int32_t min, int32_t max, lv_color_t value, int32_t num_value, lv_coord_t w, lv_coord_t h, bool status)
 {
     //
@@ -804,6 +839,11 @@ lv_obj_t *create_recv_time(lv_obj_t *parent, const lv_font_t *value, lv_coord_t 
     return recv_time;
 }
 
+/**
+ * 创建点击对象(矩形)
+ * @param obj         指向父对象的指针
+ * @return            返回点击对象
+ * */
 lv_obj_t *CreateOBJclick(lv_obj_t *obj)
 {
     lv_obj_t *Obj = lv_obj_create(obj);

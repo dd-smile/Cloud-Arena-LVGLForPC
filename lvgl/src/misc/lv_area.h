@@ -85,7 +85,6 @@ enum {
     LV_DIR_VER      = LV_DIR_TOP | LV_DIR_BOTTOM,
     LV_DIR_ALL      = LV_DIR_HOR | LV_DIR_VER,
 };
-
 typedef uint8_t lv_dir_t;
 
 /**********************

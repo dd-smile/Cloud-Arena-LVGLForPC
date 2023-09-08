@@ -84,6 +84,7 @@ extern const lv_obj_class_t lv_label_class;
 
 /**
  * Create a label object
+ * 创建一个标签对象
  * @param parent    pointer to an object, it will be the parent of the new label.
  * @return          pointer to the created button
  */
@@ -94,9 +95,9 @@ lv_obj_t * lv_label_create(lv_obj_t * parent);
  *====================*/
 
 /**
- * Set a new text for a label. Memory will be allocated to store the text by the label.
- * @param obj           pointer to a label object
- * @param text          '\0' terminated character string. NULL to refresh with the current text.
+ * Set a new text for a label. Memory will be allocated to store the text by the label. 为标签设置一个新文本。将根据标签分配内存来存储文本。
+ * @param obj           pointer to a label object 指向标签对象的指针
+ * @param text          '\0' terminated character string. NULL to refresh with the current text.　以'\0'结尾的字符串。NULL用当前文本刷新。
  */
 void lv_label_set_text(lv_obj_t * obj, const char * text);
 

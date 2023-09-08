@@ -1,9 +1,9 @@
 /*
  * @Description:
  * @Author: mai
- * @LastEditors: mai
+ * @LastEditors: da
  * @Date: 2023-07-03 17:19:59
- * @LastEditTime: 2023-07-05 14:49:19
+ * @LastEditTime: 2023-09-08 14:49:19
  * @FilePath: /lingxiantiyu/lv_node/src/device/device_common.c
  */
 #include "ui_app.h"
@@ -17,6 +17,10 @@ lv_obj_t *act_cb;
 const char *RadioText;
 lv_obj_t *Input_label;
 
+/**
+ * 创建巡检表
+ * @param parent         指向父对象的指针
+ * */
 static void CreateBiaoge(lv_obj_t *parent)
 {
     lv_obj_t *lvLogo = lv_img_create(parent);
@@ -36,6 +40,10 @@ static void CreateBiaoge(lv_obj_t *parent)
     create_12_Red_text(lvLogo, "pending", 106, 20);
 }
 
+/**
+ * 创建制造商logo
+ * @param parent          指向父对象的指针
+ * */
 static void CreateLoge(lv_obj_t *parent)
 {
 
@@ -51,6 +59,14 @@ static void CreateLoge(lv_obj_t *parent)
     lv_obj_align(lvLogo, LV_ALIGN_CENTER, 0, 0);
 }
 
+/**
+ * 创建功能按钮
+ * @param obj             指向父对象的指针
+ * @param text            文本，以'\0'结尾的字符串
+ * @param x_ofs           x坐标偏移量
+ * @param event_cb        要注册的事件
+ * @return                返回指向按钮的指针
+ * */
 static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_event_cb_t event_cb)
 {
 
@@ -75,7 +91,13 @@ static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t
     return btn;
 }
 
-/*创建控制按钮*/
+/**
+ * 创建控制按钮
+ * @param obj             指向父对象的指针
+ * @param text            文本，以'\0'结尾的字符串
+ * @param x_ofs           x坐标偏移量
+ * @param y_ofs           y坐标偏移量
+ * */
 static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs)
 {
 
@@ -96,7 +118,10 @@ static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_o
     lv_obj_center(label);
 }
 
-/*创建分割线*/
+/**
+ * 创建分割线
+ * @param parent          指向父对象的指针
+ * */
 static void CreatrLine(lv_obj_t *parent)
 {
     static lv_point_t line_points[] = {{0, 5}, {0, 409}};
@@ -108,19 +133,29 @@ static void CreatrLine(lv_obj_t *parent)
 
     lv_obj_t *line1;
     line1 = lv_line_create(parent);
-    lv_line_set_points(line1, line_points, 2); /*Set the points*/
+    lv_line_set_points(line1, line_points, 2); /*设置线的坐标*/
     lv_obj_add_style(line1, &style_line, 0);
     lv_obj_center(line1);
 }
 
-/*创建滚动页面*/
+/**
+ * 创建滚动窗口页面
+ * @param obj             指向父对象的指针 
+ * @param value           要设置的字体的指针。LVGL有许多预定义的字体，你也可以添加自定义字体。
+ * @param text            文本,以'\0'结尾的字符串。
+ * @param x_ofs           x坐标偏移量
+ * @param y_ofs           y坐标偏移量
+ * @param width           要设置的宽度
+ * @param height          要设置的高度
+ * @return                返回一个指向窗口的内容区域的指针
+ * */
 static lv_obj_t *CreateWinPage(lv_obj_t *obj, const lv_font_t *value, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, uint16_t width, uint16_t height)
 {
 
     lv_obj_t *win = lv_win_create(obj, 0);
     lv_obj_set_size(win, width, height);
     lv_obj_align(win, LV_ALIGN_BOTTOM_LEFT, x_ofs, y_ofs);
-    lv_obj_t *cont = lv_win_get_content(win); /*Content can be added here*/
+    lv_obj_t *cont = lv_win_get_content(win); /*可以在cont添加内容*/
     lv_obj_set_style_bg_color(cont, lv_color_make(26, 37, 57), LV_STATE_DEFAULT);
     lv_obj_set_style_width(cont, 0, LV_PART_SCROLLBAR);
     lv_obj_t *label = lv_label_create(cont);
@@ -133,7 +168,11 @@ static lv_obj_t *CreateWinPage(lv_obj_t *obj, const lv_font_t *value, const char
     return cont;
 }
 
-/*创建背景底图*/
+/**
+ * 创建背景底图
+ * @param mask           指向父对象的指针    
+ * @return               返回指向背景底图的指针  
+ * */
 static lv_obj_t *CreateDeviceBgCard(lv_obj_t *mask)
 {
 
@@ -354,6 +393,11 @@ lv_obj_t *CreateInspectTable(lv_obj_t *parent)
 }
 
 /*------------------------------------------创建按钮点击事件-----------------------------------------*/
+
+/**
+ * 创建重命名按钮的点击事件
+ * @param e               指向事件描述符的指针
+ * */
 static void RenameCreateButton(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -364,6 +408,10 @@ static void RenameCreateButton(lv_event_t *e)
     }
 }
 
+/**
+ * 创建检修正常按钮的点击事件
+ * @param e               指向事件描述符的指针
+ * */
 static void MaintenanceCreateButton(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -374,6 +422,10 @@ static void MaintenanceCreateButton(lv_event_t *e)
     }
 }
 
+/**
+ * 创建故障申报按钮的点击事件
+ * @param e               指向事件描述符的指针
+ * */
 static void ReportCreateButton(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -385,6 +437,10 @@ static void ReportCreateButton(lv_event_t *e)
     }
 }
 
+/**
+ * 创建检查记录表按钮的点击事件
+ * @param e               指向事件描述符的指针
+ * */
 static void InspectCreateButton(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -397,7 +453,11 @@ static void InspectCreateButton(lv_event_t *e)
     }
 }
 
-// 创建设备故障详情页
+/**
+ * 创建设备故障详情页
+ * @param parent           指向父对象的指针
+ * @return                 返回指向设备故障详情页的指针
+ * */
 lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
@@ -435,7 +495,7 @@ lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent)
     create_12_text(bg, "Result : ", 55, 105);
     CreateRadioBox(bg, 230, 287);
 
-    lv_obj_t *InspectButton = CreateFeatureButton(bg, "inspection record form", 50, InspectCreateButton); // 创建检查故障按钮
+    lv_obj_t *InspectButton = CreateFeatureButton(bg, "inspection record form", 50, InspectCreateButton); // 创建检查记录表按钮
     lv_obj_set_size(InspectButton, 320, 39);
     lv_obj_align(InspectButton, LV_ALIGN_DEFAULT, 22, 350);
 
@@ -447,7 +507,11 @@ lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent)
     return bg;
 }
 
-/*创建设备详情页*/
+/**
+ * 创建设备详情页
+ * @param data           要创建设备的基本数据
+ * @return               返回指向已创建的设备详情页面的指针
+ * */
 lv_obj_t *CreateDevicePageBg(const DevicePageData *data)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
@@ -470,15 +534,15 @@ lv_obj_t *CreateDevicePageBg(const DevicePageData *data)
     CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142); // 创建急停按钮
     CreateControlsButton(bg, data->collapseBtnText, -80, 142);       // 创建收起按钮
 
-    CreateControlsButton(bg, data->StandOpenBtnText, -350, 188);
-    CreateControlsButton(bg, data->StandClosureBtnText, -250, 188);
-    CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188);
-    CreateControlsButton(bg, data->SeatTipBtnText, -50, 188);
-    CreateFeatureButton(bg, "reporting", 245, ReportCreateButton); // 创建收起按钮
+    CreateControlsButton(bg, data->StandOpenBtnText, -350, 188);     //看台展开
+    CreateControlsButton(bg, data->StandClosureBtnText, -250, 188);  //看台收合
+    CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188);      //座椅展开
+    CreateControlsButton(bg, data->SeatTipBtnText, -50, 188);        //座椅收合
 
-    CreateFeatureButton(bg, "rename", 50, RenameCreateButton);            // 创建收起按钮
-    CreateFeatureButton(bg, "Maintenance", 145, MaintenanceCreateButton); // 创建收起按钮   //
-    CreateFeatureButton(bg, "Back", 340, lv_back_Mask);                   // 创建收起按钮
+    CreateFeatureButton(bg, "rename", 50, RenameCreateButton);            // 创建改名按钮
+    CreateFeatureButton(bg, "Maintenance", 145, MaintenanceCreateButton); // 创建检修正常按钮 
+    CreateFeatureButton(bg, "reporting", 245, ReportCreateButton); // 创建故障申报按钮  
+    CreateFeatureButton(bg, "Back", 340, lv_back_Mask);                   // 创建返回按钮
 
     CreateLoge(bg); // 制造商Logo
 

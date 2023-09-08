@@ -10,9 +10,13 @@
 DevicePageData lvPageData = {0};
 DevicePageData *pPageData = &lvPageData;
 
+/**
+ * 创建设备详情页面文字说明         
+ * */
 void CreateTelescopicStandPage(void)
 {
 
+    //基本说明初始化
     pPageData->deviceName = "Retractable Seating System";
     pPageData->intro = "Brief Introduction: Comply requirement\n"
                        "of high-standard venues for high-row, \n"

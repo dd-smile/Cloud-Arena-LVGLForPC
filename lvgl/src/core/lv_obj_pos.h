@@ -35,19 +35,20 @@ typedef struct {
  **********************/
 
 /**
- * Set the position of an object relative to the set alignment.
- * @param obj       pointer to an object
- * @param x         new x coordinate
- * @param y         new y coordinate
- * @note            With default alignment it's the distance from the top left corner
- * @note            E.g. LV_ALIGN_CENTER alignment it's the offset from the center of the parent
- * @note            The position is interpreted on the content area of the parent
- * @note            The values can be set in pixel or in percentage of parent size with `lv_pct(v)`
+ * Set the position of an object relative to the set alignment. 设置对象相对于设置的对齐方式的位置。
+ * @param obj       pointer to an object 指向对象的指针
+ * @param x         new x coordinate 新的x坐标
+ * @param y         new y coordinate 新的y坐标
+ * @note            With default alignment it's the distance from the top left corner 在默认对齐方式下，它是到左上角的距离
+ * @note            E.g. LV_ALIGN_CENTER alignment it's the offset from the center of the parent 例如LV_ALIGN_CENTER对齐，它是从父元素中心的偏移量
+ * @note            The position is interpreted on the content area of the parent 该位置在父元素的内容区域上进行解释
+ * @note            The values can be set in pixel or in percentage of parent size with `lv_pct(v)` 可以使用' lv_pct(v) '以像素为单位或以父级大小的百分比设置该值
  */
 void lv_obj_set_pos(struct _lv_obj_t * obj, lv_coord_t x, lv_coord_t y);
 
 /**
  * Set the x coordinate of an object
+ * 设置对象的x坐标
  * @param obj       pointer to an object
  * @param x         new x coordinate
  * @note            With default alignment it's the distance from the top left corner
@@ -59,6 +60,7 @@ void lv_obj_set_x(struct _lv_obj_t * obj, lv_coord_t x);
 
 /**
  * Set the y coordinate of an object
+ * 设置对象的y坐标
  * @param obj       pointer to an object
  * @param y         new y coordinate
  * @note            With default alignment it's the distance from the top left corner
@@ -70,6 +72,7 @@ void lv_obj_set_y(struct _lv_obj_t * obj, lv_coord_t y);
 
 /**
  * Set the size of an object.
+ * 设置对象的大小。
  * @param obj       pointer to an object
  * @param w         the new width
  * @param h         the new height
@@ -89,7 +92,7 @@ void lv_obj_set_size(struct _lv_obj_t * obj, lv_coord_t w, lv_coord_t h);
 bool lv_obj_refr_size(struct _lv_obj_t * obj);
 
 /**
- * Set the width of an object
+ * Set the width of an object 设置对象的宽度
  * @param obj       pointer to an object
  * @param w         the new width
  * @note            possible values are:
@@ -101,7 +104,7 @@ bool lv_obj_refr_size(struct _lv_obj_t * obj);
 void lv_obj_set_width(struct _lv_obj_t * obj, lv_coord_t w);
 
 /**
- * Set the height of an object
+ * Set the height of an object 设置对象的高度
  * @param obj       pointer to an object
  * @param h         the new height
  * @note            possible values are:
@@ -168,33 +171,33 @@ uint32_t lv_layout_register(lv_layout_update_cb_t cb, void * user_data);
 void lv_obj_set_align(struct _lv_obj_t * obj, lv_align_t align);
 
 /**
- * Change the alignment of an object and set new coordinates.
- * Equivalent to:
+ * Change the alignment of an object and set new coordinates. 这个函数默认以父对象为参考进行对齐，并根据需要添加x和y的偏移量。
+ * Equivalent to: 相当于:　
  * lv_obj_set_align(obj, align);
  * lv_obj_set_pos(obj, x_ofs, y_ofs);
- * @param obj       pointer to an object to align
- * @param align     type of alignment (see 'lv_align_t' enum) `LV_ALIGN_OUT_...` can't be used.
- * @param x_ofs     x coordinate offset after alignment
- * @param y_ofs     y coordinate offset after alignment
+ * @param obj       pointer to an object to align 指针指向要对齐的对象
+ * @param align     type of alignment (see 'lv_align_t' enum) `LV_ALIGN_OUT_...` can't be used. 
+ * @param x_ofs     x coordinate offset after alignment x坐标对齐后的偏移量
+ * @param y_ofs     y coordinate offset after alignment y坐标对齐后的偏移量
  */
 void lv_obj_align(struct _lv_obj_t * obj, lv_align_t align, lv_coord_t x_ofs, lv_coord_t y_ofs);
 
 /**
- * Align an object to an other object.
- * @param obj       pointer to an object to align
- * @param base      pointer to an other object (if NULL `obj`s parent is used). 'obj' will be aligned to it.
- * @param align     type of alignment (see 'lv_align_t' enum)
- * @param x_ofs     x coordinate offset after alignment
- * @param y_ofs     y coordinate offset after alignment
- * @note            if the position or size of `base` changes `obj` needs to be aligned manually again
+ * Align an object to an other object. 将一个对象与另一个对象对齐。　
+ * @param obj       pointer to an object to align 指向要对齐的对象的指针
+ * @param base      pointer to an other object (if NULL `obj`s parent is used). 'obj' will be aligned to it. 指向其他对象的指针
+ * @param align     type of alignment (see 'lv_align_t' enum) 对齐类型(参见'lv align t' enum)
+ * @param x_ofs     x coordinate offset after alignment 对齐后的X坐标偏移量
+ * @param y_ofs     y coordinate offset after alignment 对齐后的Y坐标偏移量
+ * @note            if the position or size of `base` changes `obj` needs to be aligned manually again 如果' base '的位置或大小发生变化，' obj '需要再次手动对齐 
  */
 void lv_obj_align_to(struct _lv_obj_t * obj, const struct _lv_obj_t * base, lv_align_t align, lv_coord_t x_ofs,
                      lv_coord_t y_ofs);
 
 /**
- * Align an object to the center on its parent.
- * @param obj       pointer to an object to align
- * @note            if the parent size changes `obj` needs to be aligned manually again
+ * Align an object to the center on its parent.  将对象与其父对象的中心对齐
+ * @param obj       pointer to an object to align  指向要对齐的对象的指针
+ * @note            if the parent size changes `obj` needs to be aligned manually again 如果父元素的大小改变，' obj '需要再次手动对齐
  */
 static inline void lv_obj_center(struct _lv_obj_t * obj)
 {

@@ -589,6 +589,13 @@ static inline uint8_t lv_color_brightness(lv_color_t color)
     return (uint8_t)(bright >> 3);
 }
 
+/**
+ * 一个内联函数，用于从给定的红、绿、蓝（RGB）值构造
+ * @param r               红色分量的值，范围从0到255。
+ * @param g               绿色分量的值，范围从0到255。
+ * @param b               蓝色分量的值，范围从0到255。
+ * @return                返回一个构造的颜色
+ * */
 static inline lv_color_t lv_color_make(uint8_t r, uint8_t g, uint8_t b)
 {
     return _LV_COLOR_MAKE_TYPE_HELPER LV_COLOR_MAKE(r, g, b);

@@ -1,9 +1,12 @@
 #include "ui_app.h"
 
-lv_Brightting_data_t setting;
-lv_obj_t *In_slider;
-lv_obj_t *On_slider;
-lv_obj_t *In_slider;
+
+/*------------------------------------------无法控制先不管----------------------------------------*/
+
+lv_Brightting_data_t setting; //屏幕设置结构体
+lv_obj_t *In_slider;   //暂时没有用到
+lv_obj_t *On_slider;   //暂时没有用到
+lv_obj_t *In_slider;   //暂时没有用到
 
 uint32_t btnmatrix_id;   // 屏保按钮id
 lv_obj_t *lv_scr_obj;    // 屏保对象
@@ -178,6 +181,10 @@ void add_Screen_event_cb(lv_event_t *e)
     }
 }
 
+/**
+ * 创建屏幕设置卡片
+ * @param parent         指向父对象的指针
+ * */
 void CreateScreen(lv_obj_t *parent)
 {
     lv_obj_t *ImageObj = CreateOBJclick(parent);

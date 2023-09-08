@@ -66,7 +66,7 @@ typedef uint16_t lv_state_t;
  * Note every part is used by every widget
  */
 enum {
-    LV_PART_MAIN         = 0x000000,   /**< A background like rectangle*/
+    LV_PART_MAIN         = 0x000000,   /**< A background like rectangle 背景矩形*/
     LV_PART_SCROLLBAR    = 0x010000,   /**< The scrollbar(s)*/
     LV_PART_INDICATOR    = 0x020000,   /**< Indicator, e.g. for slider, bar, switch, or the tick box of the checkbox*/
     LV_PART_KNOB         = 0x030000,   /**< Like handle to grab to adjust the value*/
@@ -86,9 +86,9 @@ typedef uint32_t lv_part_t;
  */
 enum {
     LV_OBJ_FLAG_HIDDEN          = (1L << 0),  /**< Make the object hidden. (Like it wasn't there at all)*/
-    LV_OBJ_FLAG_CLICKABLE       = (1L << 1),  /**< Make the object clickable by the input devices*/
+    LV_OBJ_FLAG_CLICKABLE       = (1L << 1),  /**< Make the object clickable by the input devices 使对象可以通过输入设备点击*/
     LV_OBJ_FLAG_CLICK_FOCUSABLE = (1L << 2),  /**< Add focused state to the object when clicked*/
-    LV_OBJ_FLAG_CHECKABLE       = (1L << 3),  /**< Toggle checked state when the object is clicked*/
+    LV_OBJ_FLAG_CHECKABLE       = (1L << 3),  /**< Toggle checked state when the object is clicked 当对象被点击时切换复选状态*/
     LV_OBJ_FLAG_SCROLLABLE      = (1L << 4),  /**< Make the object scrollable*/
     LV_OBJ_FLAG_SCROLL_ELASTIC  = (1L << 5),  /**< Allow scrolling inside but with slower speed*/
     LV_OBJ_FLAG_SCROLL_MOMENTUM = (1L << 6),  /**< Make the object scroll further when "thrown"*/
@@ -215,8 +215,9 @@ bool lv_is_initialized(void);
 
 /**
  * Create a base object (a rectangle)
- * @param parent    pointer to a parent object. If NULL then a screen will be created.
- * @return          pointer to the new object
+ * 创建一个基本对象(矩形)
+ * @param parent    pointer to a parent object. If NULL then a screen will be created. 指向父对象的指针。 如果为NULL，则将创建一个屏幕。 
+ * @return          pointer to the new object 指向新对象的指针
  */
 lv_obj_t * lv_obj_create(lv_obj_t * parent);
 
@@ -233,8 +234,8 @@ lv_obj_t * lv_obj_create(lv_obj_t * parent);
 void lv_obj_add_flag(lv_obj_t * obj, lv_obj_flag_t f);
 
 /**
- * Clear one or more flags
- * @param obj   pointer to an object
+ * Clear one or more flags 清除一个或多个标志
+ * @param obj   pointer to an object 指向对象的指针
  * @param f     OR-ed values from `lv_obj_flag_t` to set.
  */
 void lv_obj_clear_flag(lv_obj_t * obj, lv_obj_flag_t f);

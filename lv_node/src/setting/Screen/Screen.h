@@ -12,7 +12,7 @@ typedef struct
 
     uint32_t ScreenBtnId; //屏保按钮id
 
-} lv_Brightting_data_t;
+} lv_Brightting_data_t; //屏幕设置结构体
  
 extern  lv_Brightting_data_t setting;
 

@@ -221,10 +221,10 @@ typedef struct {
  **********************/
 
 /**
- * Add a draw mask. Everything drawn after it (until removing the mask) will be affected by the mask.
- * @param param an initialized mask parameter. Only the pointer is saved.
- * @param custom_id a custom pointer to identify the mask. Used in `lv_draw_mask_remove_custom`.
- * @return the an integer, the ID of the mask. Can be used in `lv_draw_mask_remove_id`.
+ * Add a draw mask. Everything drawn after it (until removing the mask) will be affected by the mask. 添加一个绘制蒙版。在它之后绘制的所有东西(直到移除遮罩)都会受到遮罩的影响
+ * @param param an initialized mask parameter. Only the pointer is saved. 指向遮罩参数的指针。这些参数定义了遮罩的类型和属性。
+ * @param custom_id a custom pointer to identify the mask. Used in `lv_draw_mask_remove_custom`.  一个指向自定义ID的指针。这可以用来识别特定的遮罩，尤其是当你有多个相似的遮罩时。这个参数可以设置为NULL，如果你不需要它。
+ * @return the an integer, the ID of the mask. Can be used in `lv_draw_mask_remove_id`. 返回一个遮罩的ID，你可以用它来稍后删除或修改遮罩。
  */
 int16_t lv_draw_mask_add(void * param, void * custom_id);
 

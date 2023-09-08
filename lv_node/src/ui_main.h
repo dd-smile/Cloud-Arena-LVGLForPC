@@ -1,8 +1,8 @@
 #ifndef _LV_NODE_HOME_H
 #define _LV_NODE_HOME_H
 
-#define LV_CARD_WIDTH 221
-#define LV_CARD_HEIGHT 250
+#define LV_CARD_WIDTH 221      //卡片宽度
+#define LV_CARD_HEIGHT 250     //卡片高度
 
 typedef struct
 {
