@@ -84,12 +84,12 @@ lv_obj_t * lv_table_create(lv_obj_t * parent);
  *====================*/
 
 /**
- * Set the value of a cell.
- * @param obj           pointer to a Table object
- * @param row           id of the row [0 .. row_cnt -1]
- * @param col           id of the column [0 .. col_cnt -1]
- * @param txt           text to display in the cell. It will be copied and saved so this variable is not required after this function call.
- * @note                New roes/columns are added automatically if required
+ * Set the value of a cell. 设置表格中特定单元格的内容
+ * @param obj           pointer to a Table object 指向表格对象的指针。
+ * @param row           id of the row [0 .. row_cnt -1] 行的索引（从0开始）。
+ * @param col           id of the column [0 .. col_cnt -1] 列的索引（从0开始）。
+ * @param txt           text to display in the cell. It will be copied and saved so this variable is not required after this function call. 要设置的单元格文本。此文本将被复制并存储在表中，因此在调用此函数后，您不必保留原始文本。
+ * @note                New roes/columns are added automatically if required 如果需要，将自动添加新的表/列
  */
 void lv_table_set_cell_value(lv_obj_t * obj, uint16_t row, uint16_t col, const char * txt);
 

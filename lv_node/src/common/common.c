@@ -658,35 +658,35 @@ lv_obj_t *btn_create_text(lv_obj_t *parent, bool on_back, const char *confirm_te
 }
 
 // 点击键盘页面的添加按钮事件
-static void add_event_btn(lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t *obj = lv_event_get_target(e);
+// static void add_event_btn(lv_event_t *e)    有死机bug
+// {
+//     lv_event_code_t code = lv_event_get_code(e);
+//     lv_obj_t *obj = lv_event_get_target(e);
 
-    if (code == LV_EVENT_CLICKED)
-    {
-        // memset(add_device_list[0].device_name, 0, sizeof(add_device_list[0].device_name)); // 清空数组
-        inputVal = lv_textarea_get_text(Textarea_Pinyin);                                              // 获取添加设备名称输入框的值
-        printf("添加文本:%s\n", inputVal);
-        // if(Input_label == NULL)
-        // {
-        //     while (true)
-        //     {
-        //         printf("test \r\n");
-        //     }
-        // }
-        // strcat(add_device_list[0].device_name, inputVal);                                  // 拼接字符串
-        lv_label_set_text(Input_label, inputVal);                                             // 设置标签的值
-        lv_obj_del(obj->parent);
-    }
-}
+//     if (code == LV_EVENT_CLICKED)
+//     {
+//         // memset(add_device_list[0].device_name, 0, sizeof(add_device_list[0].device_name)); // 清空数组
+//         inputVal = lv_textarea_get_text(Textarea_Pinyin);                                              // 获取添加设备名称输入框的值
+//         printf("添加文本:%s\n", inputVal);
+//         // if(Input_label == NULL)
+//         // {
+//         //     while (true)
+//         //     {
+//         //         printf("test \r\n");
+//         //     }
+//         // }
+//         // strcat(add_device_list[0].device_name, inputVal);                                  // 拼接字符串
+//         lv_label_set_text(Input_label, inputVal);                                             // 设置标签的值
+//         lv_obj_del(obj->parent);
+//     }
+// }
 
 
 /**
  * 创建一个点击设备名称的输入框弹出键盘的页面（带拼音的）
  * @param parent               指向父对象的指针
  * */
-lv_obj_t *lv_keypage_create(lv_obj_t *parent)
+lv_obj_t *lv_keypage_create(lv_obj_t *parent, lv_event_cb_t event_cb)
 {
     lv_obj_t *keypage = lv_obj_create(parent);
     lv_obj_set_size(keypage, 1024, 600);
@@ -704,7 +704,7 @@ lv_obj_t *lv_keypage_create(lv_obj_t *parent)
     }
     
     lv_obj_t *confirm_btn = btn_create_text(keypage, false, "Add", 520, 50); // 创建添加按钮
-    lv_obj_add_event_cb(confirm_btn, add_event_btn, LV_EVENT_ALL, NULL);     // 添加事件
+    lv_obj_add_event_cb(confirm_btn, event_cb, LV_EVENT_ALL, NULL);     // 添加事件
     btn_create_text(keypage, true, "Cancel", 620, 50);                       // 创建删除按钮
 
     return keypage;

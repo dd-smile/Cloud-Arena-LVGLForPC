@@ -84,7 +84,7 @@ const uint8_t _lv_bpp8_opa_table[256] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1
  **********************/
 
 /**
- * Draw a letter in the Virtual Display Buffer
+ * Draw a letter in the Virtual Display Buffer 在虚拟显示缓冲区中绘制一个字母
  * @param pos_p left-top coordinate of the latter
  * @param mask_p the letter will be drawn only on this area  (truncated to draw_buf area)
  * @param font_p pointer to font

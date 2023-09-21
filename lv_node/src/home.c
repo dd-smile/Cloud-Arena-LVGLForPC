@@ -8,6 +8,8 @@
  */
 
 #include "ui_app.h"
+
+#define MAX_PAGE  4
 HomeData device_data;
 
 /**
@@ -60,8 +62,8 @@ static lv_obj_t *TabviewDevicePage(lv_obj_t *obj, int num_pages, const char **ta
     lv_obj_t *tab_btns = lv_tabview_get_tab_btns(tabview);      //获取标签视图中的标签按钮部分
     lv_obj_set_style_bg_opa(tab_btns, 0, LV_STATE_DEFAULT);
     lv_obj_remove_style_all(tab_btns);
-    // lv_obj_set_width(tab_btns, 480);
-    lv_obj_set_width(tab_btns, 150);
+    //lv_obj_set_width(tab_btns, 480);
+    lv_obj_set_width(tab_btns, 520);
     lv_obj_set_height(tab_btns, 65);
 
     lv_obj_set_style_text_font(tab_btns, &PuHuiTi_Regular_20, 0);
@@ -115,7 +117,7 @@ lv_obj_t *device_page_box(lv_obj_t *parent, int num_pages, ...)
  * */
 void CreateHomePage(lv_obj_t *parent)
 {
-    lv_obj_t *home_tab = device_page_box(parent, 1, "Facilities"); // 设备列框架
+    lv_obj_t *home_tab = device_page_box(parent, MAX_PAGE, "设备","数据看板","-","-"); // 设备列框架
 
     device_data.all_pages = lv_tileview_add_tile(lv_obj_get_child(home_tab, 0), 0, 0, LV_DIR_RIGHT); // 添加全部页面
 

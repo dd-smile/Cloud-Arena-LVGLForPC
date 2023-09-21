@@ -16,9 +16,10 @@ static uint32_t active_index_1 = 0;
 lv_obj_t *act_cb;
 const char *RadioText;
 lv_obj_t *Input_label;
+static lv_obj_t *WinpageLabel;
 
 /**
- * 创建巡检表
+ * 创建设备详情页中的巡检表
  * @param parent         指向父对象的指针
  * */
 static void CreateBiaoge(lv_obj_t *parent)
@@ -27,9 +28,9 @@ static void CreateBiaoge(lv_obj_t *parent)
     lv_img_set_src(lvLogo, &biaoge);
     lv_obj_align(lvLogo, LV_ALIGN_CENTER, 185, 100);
 
-    create_12_text(lvLogo, "Inspection time", -105, -30);
-    create_12_text(lvLogo, "Inspection status", 0, -30);
-    create_12_text(lvLogo, "Result", 105, -30);
+    card_create_12_text(lvLogo, "检验时间", -105, -30);
+    card_create_12_text(lvLogo, "检查状态", 0, -30);
+    card_create_12_text(lvLogo, "结果", 105, -30);
 
     create_12_Green_text(lvLogo, "2023/06/27", -105, -7);
     create_12_Green_text(lvLogo, "exception", 0, -7);
@@ -64,7 +65,7 @@ static void CreateLoge(lv_obj_t *parent)
  * @param obj             指向父对象的指针
  * @param text            文本，以'\0'结尾的字符串
  * @param x_ofs           x坐标偏移量
- * @param event_cb        要注册的事件
+ * @param event_cb        要注册的事件           
  * @return                返回指向按钮的指针
  * */
 static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_event_cb_t event_cb)
@@ -86,19 +87,20 @@ static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t
     // 红色字体
     lv_obj_set_style_text_color(label, lv_color_make(255, 255, 255), LV_PART_MAIN);
 
-    lv_obj_set_style_text_font(label, &lv_font_montserrat_12, LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
     lv_obj_center(label);
     return btn;
 }
 
 /**
- * 创建控制按钮
+ * 创建活动看台控制按钮
  * @param obj             指向父对象的指针
  * @param text            文本，以'\0'结尾的字符串
  * @param x_ofs           x坐标偏移量
  * @param y_ofs           y坐标偏移量
+ * @param index            (传入设备号和按钮号，取出按钮号)按到第几个按钮
  * */
-static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs)
+static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
 {
 
     lv_obj_t *btn = lv_obj_create(obj);
@@ -109,6 +111,34 @@ static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_o
     lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
     lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
     lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+    lv_obj_add_event_cb(btn, Controls_event_cb, LV_EVENT_ALL, index);  //设备详情页控制按钮事件
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+/**
+ * 创建悬空球架控制按钮
+ * @param obj             指向父对象的指针
+ * @param text            文本，以'\0'结尾的字符串
+ * @param x_ofs           x坐标偏移量
+ * @param y_ofs           y坐标偏移量
+ * @param index            (传入设备号和按钮号，取出按钮号)按到第几个按钮
+ * */
+static void CreateBasketballControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
+{
+    lv_obj_t *btn = lv_obj_create(obj);
+
+    lv_obj_set_size(btn, 90, 35);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+    lv_obj_add_event_cb(btn, basketball_Controls_event_cb, LV_EVENT_ALL, index);
     lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
 
     lv_obj_t *label = lv_label_create(btn);
@@ -329,6 +359,29 @@ static void draw_part_event_cb(lv_event_t *e)
     }
 }
 
+/**
+ * 设置表格中单元格的内容(一列一列设置)
+ * @param halert_table                 指向表格对象的指针 
+ * @param id                           行的索引（从0开始）
+ * @param InspectionTime               要设置的单元格文本:检验时间
+ * @param InspectionStatus             要设置的单元格文本:检查状态
+ * @param SolutionMeasure              要设置的单元格文本:解决方案措施
+ * @param DeviceFaultSymptom           要设置的单元格文本:设备故障描述
+ * @param Result　　　　　　　　　　　　　　要设置的单元格文本:结果
+ * */
+void lv_create_alarm(lv_obj_t *halert_table, uint8_t id, const char *InspectionTime, const char *InspectionStatus, const char *SolutionMeasure, const char *DeviceFaultSymptom, const char *Result)
+{
+    lv_table_set_cell_value(halert_table, id, 0, InspectionTime);
+    lv_table_set_cell_value(halert_table, id, 1, InspectionStatus);
+    lv_table_set_cell_value(halert_table, id, 2, SolutionMeasure);
+    lv_table_set_cell_value(halert_table, id, 3, DeviceFaultSymptom);
+    lv_table_set_cell_value(halert_table, id, 4, Result);
+}
+
+/**
+ * 设置检查故障表参数内容
+ * @param parent           指向父对象的指针
+ * */
 static lv_obj_t *ui_alert_obj(lv_obj_t *parent)
 { // 长1000宽480的参数设置页面
     lv_obj_t *halert_table = lv_table_create(parent);
@@ -347,44 +400,40 @@ static lv_obj_t *ui_alert_obj(lv_obj_t *parent)
     lv_table_set_col_width(halert_table, 3, 350);
     lv_table_set_col_width(halert_table, 4, 100);
 
-    lv_table_set_cell_value(halert_table, 0, 0, "Inspection time");
-    lv_table_set_cell_value(halert_table, 0, 1, "Inspection status");
-    lv_table_set_cell_value(halert_table, 0, 2, "Solution measure");
-    lv_table_set_cell_value(halert_table, 0, 3, "Device fault Symptom");
-    lv_table_set_cell_value(halert_table, 0, 4, "Result");
+    lv_table_set_cell_value(halert_table, 0, 0, "检验时间");
+    lv_table_set_cell_value(halert_table, 0, 1, "检查状态");
+    lv_table_set_cell_value(halert_table, 0, 2, "解决方案措施");
+    lv_table_set_cell_value(halert_table, 0, 3, "设备故障描述");
+    lv_table_set_cell_value(halert_table, 0, 4, "结果");
 
-    lv_create_alarm(halert_table, 1, "2023/06/26", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 2, "2023/06/20", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 3, "2023/06/19", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 4, "2023/06/12", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 5, "2023/06/05", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 6, "2023/06/01", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 7, "2023/05/29", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 8, "2023/05/18", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 9, "2023/05/15", "exception", "repaired", "Click operation abnormal, no rotation, no noise", "solved");
-    lv_create_alarm(halert_table, 10, "2023/05/13", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 11, "2023/05/05", "normal", " ", " ", " ");
-    lv_create_alarm(halert_table, 12, "2023/04/12", "normal", " ", " ", " ");
+    lv_create_alarm(halert_table, 1, "2023/06/26", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 2, "2023/06/20", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 3, "2023/06/19", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 4, "2023/06/12", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 5, "2023/06/05", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 6, "2023/06/01", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 7, "2023/05/29", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 8, "2023/05/18", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 9, "2023/05/15", "异常", "修理", "点击操作异常，无旋转，无噪音", "解决了");
+    lv_create_alarm(halert_table, 10, "2023/05/13", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 11, "2023/05/05", "正常", " ", " ", " ");
+    lv_create_alarm(halert_table, 12, "2023/04/12", "正常", " ", " ", " ");
 
     // lv_create_alarm();
 }
 
-void lv_create_alarm(lv_obj_t *halert_table, uint8_t id, const char *DeviceName, const char *AlarmTime, const char *AlarmType, const char *AlarmInfo, const char *AlarmLevel)
-{
-    lv_table_set_cell_value(halert_table, id, 0, DeviceName);
-    lv_table_set_cell_value(halert_table, id, 1, AlarmTime);
-    lv_table_set_cell_value(halert_table, id, 2, AlarmType);
-    lv_table_set_cell_value(halert_table, id, 3, AlarmInfo);
-    lv_table_set_cell_value(halert_table, id, 4, AlarmLevel);
-}
 
-// 创建检查故障表
+/**
+ * 创建检查故障表
+ * @param parent           指向父对象的指针
+ * @return                 返回指向背景底图的指针
+ * */
 lv_obj_t *CreateInspectTable(lv_obj_t *parent)
 {
     lv_obj_t *mask = lv_c_create_mask_box(parent); // 创建遮罩
     lv_obj_t *Tablebg = CreateDeviceBgCard(mask);
     lv_obj_set_size(Tablebg, 900, 500);
-    card_create_16_text(Tablebg, "Device name: ", -380, -220);       // 创建设备名称
+    card_create_16_text(Tablebg, "设备名称: ", -380, -220);       // 创建设备名称
     card_create_16_text(Tablebg, pPageData->deviceName, -220, -220); // 创建设备名称
 
     ui_alert_obj(Tablebg);
@@ -393,6 +442,42 @@ lv_obj_t *CreateInspectTable(lv_obj_t *parent)
 }
 
 /*------------------------------------------创建按钮点击事件-----------------------------------------*/
+
+/**
+ * 添加描述故障点击事件
+ * @param e               指向事件描述符的指针
+ * */
+static void AddDescriptionEvent(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_target(e);
+
+    if( code == LV_EVENT_CLICKED)
+    {
+        char *inputVal = lv_textarea_get_text(Textarea_Pinyin);
+        printf("描述故障： %s\n", inputVal);
+
+        lv_label_set_text(WinpageLabel, inputVal);  //设置标签的值
+        lv_obj_del(obj->parent);
+    }
+}
+
+/**
+ * 添加重命名按钮的点击事件
+ * @param e               指向事件描述符的指针
+ * */
+static void AddRenameEventBtn(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_target(e);
+
+    if( code == LV_EVENT_CLICKED)
+    {
+        char *inputVal = lv_textarea_get_text(Textarea_Pinyin);
+        printf("添加文本 %s\n", inputVal);
+        lv_obj_del(obj->parent);
+    }
+}
 
 /**
  * 创建重命名按钮的点击事件
@@ -404,7 +489,7 @@ static void RenameCreateButton(lv_event_t *e)
 
     if (code == LV_EVENT_CLICKED)
     {
-        lv_keypage_create(lv_scr_act());
+        lv_keypage_create(lv_scr_act(), AddRenameEventBtn);
     }
 }
 
@@ -423,7 +508,7 @@ static void MaintenanceCreateButton(lv_event_t *e)
 }
 
 /**
- * 创建故障申报按钮的点击事件
+ * 创建活动看台故障申报按钮的点击事件
  * @param e               指向事件描述符的指针
  * */
 static void ReportCreateButton(lv_event_t *e)
@@ -432,8 +517,21 @@ static void ReportCreateButton(lv_event_t *e)
 
     if (code == LV_EVENT_CLICKED)
     {
-
         CreateBreakdownPageBg(lv_scr_act());
+    }
+}
+
+/**
+ * 创建悬空球架故障申报按钮的点击事件
+ * @param e               指向事件描述符的指针
+ * */
+static void BsReportCreateButton(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+
+    if (code == LV_EVENT_CLICKED)
+    {
+        BsCreateBreakdownPageBg(lv_scr_act());
     }
 }
 
@@ -447,14 +545,41 @@ static void InspectCreateButton(lv_event_t *e)
 
     if (code == LV_EVENT_CLICKED)
     {
-
         CreateInspectTable(lv_scr_act());
         printf("Create\n");
     }
 }
 
 /**
- * 创建设备故障详情页
+ * 创建描述故障输入框的点击事件
+ * @param e               指向事件描述符的指针
+ * */
+static void DescriptionInputHandler(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+
+    if( code == LV_EVENT_CLICKED)
+    {
+        lv_keypage_create(lv_scr_act(), AddDescriptionEvent);
+    }
+}
+
+/**
+ * 创建描述故障输入框
+ * @param parent           指向父对象的指针
+ * */
+static lv_obj_t *CreateDescriptionInput(lv_obj_t *parent)
+{
+    card_create_16_text(parent, "故障现象的描述: ", 152, -190);  // 设备故障现象描述
+    lv_obj_t *WinPage = CreateWinPage(parent, &fout_16_text, pPageData->Description, 408, -300, 300, 80); // 设备故障现象描述
+    lv_obj_set_style_bg_color(WinPage, lv_color_make(0, 0, 0), LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(WinPage, 1, LV_STATE_DEFAULT);
+    lv_obj_set_style_border_color(WinPage, lv_color_make(49, 61, 85), LV_STATE_DEFAULT);
+    lv_obj_add_event_cb(WinPage, DescriptionInputHandler, LV_EVENT_ALL, NULL);
+}
+
+/**
+ * 创建活动看台设备故障详情页
  * @param parent           指向父对象的指针
  * @return                 返回指向设备故障详情页的指针
  * */
@@ -464,38 +589,33 @@ lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent)
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);                               // 创建背景
     CreatrLine(bg);                                                        // 创建分割线
-    card_create_16_text(bg, "Device name: ", -300, 30);                    // 创建设备名称
+    card_create_16_text(bg, "设备名称: ", -300, 30);                    // 创建设备名称
     card_create_16_text(bg, pPageData->deviceName, -140, 30);              // 创建设备名称
     image_create(bg, pPageData->image, -200, -100);                        // 创建图片
     CreateWinPage(bg, &fout_16_text, pPageData->intro, 31, -100, 300, 59); // 创建产品简介
 
-    card_create_16_text(bg, "Description of the fault symptom: ", 152, -190);                         // 设备故障现象描述
-    lv_obj_t *WinPage = CreateWinPage(bg, &fout_16_text, pPageData->Description, 408, -300, 300, 80); // 设备故障现象描述
-    lv_obj_set_style_bg_color(WinPage, lv_color_make(0, 0, 0), LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(WinPage, 1, LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(WinPage, lv_color_make(49, 61, 85), LV_STATE_DEFAULT);
-    lv_obj_add_event_cb(WinPage, RenameCreateButton, LV_EVENT_ALL, NULL);
+    card_create_12_text(bg, "制造商服务电话: ", 88, -50); // 制造商服务电话
+    card_create_12_text(bg, pPageData->ManufacturingTel, 180, -50);
+    card_create_12_text(bg, "制造商售后电话: ", 87, 5);
+    card_create_12_text(bg, pPageData->SalehAfterotline, 180, 5);
 
-    create_12_text(bg, "Manufacturing TEL : ", 88, -50); // 制造商服务电话
-    create_12_text(bg, pPageData->ManufacturingTel, 180, -50);
-    create_12_text(bg, "After-sales hotline :", 87, 5);
-    create_12_text(bg, pPageData->SalehAfterotline, 180, 5);
+    card_create_12_text(bg, "解决问题: ", 88, 50);
 
-    create_12_text(bg, "Solve the problem: ", 88, 50);
-    // create_12_text(SolveInputBox, pPageData->SolveProblem, -60, 0);
     lv_obj_t *SolveInputBox = CreateInputBox(bg, -43, 244, 190, 35);
     lv_obj_set_style_text_font(SolveInputBox, &lv_font_montserrat_12, 0); // set font
     lv_obj_set_style_text_color(SolveInputBox, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-    lv_obj_add_event_cb(SolveInputBox, RenameCreateButton, LV_EVENT_ALL, NULL);
 
-    Input_label = lv_label_create(SolveInputBox); // 创建标签
-    lv_label_set_text(Input_label, "Solution");
-    lv_obj_align(Input_label, LV_ALIGN_LEFT_MID, -10, 0);
 
-    create_12_text(bg, "Result : ", 55, 105);
-    CreateRadioBox(bg, 230, 287);
+    // Input_label = lv_label_create(SolveInputBox); // 创建标签
+    // lv_label_set_text(Input_label, "解决方案");
+    // lv_obj_align(Input_label, LV_ALIGN_LEFT_MID, -10, 0);
 
-    lv_obj_t *InspectButton = CreateFeatureButton(bg, "inspection record form", 50, InspectCreateButton); // 创建检查记录表按钮
+    card_create_12_text(bg, "结果: ", 55, 105);
+    CreateRadioBox(bg, 230, 287);  //结果选择框
+
+    CreateDescriptionInput(bg);  //描述设备故障输入框
+
+    lv_obj_t *InspectButton = CreateFeatureButton(bg, "检查记录表", 50, InspectCreateButton); // 创建检查记录表按钮
     lv_obj_set_size(InspectButton, 320, 39);
     lv_obj_align(InspectButton, LV_ALIGN_DEFAULT, 22, 350);
 
@@ -508,45 +628,144 @@ lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent)
 }
 
 /**
- * 创建设备详情页
+ * 创建悬空球架设备故障详情页
+ * @param parent           指向父对象的指针
+ * @return                 返回指向设备故障详情页的指针
+ * */
+lv_obj_t *BsCreateBreakdownPageBg(lv_obj_t *parent)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);                               // 创建背景
+    CreatrLine(bg);                                                        // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -300, 30);                    // 创建设备名称
+    card_create_16_text(bg, bs_data->deviceName, -140, 30);              // 创建设备名称
+    image_create(bg, bs_data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, bs_data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    card_create_12_text(bg, "制造商服务电话: ", 88, -50); // 制造商服务电话
+    card_create_12_text(bg, bs_data->ManufacturingTel, 180, -50);
+    card_create_12_text(bg, "制造商售后电话: ", 87, 5);
+    card_create_12_text(bg, bs_data->SalehAfterotline, 180, 5);
+
+    card_create_12_text(bg, "解决问题: ", 88, 50);
+
+    lv_obj_t *SolveInputBox = CreateInputBox(bg, -43, 244, 190, 35);
+    lv_obj_set_style_text_font(SolveInputBox, &lv_font_montserrat_12, 0); // set font
+    lv_obj_set_style_text_color(SolveInputBox, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
+
+    card_create_12_text(bg, "结果: ", 55, 105);
+    CreateRadioBox(bg, 230, 287);  //结果选择框
+
+    CreateDescriptionInput(bg);  //描述设备故障输入框
+
+    lv_obj_t *InspectButton = CreateFeatureButton(bg, "检查记录表", 50, InspectCreateButton); // 创建检查记录表按钮
+    lv_obj_set_size(InspectButton, 320, 39);
+    lv_obj_align(InspectButton, LV_ALIGN_DEFAULT, 22, 350);
+
+    lv_obj_t *ConfirmBtn = btn_create_text(bg, false, "OK", 480, 353);     // 创建按钮
+    lv_obj_add_event_cb(ConfirmBtn, lv_back_Mask, LV_EVENT_CLICKED, NULL); // 添加返回事件
+    lv_obj_t *BackBtn = btn_create_text(bg, false, "Cancel", 620, 353);    // 创建按钮
+    lv_obj_add_event_cb(BackBtn, lv_back_Mask, LV_EVENT_CLICKED, NULL);    // 添加返回事件
+
+    return bg;
+}
+
+/**
+ * 创建活动看台设备详情页
  * @param data           要创建设备的基本数据
+ * @param device_num     设备号
  * @return               返回指向已创建的设备详情页面的指针
  * */
-lv_obj_t *CreateDevicePageBg(const DevicePageData *data)
+lv_obj_t *CreateDevicePageBg(const DevicePageData *data, uint8_t device_num)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
     CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "Device name: ", -300, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -140, 30); // 创建设备名称
-    card_create_16_text(bg, "Equipment brand: ", 100, -190);
-    create_12_text(bg, "Purchase Time: ", 80, -10);
-    create_12_text(bg, data->date, 160, -10);
-    create_12_text(bg, "Inspection cycle: ", 260, -10);
-    create_12_text(bg, data->period, 350, -10);
-    create_12_text(bg, "Supplier Service Phone: ", 105, 20);
-    create_12_text(bg, data->phoneNumber, 245, 20);
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 75, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 200, 25);
     image_create(bg, data->image, -200, -100);                        // 创建图片
     CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
-    CreateControlsButton(bg, data->expandBtnText, -320, 142);        // 创建控制按钮
-    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142); // 创建急停按钮
-    CreateControlsButton(bg, data->collapseBtnText, -80, 142);       // 创建收起按钮
+    //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
+    index_t *index0 = add_index_t(device_num, 0);
+    index_t *index1 = add_index_t(device_num, 1);
+    index_t *index2 = add_index_t(device_num, 2);
+    index_t *index3 = add_index_t(device_num, 3);
+    index_t *index4 = add_index_t(device_num, 4);
+    index_t *index5 = add_index_t(device_num, 5);
+    index_t *index6 = add_index_t(device_num, 6);
 
-    CreateControlsButton(bg, data->StandOpenBtnText, -350, 188);     //看台展开
-    CreateControlsButton(bg, data->StandClosureBtnText, -250, 188);  //看台收合
-    CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188);      //座椅展开
-    CreateControlsButton(bg, data->SeatTipBtnText, -50, 188);        //座椅收合
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index0);                // 创建一键打开按钮
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1);         // 创建急停按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2);               // 创建一键收合按钮
 
-    CreateFeatureButton(bg, "rename", 50, RenameCreateButton);            // 创建改名按钮
-    CreateFeatureButton(bg, "Maintenance", 145, MaintenanceCreateButton); // 创建检修正常按钮 
-    CreateFeatureButton(bg, "reporting", 245, ReportCreateButton); // 创建故障申报按钮  
-    CreateFeatureButton(bg, "Back", 340, lv_back_Mask);                   // 创建返回按钮
+    CreateControlsButton(bg, data->StandOpenBtnText, -350, 188, index3);     //看台展开
+    CreateControlsButton(bg, data->StandClosureBtnText, -250, 188, index4);  //看台收合
+    CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188, index5);      //座椅展开
+    CreateControlsButton(bg, data->SeatTipBtnText, -50, 188, index6);        //座椅收合
+
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);            // 创建改名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton); // 创建检修正常按钮 
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton); // 创建故障申报按钮  
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                   // 创建返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
     CreateBiaoge(bg); // 表格
 
     return bg;
+}
+
+/**
+ * 创建悬空球架设备详情页
+ * @param data           要创建设备的基本数据
+ * @param device_num     设备号
+ * @return               返回指向已创建的设备详情页面的指针
+ * */
+lv_obj_t *CreatebasketballPageBg(const DevicePageData *data, uint8_t device_num)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    CreatrLine(bg);                                      // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 75, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 200, 25);
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
+    index_t *index0 = add_index_t(device_num, 0);
+    index_t *index1 = add_index_t(device_num, 1);
+    index_t *index2 = add_index_t(device_num, 2);
+    CreateBasketballControlsButton(bg, data->expandBtnText, -320, 142, index0);                // 创建一键打开按钮
+    CreateBasketballControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1);         // 创建急停按钮
+    CreateBasketballControlsButton(bg, data->collapseBtnText, -80, 142, index2);               // 创建一键收合按钮
+
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);            // 创建改名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton); // 创建检修正常按钮 
+    CreateFeatureButton(bg, "故障申报", 245, BsReportCreateButton); // 创建故障申报按钮  
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                   // 创建返回按钮
+
+    CreateLoge(bg); // 制造商Logo
+
+    CreateBiaoge(bg); // 表格
+
+    return bg;
+
 }

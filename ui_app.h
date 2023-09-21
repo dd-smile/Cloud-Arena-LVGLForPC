@@ -62,7 +62,7 @@
                          "2027年\n" \
                          "2028年\n" \
                          "2029年\n" \
-                         "2030年\n" \                         
+                         "2030年\n" \
                          "2031年"
 
 #define TIME_ROLLER_DAY "1 日\n"  \
@@ -223,6 +223,7 @@
 #include "lv_node/src/setting/settings.h"
 #include "lv_node/src/common/time_wifi.h"
 #include "lv_node/src/device/telescopic_stand.h"
+#include "lv_node/src/device/basketball_stands.h"
 #include "lv_node/src/device/device.h"
 #include "lv_node/src/device/SmartSeat.h"
 #include "lv_node/src/device/device_common.h"

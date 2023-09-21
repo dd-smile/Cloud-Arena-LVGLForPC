@@ -30,7 +30,7 @@ lv_obj_t *create_12_Bule_text(lv_obj_t *parent, const char *title, lv_coord_t x,
 
 void lv_back(lv_event_t *e);
 void lv_back_Mask(lv_event_t *e);
-lv_obj_t *lv_keypage_create(lv_obj_t *parent);
+lv_obj_t *lv_keypage_create(lv_obj_t *parent, lv_event_cb_t event_cb);
 static lv_obj_t *lv_100ask_pinyin_ime_simple_test(lv_obj_t *parent);
 lv_obj_t *btn_create_text(lv_obj_t *parent, bool on_back, const char *confirm_text, lv_coord_t x_ofs, lv_coord_t y_ofs);
 lv_obj_t *create_popup(lv_obj_t *parent,const char *title, const char *confirm_text, const char *back_text, const char *text, lv_event_cb_t event_cb, void *user_data);
@@ -42,6 +42,7 @@ lv_obj_t *create_popup_page(lv_obj_t *parent, const char *title, lv_coord_t x, l
 lv_obj_t *create_recv_time(lv_obj_t *parent, const lv_font_t *value, lv_coord_t x, lv_coord_t y);
 lv_obj_t *CreateSlider(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int32_t min, int32_t max, lv_color_t value, int32_t num_value, lv_coord_t w, lv_coord_t h, bool status);
 
+extern lv_obj_t *Textarea_Pinyin;
 
 
 

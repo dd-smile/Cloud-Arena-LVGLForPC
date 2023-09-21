@@ -1,9 +1,9 @@
 /*** 
  * @Description: 
  * @Author: mai
- * @LastEditors: mai
+ * @LastEditors: da
  * @Date: 2023-07-03 15:31:57
- * @LastEditTime: 2023-07-05 14:39:03
+ * @LastEditTime: 2023-09-21 14:39:03
  * @FilePath: /new_home_smart/lv_node/material/image/image.h
  */
 #ifndef __IMAGE_H__
@@ -16,10 +16,15 @@ LV_IMG_DECLARE(detailed);
 
 
 /**设备图片**/
-LV_IMG_DECLARE(telescopic_stand_big);
-LV_IMG_DECLARE(telescopic_stand_small);
-LV_IMG_DECLARE(Smart_seat_small);
-LV_IMG_DECLARE(Smart_seat_big);
+LV_IMG_DECLARE(telescopic_stand_small);  //活动看台(给一级设备页使用)
+LV_IMG_DECLARE(telescopic_stand_big);    //活动看台(给设备详情页使用)
+LV_IMG_DECLARE(basketball_stands_small);   //悬空球架(给一级设备页使用)
+LV_IMG_DECLARE(basketball_stands_big);     //悬空球架(给设备详情页使用
+LV_IMG_DECLARE(partition_curtain_small);   //分隔幕(给一级设备页使用)
+LV_IMG_DECLARE(partition_curtain_big);     //分隔幕(给设备详情页使用)
+
+LV_IMG_DECLARE(Smart_seat_small); //活动看台旧图片 舍弃
+LV_IMG_DECLARE(Smart_seat_big);   //活动看台旧图片 舍弃
 LV_IMG_DECLARE(Logo);
 
 LV_IMG_DECLARE(lingxianLOGo);

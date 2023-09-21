@@ -1,6 +1,6 @@
 #include "ui_app.h"
 
-//左边导航页按钮结构体 (结构体数组)    暂时没有用到
+//左边导航页按钮结构体 (结构体数组)    
 struct
 {
   const void *img_off;
@@ -9,9 +9,9 @@ struct
   int y;
   const char *label;
 } obj_buttons[] = {
-    {&home_off, &home_on, 10, -5, "Facilities"},
-    {&mode_off, &mode_on, 10, -2, "Mode"},
-    {&setting_off, &setting_on, 10, -2, "Setting"},
+    {&home_off, &home_on, 10, -5, "设备"},
+    {&mode_off, &mode_on, 10, -2, "模式"},
+    {&setting_off, &setting_on, 10, -2, "设置"},
 };
 
 All_Data home_data;
@@ -107,7 +107,7 @@ static lv_obj_t *lv_fout_create(lv_obj_t *obj, lv_coord_t y_ofs)
  * @param img_src      指向图像按钮释放状态时，图像源的指针
  * @param img_crs      指向图像按钮按下状态时，图像源的指针
  * @param x            图像按钮对象的x坐标
- * @param x_ofs        对齐后的X坐标偏移量 (对齐后可以再调坐标)
+ * @param x_ofs        对齐后的X坐标偏移量 (对齐后可以再调坐标)     中文显示没有用到
  * @param y_ofs        y坐标对齐后的偏移量 (对齐后不能再调坐标)
  * @param label_text   文本字符串
  * @return             返回图像按钮对象
@@ -124,7 +124,7 @@ static lv_obj_t *lv_imgbtn_create_with_label(lv_obj_t *obj, const void *img_src,
   lv_obj_t *label = lv_label_create(obj);
   lv_label_set_text(label, label_text);
   lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-  lv_obj_align_to(label, img_btn, LV_ALIGN_CENTER, x_ofs, 30);
+  lv_obj_align_to(label, img_btn, LV_ALIGN_CENTER, -16, 30);
   lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, 0);                    //设置文本字体
   lv_obj_add_event_cb(home_fout, home_btn_event, LV_EVENT_ALL, img_btn);
   lv_obj_add_event_cb(img_btn, home_btn_event, LV_EVENT_ALL, img_btn);

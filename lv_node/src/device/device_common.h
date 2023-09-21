@@ -36,10 +36,13 @@ typedef struct {
 
 } DevicePageData;    //设备页面数据结构体
 extern DevicePageData *pPageData;
+extern DevicePageData *bs_data;
 extern lv_obj_t *Input_label;
 
 
-lv_obj_t *CreateDevicePageBg(const DevicePageData *data);
+lv_obj_t *CreateDevicePageBg(const DevicePageData *data, uint8_t device_num);
+lv_obj_t *CreatebasketballPageBg(const DevicePageData *data, uint8_t device_num);
 lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent);
+lv_obj_t *BsCreateBreakdownPageBg(lv_obj_t *parent);
 lv_obj_t *CreateInspectTable(lv_obj_t *parent);
 #endif // __DEVICE_COMMON_H__
