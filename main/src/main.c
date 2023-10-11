@@ -35,6 +35,10 @@
 static void hal_init(void);
 static int tick_thread(void *data);
 
+int lfd = 0;
+int cfd = 0;
+char *cBuf;   //用于存放从套接字中接收到的数据
+
 /**********************
  *  STATIC VARIABLES
  **********************/
@@ -67,6 +71,80 @@ static int tick_thread(void *data);
  *   GLOBAL FUNCTIONS
  **********************/
 
+// //获取温度数据
+// int searchTemp(char *Buf, char *Res)
+// {
+// 	char *Begin = NULL;    //定义开始指针
+// 	char *End = NULL;      //定义结束指针
+
+//     /*寻找第一次出现<temp>的位置  <temp>温度</temp>...
+//     再偏移strlen("<temp>")个地址可以得到温度</temp>...*/
+// 	Begin = strstr(Buf, "<temp>");//寻找第一次出现<temp>的位置
+//   End = strstr(Buf, "</temp>");//寻找第一次出现</temp>的位置
+
+// 	if(Begin == NULL || End == NULL || Begin > End)
+//   {
+//     printf("寻找错误!\n");
+//   }else{
+// 		Begin = Begin + strlen("<temp>");//温度</temp>...
+// 		memcpy(Res, Begin, End-Begin);//获得Begin和End之间的值
+// 	}
+// 	return 0;
+// }
+
+// //获取湿度数据
+// int searchHum(char *Buf, char *Res)
+// {
+// 	char *Begin = NULL;
+// 	char *End = NULL;
+
+// 	Begin = strstr(Buf, "<hum>");
+// 	End = strstr(Buf, "</hum>");
+
+// 	if(Begin == NULL || End == NULL || Begin > End)
+//   {
+//     printf("寻找错误!\n");
+//   }else{
+// 		Begin = Begin + strlen("<hum>");
+// 		memcpy(Res, Begin, End-Begin);
+// 	}
+// 	return 0;
+// }
+
+// void *listening(void * parg)
+// {
+//   // 4. 阻塞等待并接受客户端连接
+//   struct sockaddr_in cliaddr;
+//   int clilen = sizeof(cliaddr);
+//   cfd = accept(lfd, (struct sockaddr*)&cliaddr, &clilen);
+//   if(cfd == -1)
+//   {
+//       perror("accept");
+//       exit(0);
+//   }
+//   // 打印客户端的地址信息
+//   char ip[24] = {0};
+//   printf("客户端的IP地址: %s, 端口: %d\n",
+//           inet_ntop(AF_INET, &cliaddr.sin_addr.s_addr, ip, sizeof(ip)),
+//           ntohs(cliaddr.sin_port));
+//   while (1)
+//   {
+//     // 5. 和客户端通信
+//     // 接收数据
+//     char buf[1024];
+//     memset(buf, 0, sizeof(buf));
+//     int len = read(cfd, buf, sizeof(buf));
+//     if(len > 0)
+//     {
+//       cBuf = buf;
+//       searchTemp(cBuf, temp_data);
+//       searchHum(cBuf, hum_data);
+//       printf("温度: %s, 湿度: %s\n", temp_data, hum_data);
+//     }
+//   }
+
+// }
+
 int main(int argc, char **argv)
 {
   (void)argc;
@@ -87,8 +165,46 @@ int main(int argc, char **argv)
 
   hal_init();                   //硬件初始化：包括显示设备、输入设备   
 
-
   create_lv_layout(lv_disp_get_scr_act(NULL));
+
+  // pthread_t tid_listen;  //用于监听
+  // //创建监听的套接字
+  // lfd = socket(AF_INET, SOCK_STREAM, 0);
+  // if(lfd == -1)
+  // {
+  //     perror("socket");
+  //     exit(0);
+  // }
+
+  // char pp[24] = {0};
+  // // 2. 将socket()返回值和本地的IP端口绑定到一起
+  // struct sockaddr_in addr;
+  // addr.sin_family = AF_INET;
+  // addr.sin_port = htons(8266);   // 大端端口
+  // //addr.sin_addr.s_addr = inet_addr("192.168.17.218"); 
+
+  // addr.sin_addr.s_addr = INADDR_ANY; 
+  // printf("服务器的IP地址: %s, 端口: %d\n",
+  //         inet_ntop(AF_INET, &addr.sin_addr.s_addr, pp, sizeof(pp)),
+  //         ntohs(addr.sin_port));
+  // int ret = bind(lfd, (struct sockaddr*)&addr, sizeof(addr));
+  // if(ret == -1)
+  // {
+  //     perror("bind");
+  //     exit(0);
+  // }
+
+  // // 3. 设置监听
+  // ret = listen(lfd, 128);
+  // if(ret == -1)
+  // {
+  //     perror("listen");
+  //     exit(0);
+  // }
+
+  // pthread_create(&tid_listen, NULL, listening, NULL);
+  
+
   // ui_label_set_text();
   // ui_init();
   // ();
@@ -100,6 +216,13 @@ int main(int argc, char **argv)
     lv_timer_handler();
     usleep(5 * 1000);
   }
+
+  // close(cfd);
+  // close(lfd);
+
+  threadpool_distory(thp);
+
+  lv_timer_del(timer);
 
   return 0;
 }

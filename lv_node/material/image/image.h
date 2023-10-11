@@ -37,7 +37,9 @@ LV_IMG_DECLARE(mode_on);
 LV_IMG_DECLARE(setting_off);
 LV_IMG_DECLARE(setting_on);
 
-
+/**音频控制类型图片**/ 
+LV_IMG_DECLARE(multitrack_control_img);  //多轨控制
+LV_IMG_DECLARE(synchronous_control_img);  //音频控制
 
 /**设备模式页**/
 LV_IMG_DECLARE(mode1_off);

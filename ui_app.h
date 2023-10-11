@@ -215,6 +215,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <errno.h>
+#include <signal.h>
 
 #include "lv_node/material/image/image.h"
 #include "lv_node/src/ui_main.h"
@@ -236,6 +241,10 @@
 #include "lv_node/src/setting/Language/Language.h"
 #include "lv_node/src/setting/Add/add_event.h"
 #include "lv_node/src/setting/Add/add_device.h"
+
+#include "lv_node/src/display/display.h"
+#include "lv_node/src/display/connect_common.h"
+#include "lv_node/src/audio_control/leyard.h"
 
 LV_FONT_DECLARE(PuHuiTi_Regular_16);
 LV_FONT_DECLARE(PuHuiTi_Regular_30);

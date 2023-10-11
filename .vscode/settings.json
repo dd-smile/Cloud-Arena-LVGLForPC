@@ -164,5 +164,6 @@
     "**/.vscode",
     "**/.vscode/**"
   ],
-  "cmake.sourceDirectory": "${workspaceFolder}/lvgl"
+  "cmake.sourceDirectory": "${workspaceFolder}/lvgl",
+  "Codegeex.Comment.LanguagePreference": "zh-CN"
 }

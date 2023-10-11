@@ -13,8 +13,8 @@
 typedef struct {
     lv_obj_t *home_button[4];   // 设备页导航栏
     lv_obj_t *all_pages;    // 全部页面
-    lv_obj_t *office_page;  // 办公室页面
-    lv_obj_t *meeting_page; // 会议室页面
+    lv_obj_t *display_page;  // 数据看板页面
+    lv_obj_t *audio_page; // 音频控制页面
     lv_obj_t *finance_page; // 厨房页面
 } HomeData;
 extern HomeData device_data;    // 设备页数据

@@ -16,7 +16,6 @@ static const card_info_t CARD_INFO[] = {
     {600, 65, CreateTime,NULL},                     // 600，65,  设置时间卡片　　
     {20, 290, CreateScreensave,NULL},               // 20, 290,  屏保图片选择卡片
     {310, 290, CreateLanguage,NULL}                 // 310, 290,  语言设置卡片
-
 };
 
 

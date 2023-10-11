@@ -169,5 +169,11 @@ void create_lv_layout(lv_obj_t *scr)
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
 
+  /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
+  // thp = threadpool_create(3, 10, 10);
+  // if (thp == NULL) {
+  //     printf("threadpool_create fail\n");
+  //     return 0;
+  // }
 
 }

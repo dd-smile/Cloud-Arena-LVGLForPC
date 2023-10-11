@@ -179,7 +179,7 @@ void lv_chart_set_update_mode(lv_obj_t * obj, lv_chart_update_mode_t update_mode
 void lv_chart_set_div_line_count(lv_obj_t * obj, uint8_t hdiv, uint8_t vdiv);
 
 /**
- * Zoom into the chart in X direction
+ * Zoom into the chart in X direction 在X方向上放大图表
  * @param obj       pointer to a chart object
  * @param zoom_x    zoom in x direction. LV_ZOOM_NONE or 256 for no zoom, 512 double zoom
  */
@@ -244,11 +244,11 @@ uint16_t lv_chart_get_point_count(const lv_obj_t * obj);
 uint16_t lv_chart_get_x_start_point(const lv_obj_t * obj, lv_chart_series_t * ser);
 
 /**
- * Get the position of a point to the chart.
- * @param chart     pointer to a chart object
- * @param ser       pointer to series
- * @param id        the index.
- * @param p_out     store the result position here
+ * Get the position of a point to the chart. 在图表上得到一个点的位置。
+ * @param chart     pointer to a chart object  指向图表对象的指针
+ * @param ser       pointer to series 指向序列的指针
+ * @param id        the index. 索引。
+ * @param p_out     store the result position here 将结果位置存储在这里
  */
 void lv_chart_get_point_pos_by_id(lv_obj_t * obj, lv_chart_series_t * ser, uint16_t id, lv_point_t * p_out);
 
@@ -263,7 +263,7 @@ void lv_chart_refresh(lv_obj_t * obj);
  *=====================*/
 
 /**
- * Allocate and add a data series to the chart
+ * Allocate and add a data series to the chart 分配并添加一个数据序列到图表中
  * @param obj       pointer to a chart object
  * @param color     color of the data series
  * @param axis      the y axis to which the series should be attached (::LV_CHART_AXIS_PRIMARY_Y or ::LV_CHART_AXIS_SECONDARY_Y)
@@ -365,10 +365,10 @@ lv_point_t lv_chart_get_cursor_point(lv_obj_t * chart, lv_chart_cursor_t * curso
 void lv_chart_set_all_value(lv_obj_t * obj, lv_chart_series_t * ser, lv_coord_t value);
 
 /**
- * Set the next point's Y value according to the update mode policy.
- * @param obj       pointer to chart object
- * @param ser       pointer to a data series on 'chart'
- * @param value     the new value of the next data
+ * Set the next point's Y value according to the update mode policy. 根据更新模式策略设置下一个点的Y值。 
+ * @param obj       pointer to chart object 指向图表对象的指针
+ * @param ser       pointer to a data series on 'chart' 指向“图表”上的数据序列的指针
+ * @param value     the new value of the next data 下一个数据的新值
  */
 void lv_chart_set_next_value(lv_obj_t * obj, lv_chart_series_t * ser, lv_coord_t value);
 
@@ -421,9 +421,9 @@ void lv_chart_set_ext_y_array(lv_obj_t * obj, lv_chart_series_t * ser, lv_coord_
 void lv_chart_set_ext_x_array(lv_obj_t * obj, lv_chart_series_t * ser, lv_coord_t array[]);
 
 /**
- * Get the array of y values of a series
- * @param obj   pointer to a chart object
- * @param ser   pointer to a data series on 'chart'
+ * Get the array of y values of a series 获取一个序列的y值的数组
+ * @param obj   pointer to a chart object 指向图表对象的指针
+ * @param ser   pointer to a data series on 'chart' 指向“图表”上的数据序列的指针
  * @return      the array of values with 'point_count' elements
  */
 lv_coord_t * lv_chart_get_y_array(const lv_obj_t * obj, lv_chart_series_t * ser);
