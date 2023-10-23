@@ -128,6 +128,28 @@ int closeSocket(int fd)
     return ret;
 }
 
+/**
+ * 检测TCP连接是否断开
+ * @param sockfd         创建的文件描述符
+ * */
+int socketconnected(int sockfd)
+{
+	struct tcp_info info;//其实我们就是使用到tcp_info结构体的tcpi_state成员变量来存取socket的连接状态，
+	int len = sizeof(info);//如果此返回值为1，则说明socket连接正常，如果返回值为0，则说明连接异常。
+							//所以我们也可以直接用一个整形变量来存这个值，然后进行判断即可。
+	if (sockfd <= 0)
+		return 0;
+	getsockopt(sockfd, IPPROTO_TCP, TCP_INFO, &info, (socklen_t *) & len);
+	if((info.tcpi_state == 1)) 
+	{
+		//printf("socket connected\n");
+		return 1;
+	} else {
+		//printf("socket disconnected\n");
+		return 0;
+	}
+}
+
 /*
 函数描述: 发送指定的字节数
 函数参数:

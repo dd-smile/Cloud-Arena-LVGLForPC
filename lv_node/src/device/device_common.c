@@ -148,6 +148,129 @@ static void CreateBasketballControlsButton(lv_obj_t *obj, const char *text, lv_c
     lv_obj_center(label);
 }
 
+//创建分隔幕控制按钮
+static void CreatePartitionControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
+{
+
+    lv_obj_t *btn = lv_obj_create(obj);
+
+    lv_obj_set_size(btn, 90, 35);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+    lv_obj_add_event_cb(btn, partition_Controls_event_cb, LV_EVENT_ALL, index);
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+//创建壁挂球架控制按钮
+static void CreateWallhangingControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
+{
+    lv_obj_t *btn = lv_obj_create(obj);
+
+    lv_obj_set_size(btn, 90, 35);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+    lv_obj_add_event_cb(btn, wallhanging_Controls_event_cb, LV_EVENT_ALL, index);
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+//创地面翻折座椅控制按钮
+static void CreateFoldingControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
+{
+    lv_obj_t *btn = lv_obj_create(obj);
+
+    lv_obj_set_size(btn, 90, 35);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+    lv_obj_add_event_cb(btn, folding_Controls_event_cb, LV_EVENT_ALL, index);
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+//创建伸缩舞台控制按钮
+static void CreateContractionControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
+{
+    lv_obj_t *btn = lv_obj_create(obj);
+
+    lv_obj_set_size(btn, 90, 35);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+    lv_obj_add_event_cb(btn, telescopic_Controls_event_cb, LV_EVENT_ALL, index);
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+//创建升降旋转舞台控制按钮
+static void CreateRevolvingControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
+{
+    lv_obj_t *btn = lv_obj_create(obj);
+
+    lv_obj_set_size(btn, 90, 35);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+    lv_obj_add_event_cb(btn, stage_Controls_event_cb, LV_EVENT_ALL, index);
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+/*创建灯光控制按钮*/
+static void CreateLightControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
+{
+
+    lv_obj_t *btn = lv_obj_create(obj);
+
+    lv_obj_set_size(btn, 90, 35);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+    lv_obj_add_event_cb(btn, lights_Controls_event_cb, LV_EVENT_ALL, index);
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+
 /**
  * 创建分割线
  * @param parent          指向父对象的指针
@@ -768,4 +891,242 @@ lv_obj_t *CreatebasketballPageBg(const DevicePageData *data, uint8_t device_num)
 
     return bg;
 
+}
+
+
+/*创建分隔幕设备详情页*/
+lv_obj_t *CreatePartitionPageBg(const DevicePageData *data, uint8_t device_num)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    CreatrLine(bg);                                      // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 80, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 225, 25);
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    index_t *index1 = add_index_t(device_num, 0);
+    index_t *index2 = add_index_t(device_num, 1);
+    index_t *index3 = add_index_t(device_num, 2);
+    CreatePartitionControlsButton(bg, data->expandBtnText, -320, 142, index1);        // 一键打开按钮
+    CreatePartitionControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); // 创建急停按钮
+    CreatePartitionControlsButton(bg, data->collapseBtnText, -80, 142, index3);       // 一键收合按钮
+   
+    
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+
+    CreateLoge(bg); // 制造商Logo
+
+    CreateBiaoge(bg); // 表格
+
+    return bg;
+}
+
+/*创建壁挂球架设备详情页*/
+lv_obj_t *CreateWallhangingPageBg(const DevicePageData *data, uint8_t device_num)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    CreatrLine(bg);                                      // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 80, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 225, 25);
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    index_t *index1 = add_index_t(device_num, 0);
+    index_t *index2 = add_index_t(device_num, 1);
+    index_t *index3 = add_index_t(device_num, 2);
+    CreateWallhangingControlsButton(bg, data->expandBtnText, -320, 142, index1);        // 一键打开按钮
+    CreateWallhangingControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); // 创建急停按钮
+    CreateWallhangingControlsButton(bg, data->collapseBtnText, -80, 142, index3);       // 一键收合按钮
+   
+    
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+
+    CreateLoge(bg); // 制造商Logo
+
+    CreateBiaoge(bg); // 表格
+
+    return bg;
+}
+
+/*创建地面翻折座椅设备详情页*/
+lv_obj_t *CreateFoldingPageBg(const DevicePageData *data, uint8_t device_num)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    CreatrLine(bg);                                      // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 80, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 225, 25);
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    index_t *index1 = add_index_t(device_num, 0);
+    index_t *index2 = add_index_t(device_num, 1);
+    index_t *index3 = add_index_t(device_num, 2);
+    CreateFoldingControlsButton(bg, data->expandBtnText, -320, 142, index1);        // 一键打开按钮
+    CreateFoldingControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); // 创建急停按钮
+    CreateFoldingControlsButton(bg, data->collapseBtnText, -80, 142, index3);       // 一键收合按钮
+   
+    
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+
+    CreateLoge(bg); // 制造商Logo
+
+    CreateBiaoge(bg); // 表格
+
+    return bg;
+}
+
+/*创建伸缩舞台设备详情页*/
+lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    CreatrLine(bg);                                      // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 80, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 225, 25);
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    index_t *index1 = add_index_t(device_num, 0);
+    index_t *index2 = add_index_t(device_num, 1);
+    index_t *index3 = add_index_t(device_num, 2);
+    index_t *index4 = add_index_t(device_num, 3);
+    CreateContractionControlsButton(bg, data->expandBtnText, -320, 142, index1);       
+    CreateContractionControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); 
+    CreateContractionControlsButton(bg, data->collapseBtnText, -80, 142, index3);       
+    CreateContractionControlsButton(bg, data->StandOpenBtnText, -200, 188, index4);
+    
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+
+    CreateLoge(bg); // 制造商Logo
+
+    CreateBiaoge(bg); // 表格
+
+    return bg;
+}
+
+/*创建升降旋转舞台设备详情页*/
+lv_obj_t *CreateRevolvingPageBg(const DevicePageData *data, uint8_t device_num)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    CreatrLine(bg);                                      // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 80, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 225, 25);
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    index_t *index1 = add_index_t(device_num, 0);
+    index_t *index2 = add_index_t(device_num, 1);
+    index_t *index3 = add_index_t(device_num, 2);
+    index_t *index4 = add_index_t(device_num, 3);
+    index_t *index5 = add_index_t(device_num, 4);
+    CreateRevolvingControlsButton(bg, data->expandBtnText, -320, 142, index1);       
+    CreateRevolvingControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); 
+    CreateRevolvingControlsButton(bg, data->collapseBtnText, -80, 142, index3);       
+    CreateRevolvingControlsButton(bg, data->StandOpenBtnText, -320, 188, index4);
+    CreateRevolvingControlsButton(bg, data->StandClosureBtnText, -80, 188, index5);
+    
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+
+    CreateLoge(bg); // 制造商Logo
+
+    CreateBiaoge(bg); // 表格
+
+    return bg;
+}
+
+/*创建灯光设备详情页*/
+lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    CreatrLine(bg);                                      // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 80, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 225, 25);
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    index_t *index1 = add_index_t(device_num, 0);
+    index_t *index2 = add_index_t(device_num, 1);
+    CreateLightControlsButton(bg, data->expandBtnText, -320, 142, index1);  // 一键打开按钮
+    CreateLightControlsButton(bg, data->collapseBtnText, -80, 142, index2); // 一键收合按钮
+
+   
+
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+
+    CreateLoge(bg); // 制造商Logo
+
+    CreateBiaoge(bg); // 表格
+
+    return bg;
 }

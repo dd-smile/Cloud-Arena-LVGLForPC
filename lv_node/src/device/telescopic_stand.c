@@ -34,7 +34,7 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
             if(stop_flag == false) 
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_open\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
+                OneNet_Publish("/mytest/ycg", PUB_BUF);
             }
             break;
         case 1:   //急停
@@ -44,8 +44,8 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
 
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_stop \",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
-               //       /mytest/ycg
+                OneNet_Publish("/mytest/ycg", PUB_BUF);
+               //       /mytest/ycg        /usr/plcnet/Cloud_Arena_sports/edge/d
             }
             else
             {
@@ -57,7 +57,7 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
             if (stop_flag == false)
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_shut\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
+                OneNet_Publish("/mytest/ycg", PUB_BUF);
             }
             break;
         }

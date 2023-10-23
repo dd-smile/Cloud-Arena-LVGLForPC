@@ -17,14 +17,22 @@ LV_IMG_DECLARE(detailed);
 
 /**设备图片**/
 LV_IMG_DECLARE(telescopic_stand_small);  //活动看台(给一级设备页使用)
-LV_IMG_DECLARE(telescopic_stand_big);    //活动看台(给设备详情页使用)
 LV_IMG_DECLARE(basketball_stands_small);   //悬空球架(给一级设备页使用)
-LV_IMG_DECLARE(basketball_stands_big);     //悬空球架(给设备详情页使用
 LV_IMG_DECLARE(partition_curtain_small);   //分隔幕(给一级设备页使用)
-LV_IMG_DECLARE(partition_curtain_big);     //分隔幕(给设备详情页使用)
+LV_IMG_DECLARE(folding_seat_small);    //地面翻折座椅
+LV_IMG_DECLARE(telescopic_stage_small);  //舞台
+LV_IMG_DECLARE(wall_hanging_ball_small);  //璧挂球架
+LV_IMG_DECLARE(lights);           //场馆灯
 
-LV_IMG_DECLARE(Smart_seat_small); //活动看台旧图片 舍弃
-LV_IMG_DECLARE(Smart_seat_big);   //活动看台旧图片 舍弃
+// 详情页图片
+LV_IMG_DECLARE(telescopic_stand_big);    //活动看台(给设备详情页使用)
+LV_IMG_DECLARE(basketball_stands_big);     //悬空球架(给设备详情页使用
+LV_IMG_DECLARE(partition_curtain_big);     //分隔幕(给设备详情页使用)
+LV_IMG_DECLARE(folding_seat_big);
+LV_IMG_DECLARE(telescopic_stage_big);
+LV_IMG_DECLARE(wall_hanging_ball_big);
+LV_IMG_DECLARE(lights_img);  
+
 LV_IMG_DECLARE(Logo);
 
 LV_IMG_DECLARE(lingxianLOGo);

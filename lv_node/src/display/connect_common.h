@@ -63,6 +63,8 @@ int threadpool_distory(threadpool_t *pool);
 int threadpool_free(threadpool_t *pool);
 int is_thread_alive(pthread_t tid);
 
+int socketconnected(int sockfd);
+
 
 
 

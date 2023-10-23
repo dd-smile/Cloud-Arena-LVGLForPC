@@ -220,6 +220,12 @@
 #include <pthread.h>
 #include <errno.h>
 #include <signal.h>
+#include <netinet/in.h>
+#include <netinet/ip.h>
+#include <sys/types.h>   
+#include <sys/socket.h>
+#include <libgen.h>
+#include <linux/tcp.h>
 
 #include "lv_node/material/image/image.h"
 #include "lv_node/src/ui_main.h"
@@ -229,8 +235,12 @@
 #include "lv_node/src/common/time_wifi.h"
 #include "lv_node/src/device/telescopic_stand.h"
 #include "lv_node/src/device/basketball_stands.h"
+#include "lv_node/src/device/partition_curtian.h"
+#include "lv_node/src/device/lights.h"
+#include "lv_node/src/device/wallhanging.h"
+#include "lv_node/src/device/folding_seat.h"
+#include "lv_node/src/device/contraction_stage.h"
 #include "lv_node/src/device/device.h"
-#include "lv_node/src/device/SmartSeat.h"
 #include "lv_node/src/device/device_common.h"
 #include "lv_node/src/common/common.h"
 #include "lv_node/material/lv_100ask_pinyin_ime/lv_100ask_pinyin_ime.h"

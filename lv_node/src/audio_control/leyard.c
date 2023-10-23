@@ -8,55 +8,59 @@
  */
 #include "ui_app.h"
 
-int synchronous_fd = 0;  //实时控制客户端的文件描述符
+// int synchronous_fd = 0;  //实时控制客户端的文件描述符
 int multitrack_fd = 0;   //多轨控制客户端的文件描述符
+int led_fd = 0;   //LED大屏客户端的文件描述符
+struct sockaddr_in seraddr;
 char buf[1024];  //用于存放发送的数据
 unsigned char packet[16];  //存放静音16进制数据
 unsigned char packet_control[19];  //存放控制16进制数据
 
-static void synchronous_Controls_event_cb(lv_event_t *e);
+unsigned char packet_led1[39] = {0xED,0xCB,0x28,0x00,0x30,0x02,0x01,0x00,0x01,0x00,0x00,0x55,0x55,0x55,
+                0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x2B};
+
+unsigned char packet_led2[39] = {0xED,0xCB,0x28,0x00,0x30,0x02,0x01,0x00,0x01,0x01,0x00,0x55,0x55,0x55,
+                0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x2C}; 
+
+unsigned char packet_led3[39] = {0xED,0xCB,0x28,0x00,0x30,0x02,0x01,0x00,0x01,0x02,0x00,0x55,0x55,0x55,
+                0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x2D};
+
+static void led_Controls_event_cb(lv_event_t *e);
 static void multitrack_Controls_event_cb(lv_event_t *e);
 static void lv_back_leyard(lv_event_t *e);
 
 
 /*--------------------------------通信--------------------------------*/
 
-//发送静音的数据
-void *synchronous_working(void * parg)
-{
-    // 和客户端通信
-    // 发送数据
-    write(synchronous_fd, buf, strlen(buf)+1);
-}
-
-//发送控制的数据
-void *synchronous_c_working(void * parg)
-{
-    // 和客户端通信
-    // 发送数据
-    write(synchronous_fd, buf, strlen(buf)+1);
-}
-
-//发送多轨控制数据
-// void *multitrack_working(void * parg)
+// //发送静音的数据
+// void *synchronous_working(void * parg)
 // {
 //     // 和客户端通信
 //     // 发送数据
-//     write(multitrack_fd, buf, strlen(buf)+1);
+//     write(synchronous_fd, buf, strlen(buf)+1);
 // }
+
+// //发送控制的数据
+// void *synchronous_c_working(void * parg)
+// {
+//     // 和客户端通信
+//     // 发送数据
+//     write(synchronous_fd, buf, strlen(buf)+1);
+// }
+
 
 /**
  * 创建实时控制客户端
  * @param parent            指向父对象的指针     
  * */
-static void *create_client_sy()
-{   
-    if(synchronous_fd == 0)
-    {
-        synchronous_fd = createSocket();  //创建套接字
-        connectToHost(synchronous_fd, "192.168.17.20", 11011);  //连接服务器
-    }
-}
+// static void *create_client_sy()
+// {   
+//     if(synchronous_fd == 0)
+//     {
+//         synchronous_fd = createSocket();  //创建套接字
+//         connectToHost(synchronous_fd, "192.168.17.20", 11011);  //连接服务器
+//     }
+// }
 
 /**
  * 创建多轨控制客户端
@@ -68,6 +72,30 @@ static void *create_client_mu()
     {
         multitrack_fd = createSocket();  //创建套接字
         connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+    }
+}
+
+/**
+ * 创建LED客户端
+ * @param parent            指向父对象的指针     
+ * */
+static void *create_client_led()
+{
+    if(led_fd == 0)
+    {
+        // 1. 创建通信的套接字
+        led_fd= socket(AF_INET, SOCK_DGRAM, 0);
+        if(led_fd == -1)
+        {
+            perror("socket");
+            exit(0);
+        }
+        
+        // 初始化服务器地址信息
+        seraddr.sin_family = AF_INET;
+        seraddr.sin_port = htons(61214);    // 大端
+        // inet_pton(AF_INET, "192.168.1.223", &seraddr.sin_addr.s_addr);
+        inet_pton(AF_INET, "192.168.17.20", &seraddr.sin_addr.s_addr);
     }
 }
 
@@ -113,9 +141,9 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_
     //判断是什么设备按钮，从而添加控制事件
     switch(type)
     {
-        case 0:     //实时控制
+        case 0:     //LED大屏控制
             lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
-            lv_obj_add_event_cb(btn, synchronous_Controls_event_cb, LV_EVENT_ALL, NULL);  
+            lv_obj_add_event_cb(btn, led_Controls_event_cb, LV_EVENT_ALL, NULL);  
             break;
         case 1:     //多轨控制
             lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
@@ -174,21 +202,21 @@ static lv_obj_t *create_leyard_page(lv_obj_t *parent, const char *title, lv_coor
 }
 
 /**
- * 创建实时控制界面
+ * 创建LED大屏控制界面
  * @param parent            指向父对象的指针     
  * */
-static void *SynchronousControl(lv_obj_t *parent)
+static void *LedControl(lv_obj_t *parent)
 {
     lv_obj_t *scr = lv_c_create_mask_box(parent); // 创建遮罩
-    lv_obj_t *popup_page = create_leyard_page(scr, "实时控制", 0, 0);
+    lv_obj_t *popup_page = create_leyard_page(scr, "LED切屏", 0, 0);
 
     //连接服务器
-    create_client_sy();
+    create_client_led();
 
     lv_obj_t *btn_synchronous = swich_btn_card(popup_page);
-    create_button(btn_synchronous, "通道1静音", -90, 0, 0, 0);
-    create_button(btn_synchronous, "通道2静音", 0, 0, 0, 1);
-    create_button(btn_synchronous, "通道3静音", 90, 0, 0, 2);
+    create_button(btn_synchronous, "HDMI1", -90, 0, 0, 0);
+    create_button(btn_synchronous, "HDMI2", 0, 0, 0, 1);
+    create_button(btn_synchronous, "HDMI3", 90, 0, 0, 2);
 }
 
 /**
@@ -213,7 +241,7 @@ static void *MultitrackControl(lv_obj_t *parent)
     create_button(btn_multitrack, "停止", 0, 10, 1 ,9);
     create_button(btn_multitrack, "音量增", -90, 40, 1 ,5);
     create_button(btn_multitrack, "音量减", 90, 40, 1 ,6);
-    create_button(btn_multitrack, "初始音量", 0, 100, 1 ,7);
+    // create_button(btn_multitrack, "初始音量", 0, 100, 1 ,7);
 
 }
 
@@ -243,8 +271,8 @@ void add_Audio_event_cb(lv_event_t *e)
     {
         switch ((int)obj->user_data)
         {
-        case 0:  //实时控制
-            SynchronousControl(lv_scr_act());
+        case 0:  //led控制
+            LedControl(lv_scr_act());
             break;
 
         case 1:   //多轨控制
@@ -254,8 +282,8 @@ void add_Audio_event_cb(lv_event_t *e)
     }
 }
 
-/**实时控制按钮点击事件**/
-static void synchronous_Controls_event_cb(lv_event_t *e)
+/**LED大屏控制按钮点击事件**/
+static void led_Controls_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t* obj = lv_event_get_current_target(e);   //获取当前点击对象
@@ -265,13 +293,17 @@ static void synchronous_Controls_event_cb(lv_event_t *e)
         //判断是哪个按钮，进行封装数据
         switch ((int)obj->user_data)
         {
-        case 0: 
-            
-            break;
+            case 0: 
+                sendto(led_fd, packet_led1, sizeof(packet_led1)/sizeof(packet_led1[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
+                break;
 
-        case 1:   
-            
-            break;
+            case 1:  
+                sendto(led_fd, packet_led2, sizeof(packet_led2)/sizeof(packet_led2[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
+                break;
+        
+            case 2:
+                sendto(led_fd, packet_led3, sizeof(packet_led2)/sizeof(packet_led2[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
+                break;
         }
     }
 
@@ -318,10 +350,10 @@ static void multitrack_Controls_event_cb(lv_event_t *e)
             sprintf(buf, "V-@5F");
             write(multitrack_fd, buf, strlen(buf)+1);
             break;
-        case 7:   //初始音量-15db
-            sprintf(buf, "-15db@5F");
-            write(multitrack_fd, buf, strlen(buf)+1);
-            break;
+        // case 7:   //初始音量-15db
+        //     sprintf(buf, "-15db@5F");
+        //     write(multitrack_fd, buf, strlen(buf)+1);
+        //     break;
         case 8:   //切换下一首
             sprintf(buf, "nest@5F");
             write(multitrack_fd, buf, strlen(buf)+1);
@@ -385,6 +417,6 @@ static void *card_audio(lv_obj_t *parent, int x, int y, const char *name, uint8_
  * */
 void CreateAudioPage(lv_obj_t *parent)
 {
-    card_audio(parent, 30, 50, "实时控制", 0);
+    card_audio(parent, 30, 50, "LED切屏", 0);
     card_audio(parent, 400, 50, "多轨控制", 1);
 }

@@ -14,9 +14,9 @@ struct
     {&setting_off, &setting_on, 10, -2, "设置"},
 };
 
-int mqtt_fd;
-int light_fd;
-char PUB_BUF[256];      //上传数据的buf
+int mqtt_fd;    //连接ｍｑｔｔ套接字
+int light_fd;   //连接灯光套接字
+char PUB_BUF[256];      //上传给ＭＱＴＴ服务器数据的buf
 All_Data home_data;
 
 /**
@@ -161,11 +161,35 @@ static void home_bg(lv_obj_t *obj)
   ui_navigation_main_menu(lv_detailed);
 }
 
+/**
+ * MQTT心跳
+ * @param timer         指向定时器
+ * */
 void timer_mqtt_callback(lv_timer_t *timer)
 {
   OneNet_HeartBeat();
 }
 
+/**
+ * 检测与灯光服务器的TCP连接是否断开，断开的话进行重新连接
+ * @param parg         线程传入的参数
+ * */
+void *JudgmentConnection(void *parg)
+{
+  while (1)
+  {
+    if (socketconnected(light_fd) == 0)
+    {
+      light_fd = createSocket();  //创建套接字
+      connectToHost(light_fd, "192.168.1.230", 502);  //连接服务器
+    }
+  }
+  
+}
+
+/**
+ * 创建MQTT连接
+ * */
 static void connect_mqtt()
 {
    // 1. 创建通信的套接字
@@ -191,15 +215,19 @@ static void connect_mqtt()
 
   OneNet_DevLink();   //连接ＭＱＴＴ服务器
 
-  // sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_1\",\"v\":\"%d\"}]}",1);
-  // OneNet_Publish("/mytest/ycg", PUB_BUF);
-
 }
 
+/**
+ * 创建modbus TCP灯光连接
+ * */
 static void *create_client_light()
 {   
     light_fd = createSocket();  //创建套接字
-    connectToHost(light_fd, "192.168.1.230", 502);  //连接服务器
+    // connectToHost(light_fd, "192.168.1.230", 502);  //连接服务器
+    connectToHost(light_fd, "192.168.17.20", 502);  //连接服务器
+
+    pthread_t tid;
+    pthread_create(&tid, NULL, JudgmentConnection, NULL);
 }
 
 void create_lv_layout(lv_obj_t *scr)
@@ -216,14 +244,14 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_weather_callback, 60000, NULL);
 
   //创建ＭＱＴＴ心跳任务
-  // lv_timer_create(timer_mqtt_callback, 20000, NULL);
+  lv_timer_create(timer_mqtt_callback, 20000, NULL);
 
   CreateHomePage(home_data.home_page);       // 主页
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
 
-  // connect_mqtt();
-  create_client_light();
+  connect_mqtt();   // 连接mqtt服务器
+  create_client_light();  //　连接灯光服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
   // thp = threadpool_create(3, 10, 10);

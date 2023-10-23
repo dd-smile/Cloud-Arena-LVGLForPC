@@ -132,7 +132,8 @@
     "device_common.h": "c",
     "initializer_list": "c",
     "time_wifi.h": "c",
-    "time_setting.h": "c"
+    "time_setting.h": "c",
+    "wallhanging.h": "c"
   },
   "C_Cpp.errorSquiggles": "Disabled",
   "C_Cpp_Runner.cCompilerPath": "gcc",

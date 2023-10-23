@@ -26,28 +26,6 @@ index_t *add_index_t(uint8_t num, uint8_t ind)
     return index;
 }
 
-//这个函数是开发板串口发送的，加上这个防止报错
-void SetSerialDo(uint8_t addr, uint8_t SetSerialInedx, uint8_t status)
-{
-    unsigned char packet[8];
-
-    packet[0] = addr;
-    packet[1] = 0x05;
-    packet[2] = 0x00;
-    packet[3] = SetSerialInedx;
-    if(status == 1)
-        packet[4] = 0xFF;  //开
-    else    
-        packet[4] = 0;  //关
-    packet[5] = 0x00;
-    //计算校验码
-    //packet[6]
-    //packet[7]
-
-    usleep(100 * 1000);   //休眠
-}
-
-
 
 /**
  * 设置样式
@@ -83,10 +61,28 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, uin
     {
         //首页卡片的按钮
         case 0:   //活动看台
-            lv_obj_add_event_cb(btn, telescoopic_Controls_event_cb, LV_EVENT_ALL, index);  //传入设备号和按钮号
+            lv_obj_add_event_cb(btn, telescoopic_Controls_event_cb, LV_EVENT_ALL, index); // 传入设备号和按钮号
             break;
         case 1:   //悬空球架
-            lv_obj_add_event_cb(btn, basketball_Controls_event_cb, LV_EVENT_ALL, index);  
+            lv_obj_add_event_cb(btn, basketball_Controls_event_cb, LV_EVENT_ALL, index);
+            break;
+        case 2:  //分隔幕
+            lv_obj_add_event_cb(btn, partition_Controls_event_cb, LV_EVENT_ALL, index);
+            break;
+        case 3:  //壁挂球架
+            lv_obj_add_event_cb(btn, wallhanging_Controls_event_cb, LV_EVENT_ALL, index);
+            break;
+        case 4:  //地面翻折座椅
+            lv_obj_add_event_cb(btn, folding_Controls_event_cb, LV_EVENT_ALL, index);
+            break;
+        case 5:   //舞台
+            lv_obj_add_event_cb(btn, contraction_Controls_event_cb, LV_EVENT_ALL, index);
+            break;
+        case 6:   //升降旋转舞台
+            lv_obj_add_event_cb(btn, revolving_Controls_event_cb, LV_EVENT_ALL, index);
+            break;
+        case 7:   //灯光
+            lv_obj_add_event_cb(btn, lights_Controls_event_cb, LV_EVENT_ALL, index);
             break;
         default:
             break;
@@ -183,7 +179,15 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
         dev_card = lv_box_create(parent, x, y, "放下", "急停", "收起", index);
     else if(image == 2)  //如果设备是分隔幕
         dev_card = lv_box_create(parent, x, y, "放下", "急停", "收起", index);
-    else if(image == 3)  //如果设备是灯具
+    else if(image == 3)  //壁挂球架
+        dev_card = lv_box_create(parent, x, y, "展开", "急停", "收合", index);
+    else if(image == 4)  //地面翻折座椅
+        dev_card = lv_box_create(parent, x, y, "打开", "急停", "关闭", index);
+    else if(image == 5)  //舞台
+        dev_card = lv_box_create(parent, x, y, "表演", "合唱", "收合", index);
+    else if(image == 6)  //升降旋转舞台
+        dev_card = lv_box_create(parent, x, y, "上升", "急停", "下降", index);
+    else if(image == 7)  //灯光
         dev_card = lv_box_create(parent, x, y, "打开", "关闭", NULL, index);
 
     printf("index:%d %d\n", index->num, index->ind);
@@ -198,7 +202,7 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
     lv_obj_align(imgbutton, LV_ALIGN_CENTER, 0, 0);
     lv_obj_clear_flag(imgbutton, LV_OBJ_FLAG_SCROLLABLE);
 
-    static const lv_img_dsc_t *img_table[] = {&telescopic_stand_small, &basketball_stands_small, &partition_curtain_small}; //设备图片数组
+    static const lv_img_dsc_t *img_table[] = {&telescopic_stand_small, &basketball_stands_small, &partition_curtain_small, &wall_hanging_ball_small, &folding_seat_small, &telescopic_stage_small, &telescopic_stage_small,&lights}; //设备图片数组
     lv_img_set_src(imgbutton, img_table[image]);
     lv_obj_add_flag(imgbutton, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_add_event_cb(imgbutton, lv_create_device, LV_EVENT_ALL, (void *)index);
@@ -251,6 +255,17 @@ void CreateDevicePage(lv_obj_t *parent)
 {
 
     card_class(parent, 0, 0,"活动看台", 0, 1);      //创建活动看台卡片   倒数第二个参数是设备类型，倒数第一个是设备号
-    card_class(parent, 1, 0,"悬空球架", 1, 1);
-    card_class(parent, 2, 0,"自动分隔幕", 2, 1);
+    card_class(parent, 1, 0, "悬空球架1", 1, 1);
+    card_class(parent, 2, 0, "悬空球架2", 1, 2);
+    card_class(parent, 3, 0, "悬空球架3", 1, 3);
+    card_class(parent, 0, 1, "悬空球架4", 1, 4);
+    card_class(parent, 1, 1, "自动分隔幕1", 2, 1);
+    card_class(parent, 2, 1, "自动分隔幕2", 2, 2);
+    card_class(parent, 3, 1, "壁挂球架1", 3, 1);
+    card_class(parent, 0, 2, "壁挂球架2", 3, 2);
+    card_class(parent, 1, 2, "地埋翻转座椅1", 4, 1);
+    card_class(parent, 2, 2, "地埋翻转座椅2", 4, 2);
+    card_class(parent, 3, 2, "伸缩舞台", 5, 1);
+    card_class(parent, 0, 3, "升降旋转舞台", 6, 1);
+    card_class(parent, 1, 3, "场馆灯光", 7, 1);
 }
