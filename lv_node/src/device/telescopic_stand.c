@@ -9,7 +9,6 @@
 #include "ui_app.h"
 DevicePageData lvPageData = {0};
 DevicePageData *pPageData = &lvPageData;
-uint8_t ReadSerialDiNum;  //用于读取ＤＩ
 int Switch_status = -1;   //按钮开关状态(用于判断是哪个按钮)
 
 bool stop_flag = false;   //急停标志位
@@ -17,8 +16,6 @@ bool stand_flag = false;  //看台标志位，ｔｒｕｅ为收拢
 
 /**
  * 设备卡片看台控制事件
- * 从机１的ＤＯ１控制看台展开电机，Ｄ０２控制看台收拢电机
- * ＤＯ３座椅展开电机，Ｄ０４座椅收合电机
  * @param e          指向要设置对象的指针
  * */
 void telescoopic_Controls_event_cb(lv_event_t *e)
@@ -36,12 +33,8 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
         case 0:  //一键打开
             if(stop_flag == false) 
             {
-                for (size_t i = 0; i < 4; i++)  //关闭ＤＯ
-                {
-                    SetSerialDo(1,i,0);
-                }
-                SetSerialDo(1,0,1);   //打开DO1   第一个ＩＯ控制器
-                ReadSerialDiNum = 1;
+                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_open\",\"v\":\"%d\"}]}",1);
+                OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
             }
             break;
         case 1:   //急停
@@ -50,15 +43,9 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;   //表示急停产生
 
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
-                //关闭所有继电器的端口
-                for (size_t i = 0; i < 6; i++)
-                {
-                    SetSerialDo(1,i,0);
-                }
-                for (size_t i = 0; i < 6; i++)
-                {
-                    SetSerialDo(2,i,0);
-                }
+                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_stop \",\"v\":\"%d\"}]}",1);
+                OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
+               //       /mytest/ycg
             }
             else
             {
@@ -69,106 +56,12 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
         case 2:   //一键关闭
             if (stop_flag == false)
             {
-                for (size_t i = 0; i < 4; i++) //关闭ＤＯ
-                {
-                    SetSerialDo(1,i,0);
-                }
-                SetSerialDo(1,3,1);    //打开DO4    第一个ＩＯ控制器   先收拢座椅  
-                ReadSerialDiNum = 4;
+                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_shut\",\"v\":\"%d\"}]}",1);
+                OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
             }
             break;
         }
         Switch_status = index;   //保存区分按钮一键或单独控制
-    }
-}
-
-/**
- * 详情页面看台控制事件
- * 从机１的ＤＯ１控制看台展开电机，Ｄ０２控制看台收拢电机
- * ＤＯ３座椅展开电机，Ｄ０４座椅收合电机
- * @param e          指向要设置对象的指针
- * */
-void Controls_event_cb(lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t *obj = lv_event_get_target(e);
-
-    index_t *user_data = lv_event_get_user_data(e);
-    uint8_t index = user_data->ind; //判断按钮号
-
-    if(code == LV_EVENT_CLICKED)
-    {
-        if(index >= 3)   //若是下方４个按钮
-        {
-            for (size_t i = 0; i < 4; i++)
-            {
-                if(i != index - 3)
-                {
-                    SetSerialDo(1,i,0);  //其余电机关闭
-                }
-            }
-        }
-        switch(index)
-        {
-        case 0: //一键打开
-            if(stop_flag == false)
-            {
-                ReadSerialDiNum = 1;
-                //SetAllDoClose(0XFE);  关闭ＤＯ   写在开发板的代码中
-                usleep(100 * 1000);
-                SetSerialDo(1,0,1);   //展开看台，DO1打开
-            }
-            break;
-        case 1: //急停
-            if(stop_flag == false)
-            {
-                stop_flag = true;
-                lv_obj_add_state(obj, LV_STATE_PRESSED);
-                //SetAllDoClose(0XFE);  关闭ＤＯ   
-            }
-            else
-            {
-                stop_flag = false;
-                lv_obj_add_state(obj, LV_STATE_PRESSED);
-            }
-            break;
-        case 2: //一键关闭
-            if(stop_flag == false)
-            {
-                ReadSerialDiNum = 4;
-                //SetAllDoClose(0XFE);  关闭ＤＯ   
-                SetSerialDo(1,3,1);    //打开DO4    第一个ＩＯ控制器   先收拢座椅  
-            }
-        case 3:  //打开看台
-            if(stop_flag == false)
-            {
-                ReadSerialDiNum = 1;
-                SetSerialDo(1,0,1);    //打开DO1   　　
-            }
-            break;
-        case 4:  //收拢看台
-            if(stop_flag == false)
-            {
-                ReadSerialDiNum = 2;
-                SetSerialDo(1,1,1);   //打开DO2  
-            }
-            break;
-        case 5:  //打开座椅,看台打开才能打开
-            if (stop_flag == false && !stand_flag)
-            {
-                ReadSerialDiNum = 3;
-                SetSerialDo(1,2,1);    //打开DO3
-            }
-            break;
-        case 6:  //收拢座椅
-            if(stop_flag == false)
-            {
-                ReadSerialDiNum = 4;
-                SetSerialDo(1,3,1);    //打开DO4
-            }
-            break;
-        }
-        Switch_status = index;  //保存区分按钮一键或单独控制
     }
 }
 

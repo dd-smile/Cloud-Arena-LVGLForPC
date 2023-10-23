@@ -9,6 +9,8 @@
 #ifndef __LEYARD_H__
 #define __LEYARD_H__
 
+extern int synchronous_fd;
+extern int multitrack_fd;
 
 void CreateAudioPage(lv_obj_t *parent);
 

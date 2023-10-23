@@ -85,7 +85,7 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, uin
         case 0:   //活动看台
             lv_obj_add_event_cb(btn, telescoopic_Controls_event_cb, LV_EVENT_ALL, index);  //传入设备号和按钮号
             break;
-        case 2:   //悬空球架
+        case 1:   //悬空球架
             lv_obj_add_event_cb(btn, basketball_Controls_event_cb, LV_EVENT_ALL, index);  
             break;
         default:

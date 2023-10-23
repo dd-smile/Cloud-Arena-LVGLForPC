@@ -226,27 +226,27 @@ void time_roller(lv_obj_t *parent)
     lv_obj_t *roller1 = createTimeCard(parent, 30, TIME_ROLLER_YEAH, t_year - 1970);   //年份滚轴
     //lv_roller_get_selected_str(roller1, year_buf, sizeof(year_buf));  //将当前选定的选项作为字符串获取,并存储在buf中
     //printf("Selected year: %s\n", year_buf);  //打印选中的选项
-    lv_obj_add_event_cb(roller1, rolleryear_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
+    // lv_obj_add_event_cb(roller1, rolleryear_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
 
 
     lv_obj_t *roller2 = createTimeCard(parent, 130, TIME_ROLLER_MONTH, month);   //月份滚轴
     //lv_roller_get_selected_str(roller2, month_buf, sizeof(month_buf));
-    lv_obj_add_event_cb(roller2, rollermonth_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
+    // lv_obj_add_event_cb(roller2, rollermonth_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
 
 
     lv_obj_t *roller3 = createTimeCard(parent, 230, TIME_ROLLER_DAY, day - 1);  //天数滚轴
     //lv_roller_get_selected_str(roller3, day_buf, sizeof(day_buf));
-    lv_obj_add_event_cb(roller3, rollerday_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
+    // lv_obj_add_event_cb(roller3, rollerday_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
 
 
     lv_obj_t *roller4 = createTimeCard(parent, 330, TIME_ROLLER_HOUR, hour - 1);  //小时滚轴
     //lv_roller_get_selected_str(roller4, hour_buf, sizeof(hour_buf));
-    lv_obj_add_event_cb(roller4, rollerhour_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
+    // lv_obj_add_event_cb(roller4, rollerhour_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
 
 
     lv_obj_t *roller5 = createTimeCard(parent, 430, TIME_ROLLER_MIN, min);  //分钟滚轴
     //lv_roller_get_selected_str(roller5, min_buf, sizeof(min_buf));
-    lv_obj_add_event_cb(roller5, rollermin_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
+    // lv_obj_add_event_cb(roller5, rollermin_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
 }
 
 /**

@@ -116,10 +116,10 @@ lv_obj_t *device_page_box(lv_obj_t *parent, int num_pages, ...)
  * */
 void CreateHomePage(lv_obj_t *parent)
 {
-    lv_obj_t *home_tab = device_page_box(parent, MAX_PAGE, "设备","数据看板","音频控制","-"); // 设备列框架
+    lv_obj_t *home_tab = device_page_box(parent, MAX_PAGE, "数据看板","设备","音频控制","-"); // 设备列框架
 
-    device_data.all_pages = lv_tileview_add_tile(lv_obj_get_child(home_tab, 0), 0, 0, LV_DIR_RIGHT); // 添加全部页面
-    device_data.display_page = lv_tileview_add_tile(lv_obj_get_child(home_tab, 1), 0, 0, LV_DIR_RIGHT); // 添加数据看板页面
+    device_data.display_page = lv_tileview_add_tile(lv_obj_get_child(home_tab, 0), 0, 0, LV_DIR_RIGHT); // 添加数据看板页面
+    device_data.all_pages = lv_tileview_add_tile(lv_obj_get_child(home_tab, 1), 0, 0, LV_DIR_RIGHT); // 添加全部页面
     device_data.audio_page = lv_tileview_add_tile(lv_obj_get_child(home_tab, 2 ), 0, 0, LV_DIR_RIGHT); //添加音频控制页面
 
     CreateDevicePage(device_data.all_pages);

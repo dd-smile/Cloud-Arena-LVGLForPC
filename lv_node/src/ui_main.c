@@ -14,6 +14,9 @@ struct
     {&setting_off, &setting_on, 10, -2, "设置"},
 };
 
+int mqtt_fd;
+int light_fd;
+char PUB_BUF[256];      //上传数据的buf
 All_Data home_data;
 
 /**
@@ -158,6 +161,47 @@ static void home_bg(lv_obj_t *obj)
   ui_navigation_main_menu(lv_detailed);
 }
 
+void timer_mqtt_callback(lv_timer_t *timer)
+{
+  OneNet_HeartBeat();
+}
+
+static void connect_mqtt()
+{
+   // 1. 创建通信的套接字
+  mqtt_fd = socket(AF_INET, SOCK_STREAM, 0);
+  if(mqtt_fd == -1)
+  {
+      perror("socket");
+      exit(0);
+  }
+
+  // 2. 连接服务器
+  struct sockaddr_in addr;
+  addr.sin_family = AF_INET;
+  addr.sin_port = htons(1883);   // 大端端口
+  inet_pton(AF_INET, "112.74.105.251", &addr.sin_addr.s_addr);
+
+  int ret = connect(mqtt_fd, (struct sockaddr*)&addr, sizeof(addr));
+  if(ret == -1)
+  {
+      perror("connect");
+      exit(0);
+  }
+
+  OneNet_DevLink();   //连接ＭＱＴＴ服务器
+
+  // sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_1\",\"v\":\"%d\"}]}",1);
+  // OneNet_Publish("/mytest/ycg", PUB_BUF);
+
+}
+
+static void *create_client_light()
+{   
+    light_fd = createSocket();  //创建套接字
+    connectToHost(light_fd, "192.168.1.230", 502);  //连接服务器
+}
+
 void create_lv_layout(lv_obj_t *scr)
 {
 
@@ -165,9 +209,21 @@ void create_lv_layout(lv_obj_t *scr)
   home_page_box(scr);        // 框架(创建滑动页面)
   create_wifi_and_time(scr); // wifi 和 时间
 
+  //创建更新温湿度数据任务
+  lv_timer_create(timer_data_callback, 60000, NULL);
+
+  //创建更新天气数据任务
+  // lv_timer_create(timer_weather_callback, 60000, NULL);
+
+  //创建ＭＱＴＴ心跳任务
+  // lv_timer_create(timer_mqtt_callback, 20000, NULL);
+
   CreateHomePage(home_data.home_page);       // 主页
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
+
+  // connect_mqtt();
+  create_client_light();
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
   // thp = threadpool_create(3, 10, 10);

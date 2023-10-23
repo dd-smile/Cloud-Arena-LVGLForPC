@@ -20,6 +20,9 @@ typedef struct
 } All_Data;
 
 extern All_Data home_data;
+extern int mqtt_fd;
+extern int light_fd;
+extern char PUB_BUF[256];
 
 void create_lv_layout(lv_obj_t *scr);
 

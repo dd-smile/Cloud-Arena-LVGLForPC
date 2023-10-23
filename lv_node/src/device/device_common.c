@@ -111,7 +111,7 @@ static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_o
     lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
     lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
     lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, Controls_event_cb, LV_EVENT_ALL, index);  //设备详情页控制按钮事件
+    lv_obj_add_event_cb(btn, telescoopic_Controls_event_cb, LV_EVENT_ALL, index);  //设备详情页控制按钮事件
     lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
 
     lv_obj_t *label = lv_label_create(btn);

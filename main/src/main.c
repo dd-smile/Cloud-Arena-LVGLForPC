@@ -219,6 +219,9 @@ int main(int argc, char **argv)
 
   // close(cfd);
   // close(lfd);
+  closeSocket(synchronous_fd);
+  closeSocket(multitrack_fd);
+  closeSocket(mqtt_fd);
 
   threadpool_distory(thp);
 

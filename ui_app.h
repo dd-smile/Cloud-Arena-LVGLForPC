@@ -245,6 +245,12 @@
 #include "lv_node/src/display/display.h"
 #include "lv_node/src/display/connect_common.h"
 #include "lv_node/src/audio_control/leyard.h"
+#include "lv_node/src/cJSON/cJSON.h"
+#include "lv_node/src/common/parson.h"
+
+#include "lv_node/src/mqtt/mqtt_common.h"
+#include "lv_node/src/mqtt/MqttKit.h"
+#include "lv_node/src/mqtt/onenet.h"
 
 LV_FONT_DECLARE(PuHuiTi_Regular_16);
 LV_FONT_DECLARE(PuHuiTi_Regular_30);

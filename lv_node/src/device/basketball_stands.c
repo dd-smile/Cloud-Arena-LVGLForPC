@@ -11,13 +11,12 @@
 
 DevicePageData basketball_stands_data = {0};
 DevicePageData *bs_data = &basketball_stands_data;
-extern bool stop_flag;
 
+unsigned char packet_open[12] = {0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0xf0, 0x05, 0x00, 0x01, 0xFF, 0x00};
+unsigned char packet_close[12] = {0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0xf0, 0x05, 0x00, 0x02, 0xFF, 0x00};
 
 /**
  * 设备卡片悬空球架控制事件   与设备详情页的控制事件一样
- * 从机１的ＤＯ５控制球架展开电机，Ｄ０６控制球架收拢电机
- * ＤＩ５球架展开限位，ＤＩ６球架收拢限位
  * @param e          指向要设置对象的指针
  * */
 void basketball_Controls_event_cb(lv_event_t *e)
@@ -34,11 +33,11 @@ void basketball_Controls_event_cb(lv_event_t *e)
         switch (index)
         {
         case 0: //看台收拢才能打开球架
-            if (stop_flag == false && stand_flag ) 
+            if (stop_flag == false) 
             {
-                // SetAllDoClose(OXFE);  //广播地址全关   关闭ＤＯ   写在开发板的代码中
-                usleep(100 * 1000);
-                SetSerialDo(1, 4, 1); //打开球架展开电机
+                // sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_1\",\"v\":\"%d\"}]}",1);
+                // OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
+                write(light_fd, packet_open, sizeof(packet_open));
             }
             break;
         case 1:  //急停
@@ -46,7 +45,8 @@ void basketball_Controls_event_cb(lv_event_t *e)
             {
                 stop_flag = true;   //表示急停产生
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
-                // SetAllDoClose(OXFE);  //广播地址全关   关闭ＤＯ   写在开发板的代码中
+                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_1\",\"v\":\"%d\"}]}",1);
+                OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
             }
             else
             {
@@ -56,10 +56,10 @@ void basketball_Controls_event_cb(lv_event_t *e)
             break;
         case 2:  //收拢球架
             if (stop_flag == false)
-            {
-                // SetAllDoClose(OXFE);  //广播地址全关   关闭ＤＯ   写在开发板的代码中
-                usleep(100 * 1000);
-                SetSerialDo(1, 5, 1); //打开球架收拢电机
+            {   
+                write(light_fd, packet_close, sizeof(packet_close));
+                // sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_up_1\",\"v\":\"%d\"}]}",1);
+                // OneNet_Publish("/usr/plcnet/Cloud_Arena_sports/edge/d", PUB_BUF);
             }
             break;
         }

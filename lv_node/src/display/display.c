@@ -12,6 +12,82 @@ char temp_data[1024];  //用于输出获取到的温度数据
 char hum_data[1024];   //用于输出获取到的湿度数据
 lv_timer_t *timer = NULL;
 Sensor_Data sensor_data;
+uint16_t hour;   //当前时间
+uint16_t last_hour;  //上一次时间
+weather_t weather = {0};
+char buf[1024];
+char buffer[1024];  
+int fd;
+int iDataNum;
+
+//解析json
+void aita_ParseJsonNow(char *msg, weather_t *w) {
+    cJSON *json, *ja, *jo, *josub, *item;
+    json = cJSON_Parse(msg); //parse string to cJSON type
+    if(json == NULL) {
+        printf("json type cast error: %s", cJSON_GetErrorPtr());
+        return;
+    } else {
+        printf("parse now pack\n");
+        if((ja=cJSON_GetObjectItem(json, "results")) != NULL) { //get results array
+            if((jo=cJSON_GetArrayItem(ja, 0)) != NULL) {        //get array[0](the only item)
+                //get location object
+                if((josub=cJSON_GetObjectItem(jo, "location")) != NULL) {
+                    if((item=cJSON_GetObjectItem(josub, "id")) != NULL) {
+                        memcpy(w->id, item->valuestring, strlen(item->valuestring));
+                    }
+                    if((item=cJSON_GetObjectItem(josub, "name")) != NULL) {
+                        memcpy(w->name, item->valuestring, strlen(item->valuestring));
+                    }
+                    if((item=cJSON_GetObjectItem(josub, "country")) != NULL) {
+                        memcpy(w->country, item->valuestring, strlen(item->valuestring));
+                    }
+                    if((item=cJSON_GetObjectItem(josub, "path")) != NULL) {
+                        memcpy(w->path, item->valuestring, strlen(item->valuestring));
+                    }
+                    if((item=cJSON_GetObjectItem(josub, "timezone")) != NULL) {
+                        memcpy(w->timezone, item->valuestring, strlen(item->valuestring));
+                    }
+                    if((item=cJSON_GetObjectItem(josub, "timezone_offset")) != NULL) {
+                        memcpy(w->tz_offset, item->valuestring, strlen(item->valuestring));
+                    }
+                }
+                //get now object
+                if((josub=cJSON_GetObjectItem(jo, "now")) != NULL) {
+                    if((item=cJSON_GetObjectItem(josub, "text")) != NULL) {
+                        memcpy(w->text, item->valuestring, strlen(item->valuestring));
+                    }
+                    if((item=cJSON_GetObjectItem(josub, "code")) != NULL) {
+                        memcpy(w->code, item->valuestring, strlen(item->valuestring));
+                    }
+                    if((item=cJSON_GetObjectItem(josub, "temperature")) != NULL) {
+                        memcpy(w->temp, item->valuestring, strlen(item->valuestring));
+                    }
+                }
+                //get last_update object
+                if((josub=cJSON_GetObjectItem(jo, "last_update")) != NULL) {
+                    memcpy(w->last_update, josub->valuestring, strlen(josub->valuestring));                 
+                }
+            }
+        }
+    }
+    //delete original json pack free memory
+    cJSON_Delete(json);
+    return;
+}
+
+void aita_PrintWeather(weather_t *w) {
+    printf("id: %s\n", w->id);
+    printf("name: %s\n", w->name);
+    printf("country: %s\n", w->country);
+    printf("path: %s\n", w->path);
+    printf("timezone: %s\n", w->timezone);
+    printf("timezone_offset: %s\n", w->tz_offset);
+    printf("text: %s\n", w->text);
+    printf("code: %s\n", w->code);
+    printf("temperature: %s\n", w->temp);
+    printf("last_update: %s\n", w->last_update);
+}
 
 /**
  * 创建温湿度历史图表的点击事件
@@ -114,43 +190,87 @@ void display_float_number(lv_obj_t *label, char *number, int type)
     }
 }
 
-/**
- * 获取温度数据
-*/
-static char *get_temp()
+//获取当前时间
+void get_localtime()
 {
-    return temp_data;
+    time_t now = time(NULL);
+    struct tm *tm_now = localtime(&now);
+
+    hour = tm_now->tm_hour;
+}
+
+
+/**
+ * 创建心知天气定时器回调函数
+*/
+void timer_weather_callback(lv_timer_t * timer) 
+{   
+    get_localtime();
+
+    char buffer_weather[1024];
+
+    if(last_hour != hour)
+    {
+        last_hour = hour;
+        // 1. 创建通信的套接字
+        int fd = socket(AF_INET, SOCK_STREAM, 0);
+        if(fd == -1)
+        {
+            perror("socket");
+            exit(0);
+        }
+
+        // 2. 连接服务器
+        struct sockaddr_in addr;
+        addr.sin_family = AF_INET;
+        addr.sin_port = htons(80);   // 大端端口
+        inet_pton(AF_INET, "116.62.81.138", &addr.sin_addr.s_addr);
+
+        int ret = connect(fd, (struct sockaddr*)&addr, sizeof(addr));
+        if(ret == -1)
+        {
+            perror("connect");
+            exit(0);
+        }
+
+        // 3. 和服务器端通信
+        // 发送数据
+        sprintf(buf, "GET https://api.seniverse.com/v3/weather/now.json?key=SCYXqGB7ZPUSvlsZy&location=shenzhen&language=zh-Hans&unit=c\r\n\r\n");  
+        write(fd, buf, strlen(buf)+1);
+
+        buffer[0] = '\0';
+
+		iDataNum = recv(fd, buffer, 1024, 0);
+
+        buffer[iDataNum] = '\0';
+
+        printf("收到消息: %s\n", buffer);
+
+        aita_ParseJsonNow(buffer, &weather);
+
+        snprintf(buffer_weather, sizeof(buffer_weather), "今天天气:%s,外温:%s摄氏度", weather.text, weather.temp);
+        lv_label_set_text(sensor_data.label_weather, buffer_weather);  //调用心知天气ａｐｉ
+
+        aita_PrintWeather(&weather);
+
+        close(fd);
+    }   
 }
 
 /**
- * 获取湿度数据
-*/
-static char *get_hum()
-{
-    return hum_data;
-}
-
-/**
- * 创建定时器回调函数
+ * 创建温湿度定时器回调函数
 */
 void timer_data_callback(lv_timer_t * timer) 
 {
-    // 从传感器获取数据
-    char *sensor_temp = get_temp();
-    char *sensor_hum = get_hum();
-
     lv_obj_t *label = (lv_obj_t *)timer->user_data;
 
     char buffer_temp[20];
     char buffer_hum[20];
-    snprintf(buffer_temp, sizeof(buffer_temp), "室内温度: %s", sensor_temp);
-    snprintf(buffer_hum, sizeof(buffer_hum), "室内湿度: %s", sensor_hum);
-
+    snprintf(buffer_temp, sizeof(buffer_temp), "室内温度: %s", temp_data);
+    snprintf(buffer_hum, sizeof(buffer_hum), "室内湿度: %s", hum_data);
 
     lv_label_set_text(sensor_data.label_temp, buffer_temp);
     lv_label_set_text(sensor_data.label_hum, buffer_hum);
-    // lv_label_set_text(sensor_data.label_weather, "今天天气晴朗,外温30摄氏度");  //调用心知天气ａｐｉ
-
 }
 
 /**
@@ -163,9 +283,6 @@ static void Create_TempeHumData(lv_obj_t *parent)
 
     lv_obj_t *card = Createcard(parent);
     lv_obj_set_pos(card, 5, 65);
-
-    timer = lv_timer_create(timer_data_callback, 60000, card);
-
     
     sensor_data.label_temp = lv_label_create(card);
     display_float_number(sensor_data.label_temp, "26", 0);  
@@ -180,7 +297,7 @@ static void Create_TempeHumData(lv_obj_t *parent)
     lv_obj_align(sensor_data.label_hum, LV_ALIGN_CENTER, -60, -10);
 
     sensor_data.label_weather = lv_label_create(card);
-    lv_label_set_text(sensor_data.label_weather, "今天天气晴朗,外温30摄氏度");  //调用心知天气ａｐｉ
+    lv_label_set_text(sensor_data.label_weather, "今天天气:晴朗,外温:30摄氏度");  //调用心知天气ａｐｉ
     lv_obj_set_style_text_font(sensor_data.label_weather, &PuHuiTi_Regular_20, LV_PART_MAIN);
     lv_obj_set_style_text_color(sensor_data.label_weather, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
     lv_obj_align_to(sensor_data.label_weather, sensor_data.label_hum, LV_ALIGN_BOTTOM_MID, 50, 40);

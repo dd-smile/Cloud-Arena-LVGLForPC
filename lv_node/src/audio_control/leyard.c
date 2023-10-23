@@ -50,9 +50,12 @@ void *synchronous_c_working(void * parg)
  * @param parent            指向父对象的指针     
  * */
 static void *create_client_sy()
-{
-    synchronous_fd = createSocket();  //创建套接字
-    connectToHost(synchronous_fd, "192.168.17.20", 11011);  //连接服务器
+{   
+    if(synchronous_fd == 0)
+    {
+        synchronous_fd = createSocket();  //创建套接字
+        connectToHost(synchronous_fd, "192.168.17.20", 11011);  //连接服务器
+    }
 }
 
 /**
@@ -60,9 +63,12 @@ static void *create_client_sy()
  * @param parent            指向父对象的指针     
  * */
 static void *create_client_mu()
-{
-    multitrack_fd = createSocket();  //创建套接字
-    connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+{   
+    if(multitrack_fd == 0)
+    {
+        multitrack_fd = createSocket();  //创建套接字
+        connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+    }
 }
 
 /*------------------------------界面ＵＩ----------------------------------*/
@@ -220,9 +226,9 @@ static void lv_back_leyard(lv_event_t *e)
     lv_obj_t *obj = lv_event_get_target(e);
     if (code == LV_EVENT_CLICKED)
     {   
-        //关闭套接字
-        closeSocket(synchronous_fd);
-        closeSocket(multitrack_fd);
+        // //关闭套接字
+        // closeSocket(synchronous_fd);
+        // closeSocket(multitrack_fd);
         lv_obj_del(obj->parent->parent);
     }
 }
