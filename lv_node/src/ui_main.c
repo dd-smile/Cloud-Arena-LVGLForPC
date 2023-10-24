@@ -14,6 +14,8 @@ struct
     {&setting_off, &setting_on, 10, -2, "设置"},
 };
 
+static bool enteredScreenMode = false; // 屏保标志位
+static bool password_flag = false;  //给第一次弹出密码框
 int mqtt_fd;    //连接ｍｑｔｔ套接字
 int light_fd;   //连接灯光套接字
 char PUB_BUF[256];      //上传给ＭＱＴＴ服务器数据的buf
@@ -162,6 +164,69 @@ static void home_bg(lv_obj_t *obj)
 }
 
 /**
+ * 屏保模式时的点击事件
+ * @param e           指向事件描述符的指针     
+ * */
+static void SettingScreenBack_event_cb(lv_event_t *e)
+{
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *obj = lv_event_get_target(e);
+  if (code == LV_EVENT_CLICKED)
+  {
+
+    lv_obj_del(obj);
+    password_lock_open = false;
+    lv_gui_password_keyboard_display();
+    enteredScreenMode = false;
+    password_flag = true;
+  }
+}
+
+/**
+ * 进入屏保模式
+ * @param obj         指向一个对象的指针，它将是新图像的父对象
+ * */
+static void SettingScreenBox(lv_obj_t *parent)
+{
+  if(password_flag == true && password_lock_open == false)
+  { 
+    lv_obj_del(pwd_main_cont);
+  }
+  lv_img_t *img_arr[] = { &Image1_big,
+                          &Image2_big,
+                          &Image3_big, 
+                          &Image4_big, 
+                          &Image5_big, 
+                          &Image6_big};
+  lv_obj_t *screensaverCard = lv_img_create(parent);
+  lv_img_set_src(screensaverCard, img_arr[setting.ScreenSaveid]);
+  lv_obj_add_flag(screensaverCard, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_add_event_cb(screensaverCard, SettingScreenBack_event_cb, LV_EVENT_CLICKED, NULL);
+}
+
+/**
+ * 屏保任务
+ * @param timer         指向定时器
+ * */
+void UpdateTask(lv_timer_t *timer)
+{
+    if(setting.screen_save_time == 0)
+    {
+      setting.screen_save_time = 60*1000;
+    }  
+    uint32_t screenModeTime = setting.screen_save_time;
+    uint32_t idle_time = lv_disp_get_inactive_time(lv_disp_get_default());
+
+    if(idle_time < 7200*1000 && idle_time >= screenModeTime && !enteredScreenMode)
+    {
+      printf("进入屏保模式%ld\n",idle_time);
+      SettingScreenBox(lv_scr_act());
+      enteredScreenMode = true;
+    }
+  
+}
+
+/**
  * MQTT心跳
  * @param timer         指向定时器
  * */
@@ -233,9 +298,15 @@ static void *create_client_light()
 void create_lv_layout(lv_obj_t *scr)
 {
 
+  // 读取屏幕配置文件
+  updateSettingData(&setting, SCREEN_SETTING_JSON);
+
   home_bg(scr);              // 设置主页背景
   home_page_box(scr);        // 框架(创建滑动页面)
   create_wifi_and_time(scr); // wifi 和 时间
+
+  // 创建屏保任务
+  lv_timer_create(UpdateTask, 500, NULL);
 
   //创建更新温湿度数据任务
   lv_timer_create(timer_data_callback, 60000, NULL);
@@ -244,14 +315,14 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_weather_callback, 60000, NULL);
 
   //创建ＭＱＴＴ心跳任务
-  lv_timer_create(timer_mqtt_callback, 20000, NULL);
+  //lv_timer_create(timer_mqtt_callback, 20000, NULL);
 
   CreateHomePage(home_data.home_page);       // 主页
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
 
-  connect_mqtt();   // 连接mqtt服务器
-  create_client_light();  //　连接灯光服务器
+  //connect_mqtt();   // 连接mqtt服务器
+  //create_client_light();  //　连接灯光服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
   // thp = threadpool_create(3, 10, 10);

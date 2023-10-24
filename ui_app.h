@@ -243,6 +243,7 @@
 #include "lv_node/src/device/device.h"
 #include "lv_node/src/device/device_common.h"
 #include "lv_node/src/common/common.h"
+#include "lv_node/src/common/lock.h"
 #include "lv_node/material/lv_100ask_pinyin_ime/lv_100ask_pinyin_ime.h"
 
 #include "lv_node/src/setting/Time/time_setting.h"
@@ -251,6 +252,7 @@
 #include "lv_node/src/setting/Language/Language.h"
 #include "lv_node/src/setting/Add/add_event.h"
 #include "lv_node/src/setting/Add/add_device.h"
+#include "lv_node/src/setting/disposition.h"
 
 #include "lv_node/src/display/display.h"
 #include "lv_node/src/display/connect_common.h"

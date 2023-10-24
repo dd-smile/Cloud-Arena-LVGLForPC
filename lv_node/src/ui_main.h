@@ -19,7 +19,22 @@ typedef struct
 
 } All_Data;
 
+typedef struct
+{
+    uint8_t brightness; //滑动条的值（外面）
+    uint32_t ScreenSaveid; //屏保图片ｉｄ
+    uint32_t Btnmid;  //设置保存多久按钮的ｉｄ
+    int screen_save_time;  //设置保存多久
+
+    char On_screen[8];  // 外面的亮度
+    char In_screen[8];  // 外面的亮度
+
+    
+
+} lv_setting_data_t;
+
 extern All_Data home_data;
+extern  lv_setting_data_t setting;
 extern int mqtt_fd;
 extern int light_fd;
 extern char PUB_BUF[256];

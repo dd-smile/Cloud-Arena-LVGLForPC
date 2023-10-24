@@ -11,6 +11,5 @@
 
 void slider_event_cb(lv_event_t *e);
 void CreateScreensave(lv_obj_t *parent);
-void *CreateScreenSaveStlye(lv_obj_t *parent);
 
 #endif

@@ -2,19 +2,8 @@
 #ifndef _LV_SCREEN_SETTING_H
 #define _LV_SCREEN_SETTING_H
 
-typedef struct
-{
-    bool switch_state;
-    uint8_t brightness; //滑动条的值（外面）
+#define  SCREEN_SETTING_JSON  "/home/csd/demo/lx_screen_setting.json"  
 
-    char On_screen[8];  // 外面的亮度
-    char In_screen[8];  // 外面的亮度
-
-    uint32_t ScreenBtnId; //屏保按钮id
-
-} lv_Brightting_data_t; //屏幕设置结构体
- 
-extern  lv_Brightting_data_t setting;
 
 void CreateScreen(lv_obj_t *parent);
 void add_Screen_event_cb(lv_event_t *e);

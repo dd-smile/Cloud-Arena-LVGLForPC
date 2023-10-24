@@ -72,11 +72,23 @@ LV_IMG_DECLARE(popover);
 
 LV_IMG_DECLARE(light);
 LV_IMG_DECLARE(PopupBox);
-LV_IMG_DECLARE(ImageFirst);
 LV_IMG_DECLARE(ImageSecond);
 LV_IMG_DECLARE(DevicePopupbox);
 
-
+// 屏保图片
+LV_IMG_DECLARE(Image1);
+LV_IMG_DECLARE(Image2);
+LV_IMG_DECLARE(Image3);
+LV_IMG_DECLARE(Image4);
+LV_IMG_DECLARE(Image5);
+LV_IMG_DECLARE(Image6);
+LV_IMG_DECLARE(Image1_big);
+LV_IMG_DECLARE(Image2_big);
+LV_IMG_DECLARE(Image3_big);
+LV_IMG_DECLARE(Image4_big);
+LV_IMG_DECLARE(Image5_big);
+LV_IMG_DECLARE(Image6_big);
+LV_IMG_DECLARE(select_label);
 
 
 

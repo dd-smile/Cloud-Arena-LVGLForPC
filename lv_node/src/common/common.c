@@ -877,3 +877,4 @@ lv_obj_t *create_popup_page(lv_obj_t *parent, const char *title, lv_coord_t x, l
 
     return popup_page;
 }
+
