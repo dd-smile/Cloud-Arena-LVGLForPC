@@ -21,6 +21,41 @@ static void toggle_label(lv_obj_t *label, bool state)
     lv_obj_set_style_text_color(label, color, 0);
 }
 
+void manual_Controls_event_cb(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_target(e);  //获取事件最初针对的对象    
+
+    index_t *user_data = lv_event_get_user_data(e);
+    uint8_t index = user_data->ind; //判断按钮号
+
+    if(code == LV_EVENT_CLICKED)
+    {
+        switch (index)
+        {
+        case 0:  
+            break;
+        case 1:   //打开手动模式
+            if(stop_flag == false)
+            {
+                stop_flag = true;   
+
+                lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
+                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Manual_mode\",\"v\":\"%d\"}]}",1);
+                OneNet_Publish("/mytest/ycg", PUB_BUF);
+            }
+            else
+            {
+                stop_flag = false;
+                lv_obj_clear_state(obj,LV_STATE_PRESSED);
+            }
+            break;
+        case 2:   
+            break;
+        }
+    }
+}
+
 /**
  * 设置模式图片是开启还是关闭
  * @param obj           指向事件最初针对的对象(没有开启冒泡的话，就是事件注册对象)

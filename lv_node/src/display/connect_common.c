@@ -23,7 +23,7 @@ int createSocket()
         perror("socket");
         return -1;
     }
-    printf("套接字创建成功, fd=%d\n", fd);
+    //printf("套接字创建成功, fd=%d\n", fd);
     return fd;
 }
 

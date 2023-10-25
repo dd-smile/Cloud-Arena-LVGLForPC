@@ -11,6 +11,7 @@
 
 
 void CreateModePage(lv_obj_t *obj);
+void manual_Controls_event_cb(lv_event_t *e);
 
 
 #endif

@@ -11,6 +11,7 @@
 // int synchronous_fd = 0;  //实时控制客户端的文件描述符
 int multitrack_fd = 0;   //多轨控制客户端的文件描述符
 int led_fd = 0;   //LED大屏客户端的文件描述符
+int multitrack_red;   //多轨控制客户端是否连接上服务器
 struct sockaddr_in seraddr;
 char buf[1024];  //用于存放发送的数据
 unsigned char packet[16];  //存放静音16进制数据
@@ -28,6 +29,8 @@ unsigned char packet_led3[39] = {0xED,0xCB,0x28,0x00,0x30,0x02,0x01,0x00,0x01,0x
 static void led_Controls_event_cb(lv_event_t *e);
 static void multitrack_Controls_event_cb(lv_event_t *e);
 static void lv_back_leyard(lv_event_t *e);
+
+static lv_obj_t *connect_label;  //连接提示框
 
 
 /*--------------------------------通信--------------------------------*/
@@ -47,6 +50,26 @@ static void lv_back_leyard(lv_event_t *e);
 //     // 发送数据
 //     write(synchronous_fd, buf, strlen(buf)+1);
 // }
+
+//检测音频服务器是否断开
+void *audio_working(void * parg)
+{
+    while (1)
+    {
+        if (socketconnected(multitrack_fd) == 0)
+        {
+            closeSocket(multitrack_fd);
+            lv_label_set_text(connect_label, "请检查服务器是否开启");
+            multitrack_fd = createSocket();  //创建套接字
+            multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+            if(multitrack_red != -1)
+            {
+                lv_label_set_text(connect_label, "");
+            }
+        }
+        usleep(500 * 10000);
+    }
+}
 
 
 /**
@@ -71,8 +94,9 @@ static void *create_client_mu()
     if(multitrack_fd == 0)
     {
         multitrack_fd = createSocket();  //创建套接字
-        connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+        multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
     }
+    threadpool_add(thp, (void *)&audio_working, 0);
 }
 
 /**
@@ -242,7 +266,18 @@ static void *MultitrackControl(lv_obj_t *parent)
     create_button(btn_multitrack, "音量增", -90, 40, 1 ,5);
     create_button(btn_multitrack, "音量减", 90, 40, 1 ,6);
     // create_button(btn_multitrack, "初始音量", 0, 100, 1 ,7);
-
+    connect_label = lv_label_create(btn_multitrack);
+    static lv_style_t connect_label_style;
+    lv_style_reset(&connect_label_style);
+    lv_style_init(&connect_label_style);
+    lv_style_set_radius(&connect_label_style, 0); // 设置样式的圆角弧度
+	lv_style_set_border_width(&connect_label_style, 0); //设置边框宽度
+    lv_style_set_text_color(&connect_label_style , lv_palette_main(LV_PALETTE_RED));  // 字体颜色设置为红色
+    lv_label_set_long_mode(connect_label, LV_LABEL_LONG_SCROLL_CIRCULAR); // 长文本循环滚动
+    lv_obj_add_style(connect_label, &connect_label_style, 0); // 给btn_label添加样式
+    lv_obj_set_style_text_font(connect_label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_align(connect_label, LV_ALIGN_CENTER, 0, 110);
+	lv_label_set_text(connect_label, ""); // 设置文本内容
 }
 
 /*------------------------------点击事件----------------------------------*/
@@ -321,46 +356,73 @@ static void multitrack_Controls_event_cb(lv_event_t *e)
         switch ((int)obj->user_data)
         {
         case 0:  //音乐1
-            sprintf(buf, "music1@5F");  //播放
-            /* 向线程池中添加任务 */
-            //threadpool_add(thp, (void *)&multitrack_working, 0);
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "music1@5F");  //播放
+                /* 向线程池中添加任务 */
+                //threadpool_add(thp, (void *)&multitrack_working, 0);
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         case 1:   //音乐2
-            sprintf(buf, "music2@5F");  //播放
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "music2@5F");  //播放
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         case 2:   //音乐3
-            sprintf(buf, "music3@5F");  //播放
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "music3@5F");  //播放
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         case 3:   //音乐4
-            sprintf(buf, "music4@5F");  //播放
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "music4@5F");  //播放
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         case 4:   //大自然音乐
-            sprintf(buf, "daziran@5F");  //播放
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "daziran@5F");  //播放
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         case 5:   //音量增加5db
-            sprintf(buf, "V+@5F");  
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "V+@5F");  
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         case 6:   //音量减少5db
-            sprintf(buf, "V-@5F");
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "V-@5F");
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         // case 7:   //初始音量-15db
         //     sprintf(buf, "-15db@5F");
         //     write(multitrack_fd, buf, strlen(buf)+1);
         //     break;
         case 8:   //切换下一首
-            sprintf(buf, "nest@5F");
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "nest@5F");
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         case 9:   //暂停播放
-            sprintf(buf, "stop@5F");
-            write(multitrack_fd, buf, strlen(buf)+1);
+            if(multitrack_red != -1)
+            {
+                sprintf(buf, "stop@5F");
+                write(multitrack_fd, buf, strlen(buf)+1);
+            }
             break;
         }
     }

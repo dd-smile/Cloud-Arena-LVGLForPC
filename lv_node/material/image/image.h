@@ -56,6 +56,7 @@ LV_IMG_DECLARE(mode2_off);
 LV_IMG_DECLARE(mode2_on);
 LV_IMG_DECLARE(mode3_off);
 LV_IMG_DECLARE(mode3_on);
+LV_IMG_DECLARE(manual_mode);
 
 
 

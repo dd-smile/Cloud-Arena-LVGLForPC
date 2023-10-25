@@ -43,7 +43,7 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;   //表示急停产生
 
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_stop \",\"v\":\"%d\"}]}",1);
+                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_stop\",\"v\":\"%d\"}]}",1);
                 OneNet_Publish("/mytest/ycg", PUB_BUF);
                //       /mytest/ycg        /usr/plcnet/Cloud_Arena_sports/edge/d
             }

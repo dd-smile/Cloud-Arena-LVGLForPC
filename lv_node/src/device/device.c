@@ -84,6 +84,9 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, uin
         case 7:   //灯光
             lv_obj_add_event_cb(btn, lights_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+        case 8:   //手动模式
+            lv_obj_add_event_cb(btn, manual_Controls_event_cb, LV_EVENT_ALL, index);
+            break;
         default:
             break;
     }
@@ -189,8 +192,10 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
         dev_card = lv_box_create(parent, x, y, "上升", "急停", "下降", index);
     else if(image == 7)  //灯光
         dev_card = lv_box_create(parent, x, y, "打开", "关闭", NULL, index);
+    else if(image == 8)  //手动模式
+        dev_card = lv_box_create(parent, x, y, NULL, "打开", NULL, index);
 
-    printf("index:%d %d\n", index->num, index->ind);
+    //printf("index:%d %d\n", index->num, index->ind);
 
     lv_obj_t *cont = lv_obj_create(dev_card);
     lv_obj_set_size(cont, 107, 107);
@@ -202,7 +207,7 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
     lv_obj_align(imgbutton, LV_ALIGN_CENTER, 0, 0);
     lv_obj_clear_flag(imgbutton, LV_OBJ_FLAG_SCROLLABLE);
 
-    static const lv_img_dsc_t *img_table[] = {&telescopic_stand_small, &basketball_stands_small, &partition_curtain_small, &wall_hanging_ball_small, &folding_seat_small, &telescopic_stage_small, &telescopic_stage_small,&lights}; //设备图片数组
+    static const lv_img_dsc_t *img_table[] = {&telescopic_stand_small, &basketball_stands_small, &partition_curtain_small, &wall_hanging_ball_small, &folding_seat_small, &telescopic_stage_small, &telescopic_stage_small,&lights,&manual_mode}; //设备图片数组
     lv_img_set_src(imgbutton, img_table[image]);
     lv_obj_add_flag(imgbutton, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_add_event_cb(imgbutton, lv_create_device, LV_EVENT_ALL, (void *)index);
@@ -241,7 +246,32 @@ static void lv_create_device(lv_event_t *e)
         case 1:
             CreateBasketballStandsPage(device_num);       //创建悬空球架页面
             break;
-        default:
+
+        case 2:
+            CreatePartitionCurtianPage(device_num);
+            break;
+            
+        case 3:  //壁挂球架
+            CreateWallhangingPage(device_num);
+            break;
+
+        case 4:  //地面翻折座椅
+            CreateFoldingPage(device_num);
+            break;
+
+        case 5:   //舞台
+            CreateContractionPage(device_num);
+            break;
+
+        case 6:   //升降旋转舞台
+            CreateRevolvingPage(device_num);
+            break;
+
+        case 7:   //灯光
+            CreateLightsPage(device_num);
+            break;
+
+        default :
             break;
         }
     }
@@ -268,4 +298,5 @@ void CreateDevicePage(lv_obj_t *parent)
     card_class(parent, 3, 2, "伸缩舞台", 5, 1);
     card_class(parent, 0, 3, "升降旋转舞台", 6, 1);
     card_class(parent, 1, 3, "场馆灯光", 7, 1);
+    card_class(parent, 2, 3, "手动模式", 8, 1);
 }
