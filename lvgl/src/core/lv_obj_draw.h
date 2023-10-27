@@ -146,9 +146,9 @@ bool lv_obj_draw_part_check_type(lv_obj_draw_part_dsc_t * dsc, const struct _lv_
 void lv_obj_refresh_ext_draw_size(struct _lv_obj_t * obj);
 
 /**
- * Get the extended draw area of an object.
+ * Get the extended draw area of an object. 获取对象的扩展绘制区域。
  * @param obj pointer to an object
- * @return the size extended draw area around the real coordinates
+ * @return the size extended draw area around the real coordinates 大小扩展绘制区域周围的实际坐标 
  */
 lv_coord_t _lv_obj_get_ext_draw_size(const struct _lv_obj_t * obj);
 

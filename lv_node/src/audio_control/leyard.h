@@ -12,6 +12,7 @@
 // extern int synchronous_fd;
 extern int led_fd;
 extern int multitrack_fd;
+extern int multitrack_red;
 extern char buf_audio[1024];
 
 void CreateAudioPage(lv_obj_t *parent);

@@ -11,7 +11,7 @@
 // int synchronous_fd = 0;  //实时控制客户端的文件描述符
 int multitrack_fd = 0;   //多轨控制客户端的文件描述符
 int led_fd = 0;   //LED大屏客户端的文件描述符
-int multitrack_red;   //多轨控制客户端是否连接上服务器
+int multitrack_red = -1;   //多轨控制客户端是否连接上服务器
 struct sockaddr_in seraddr;
 char buf[1024];  //用于存放发送的数据
 unsigned char packet[16];  //存放静音16进制数据
@@ -36,7 +36,7 @@ static lv_obj_t *connect_label;  //连接提示框
 /*--------------------------------通信--------------------------------*/
 
 // //发送静音的数据
-// void *synchronous_working(void * parg)
+// void *synchronous_working(void *parg)
 // {
 //     // 和客户端通信
 //     // 发送数据
@@ -44,7 +44,7 @@ static lv_obj_t *connect_label;  //连接提示框
 // }
 
 // //发送控制的数据
-// void *synchronous_c_working(void * parg)
+// void *synchronous_c_working(void *parg)
 // {
 //     // 和客户端通信
 //     // 发送数据
@@ -52,22 +52,17 @@ static lv_obj_t *connect_label;  //连接提示框
 // }
 
 //检测音频服务器是否断开
-void *audio_working(void * parg)
+void audio_working()
 {
-    while (1)
+    if (socketconnected(multitrack_fd) == 0)
+    {   
+        closeSocket(multitrack_fd);
+        lv_label_set_text(connect_label, "请检查服务器是否开启");
+    }
+    else
     {
-        if (socketconnected(multitrack_fd) == 0)
-        {
-            closeSocket(multitrack_fd);
-            lv_label_set_text(connect_label, "请检查服务器是否开启");
-            multitrack_fd = createSocket();  //创建套接字
-            multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
-            if(multitrack_red != -1)
-            {
-                lv_label_set_text(connect_label, "");
-            }
-        }
-        usleep(500 * 10000);
+        lv_label_set_text(connect_label, "");
+        write(multitrack_fd, buf, strlen(buf)+1);
     }
 }
 
@@ -85,19 +80,6 @@ void *audio_working(void * parg)
 //     }
 // }
 
-/**
- * 创建多轨控制客户端
- * @param parent            指向父对象的指针     
- * */
-static void *create_client_mu()
-{   
-    if(multitrack_fd == 0)
-    {
-        multitrack_fd = createSocket();  //创建套接字
-        multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
-    }
-    threadpool_add(thp, (void *)&audio_working, 0);
-}
 
 /**
  * 创建LED客户端
@@ -252,9 +234,6 @@ static void *MultitrackControl(lv_obj_t *parent)
     lv_obj_t *scr = lv_c_create_mask_box(parent); // 创建遮罩
     lv_obj_t *popup_page = create_leyard_page(scr, "多轨控制", 0, 0);
 
-    //连接服务器
-    create_client_mu();
-
     lv_obj_t *btn_multitrack = swich_btn_card(popup_page);
     create_button(btn_multitrack, "音乐1", -90, -100, 1, 0);
     create_button(btn_multitrack, "音乐2", 0, -100, 1, 1);
@@ -278,6 +257,7 @@ static void *MultitrackControl(lv_obj_t *parent)
     lv_obj_set_style_text_font(connect_label, &PuHuiTi_Regular_16, LV_PART_MAIN);
     lv_obj_align(connect_label, LV_ALIGN_CENTER, 0, 110);
 	lv_label_set_text(connect_label, ""); // 设置文本内容
+
 }
 
 /*------------------------------点击事件----------------------------------*/
@@ -350,79 +330,53 @@ static void multitrack_Controls_event_cb(lv_event_t *e)
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t* obj = lv_event_get_current_target(e);   //获取当前点击对象
 
+
     if (code == LV_EVENT_CLICKED)
     {
         //判断是哪个按钮，进行封装数据
         switch ((int)obj->user_data)
         {
         case 0:  //音乐1
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "music1@5F");  //播放
                 /* 向线程池中添加任务 */
                 //threadpool_add(thp, (void *)&multitrack_working, 0);
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         case 1:   //音乐2
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "music2@5F");  //播放
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         case 2:   //音乐3
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "music3@5F");  //播放
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         case 3:   //音乐4
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "music4@5F");  //播放
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         case 4:   //大自然音乐
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "daziran@5F");  //播放
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         case 5:   //音量增加5db
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "V+@5F");  
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         case 6:   //音量减少5db
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "V-@5F");
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         // case 7:   //初始音量-15db
         //     sprintf(buf, "-15db@5F");
         //     write(multitrack_fd, buf, strlen(buf)+1);
         //     break;
         case 8:   //切换下一首
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "nest@5F");
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         case 9:   //暂停播放
-            if(multitrack_red != -1)
-            {
                 sprintf(buf, "stop@5F");
-                write(multitrack_fd, buf, strlen(buf)+1);
-            }
+                audio_working();
             break;
         }
     }

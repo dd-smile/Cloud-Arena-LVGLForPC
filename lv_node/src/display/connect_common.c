@@ -457,7 +457,7 @@ void *workers_thread(void *threadpool)
         
         /* queue_size == 0 说明没有任务，调wait 阻塞在条件变量上，若有任务，跳过该while */
         while((pool->queue_size == 0) && (!pool->shutdown)) {
-            printf("Workers'thread ID 0x%x is waiting\n", (unsigned int)pthread_self());
+            //printf("Workers'thread ID 0x%x is waiting\n", (unsigned int)pthread_self());
             pthread_cond_wait(&(pool->queue_not_empty), &(pool->lock));
             
             /* 清除指定数目的空闲线程，如果要结束的线程个数大于0，结束线程 */

@@ -325,10 +325,10 @@ void create_lv_layout(lv_obj_t *scr)
   //create_client_light();  //　连接灯光服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
-  thp = threadpool_create(3, 10, 10);
-  if (thp == NULL) {
-      printf("threadpool_create fail\n");
-      return 0;
-  }
+  // thp = threadpool_create(3, 10, 10);
+  // if (thp == NULL) {
+  //     printf("threadpool_create fail\n");
+  //     return 0;
+  // }
 
 }
