@@ -107,7 +107,7 @@ int connectToHost(int fd, const char* ip, unsigned short port)
     int ret = connect(fd, (struct sockaddr*)&saddr, sizeof(saddr));
     if(ret == -1)
     {
-        perror("connect");
+        //perror("connect");
         return -1;
     }
     printf("成功和服务器建立连接...\n");

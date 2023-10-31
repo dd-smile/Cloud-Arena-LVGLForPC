@@ -157,6 +157,7 @@ void *create_client_mu(void * parg)
     {
       if(socketconnected(multitrack_fd) == 0)
       {
+        closeSocket(multitrack_fd);
         multitrack_fd = createSocket();  //创建套接字
         multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
       }
@@ -209,6 +210,9 @@ int main(int argc, char **argv)
   // printf("服务器的IP地址: %s, 端口: %d\n",
   //         inet_ntop(AF_INET, &addr.sin_addr.s_addr, pp, sizeof(pp)),
   //         ntohs(addr.sin_port));
+  // 设置ＳＯ_ＲＥＵＳＥＡＤＤＲ，快速重启服务器，防止出现Address in use
+  // int on = 1;
+  // setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
   // int ret = bind(lfd, (struct sockaddr*)&addr, sizeof(addr));
   // if(ret == -1)
   // {
