@@ -38,6 +38,7 @@ extern  lv_setting_data_t setting;
 extern int mqtt_fd;
 extern int light_fd;
 extern char PUB_BUF[256];
+extern bool password_flag;
 
 void create_lv_layout(lv_obj_t *scr);
 

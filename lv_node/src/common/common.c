@@ -607,6 +607,18 @@ lv_obj_t *lv_c_create_mask_box(lv_obj_t *parent)
     return gray_layer;
 }
 
+// 创建模式遮罩层
+lv_obj_t *lv_mode_create_mask_box(lv_obj_t *parent)
+{
+    lv_obj_t *gray_layer = lv_obj_create(parent); // 主页面灰色遮罩层
+    lv_obj_remove_style_all(gray_layer);
+    lv_obj_set_pos(gray_layer, 0, 0);
+    lv_obj_set_size(gray_layer, lv_obj_get_width(parent), lv_obj_get_height(parent));
+    lv_c_style_set_style_mask(gray_layer);
+    // lv_obj_add_event_cb(gray_layer, lv_back_event, LV_EVENT_CLICKED, NULL); // 添加返回事件
+    return gray_layer;
+}
+
 /*-----------------------------------------------创建键盘---------------------------------------------------------*/
 
 /**

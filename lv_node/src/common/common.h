@@ -12,6 +12,7 @@
 void lv_back_event(lv_event_t *e);
 lv_obj_t *image_create(lv_obj_t *parent, const void *src, lv_coord_t x, lv_coord_t y);
 lv_obj_t *lv_c_create_mask_box(lv_obj_t *parent);
+lv_obj_t *lv_mode_create_mask_box(lv_obj_t *parent);
 lv_obj_t *card_create_100_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y);
 lv_obj_t *card_create_72_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y);
 lv_obj_t *card_create_36_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y);

@@ -15,7 +15,7 @@ struct
 };
 
 static bool enteredScreenMode = false; // 屏保标志位
-static bool password_flag = false;  //给第一次弹出密码框
+bool password_flag = false;  //给第一次弹出密码框
 int mqtt_fd;    //连接ｍｑｔｔ套接字
 int light_fd;   //连接灯光套接字
 char PUB_BUF[256];      //上传给ＭＱＴＴ服务器数据的buf
@@ -252,6 +252,31 @@ void *JudgmentConnection(void *parg)
   }
 }
 
+void *Judgmentmode(void *parg)
+{
+  while(1)
+  {
+    if(password_mode_lock == true)
+    {
+      switch (mode_num)
+      {
+      case 0:
+        mode_num = -1;
+        printf("训练模式\n");
+        break;
+      case 1:
+        mode_num = -1;
+        printf("演出模式\n");
+        break;
+      case 2:
+        mode_num = -1;
+        printf("比赛模式\n");
+        break;
+      }
+    }
+  }
+}
+
 /**
  * 创建MQTT连接
  * */
@@ -298,6 +323,9 @@ static void *create_client_light()
 void create_lv_layout(lv_obj_t *scr)
 {
 
+  pthread_t mode_tid;
+  pthread_create(&mode_tid, NULL, Judgmentmode, NULL);
+
   // 读取屏幕配置文件
   updateSettingData(&setting, SCREEN_SETTING_JSON);
 
@@ -309,7 +337,7 @@ void create_lv_layout(lv_obj_t *scr)
   lv_timer_create(UpdateTask, 500, NULL);
 
   //创建更新温湿度数据任务
-  lv_timer_create(timer_data_callback, 60000, NULL);
+  //lv_timer_create(timer_data_callback, 60000, NULL);
 
   //创建更新天气数据任务
   // lv_timer_create(timer_weather_callback, 60000, NULL);

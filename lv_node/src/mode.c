@@ -10,6 +10,8 @@
 #include "ui_app.h"
 lv_obj_t *home_modes[4];   //暂时没有用到
 static lv_obj_t *mode_labels[4];   //模式卡片模板
+static bool states[] = {false, false, false, false};
+int mode_num = -1; 
 
 // 事件   暂时没有用到
 static void toggle_label(lv_obj_t *label, bool state)
@@ -81,11 +83,12 @@ static void lv_event_handler(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t *obj = lv_event_get_target(e);    //事件最初针对的对象(没有开启冒泡的话，就是事件注册对象)  mode_images[i]
+    int num = (int)lv_event_get_user_data(e);
 
     //如果发生点击事件
     if (code == LV_EVENT_CLICKED)
-    {
-        static bool states[] = {false, false, false, false};
+    {   
+        password_mode_lock = false;
         for (int i = 0; i < 3; i++)
         {
             // 如果等于事件最初针对的对象(被点击的卡片)
@@ -100,6 +103,19 @@ static void lv_event_handler(lv_event_t *e)
                 toggle_image( mode_labels[i]->parent, i, 1);    //关闭的图片
             }
         }
+        if(num == 0)
+        {
+            mode_num = 0;
+        }
+        else if(num == 1)
+        {
+            mode_num = 1;
+        }else if(num == 2)
+        {
+            mode_num = 2;
+        }
+        lv_mode_password_keyboard_display();
+
     }
 }
 
@@ -174,6 +190,6 @@ void CreateModePage(lv_obj_t *obj)
                                                                    );
         lv_c_label_create(mode_cards[i], mode_names[i]);          //设置卡片名字
         mode_labels[i] = lv_d_label_caeate(mode_images[i]);       //初始化生成模式卡片模板
-        lv_obj_add_event_cb(mode_images[i], lv_event_handler, LV_EVENT_ALL, NULL);
+        lv_obj_add_event_cb(mode_images[i], lv_event_handler, LV_EVENT_ALL, (void*)i);
     }
 }

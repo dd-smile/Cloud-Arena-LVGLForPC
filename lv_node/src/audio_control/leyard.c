@@ -99,9 +99,9 @@ static void *create_client_led()
         
         // 初始化服务器地址信息
         seraddr.sin_family = AF_INET;
-        seraddr.sin_port = htons(61214);    // 大端
+        seraddr.sin_port = htons(48631);    // 大端
         // inet_pton(AF_INET, "192.168.1.223", &seraddr.sin_addr.s_addr);
-        inet_pton(AF_INET, "192.168.17.20", &seraddr.sin_addr.s_addr);
+        inet_pton(AF_INET, "192.168.1.101", &seraddr.sin_addr.s_addr);
     }
 }
 
@@ -216,6 +216,30 @@ static void *LedControl(lv_obj_t *parent)
     lv_obj_t *scr = lv_c_create_mask_box(parent); // 创建遮罩
     lv_obj_t *popup_page = create_leyard_page(scr, "LED切屏", 0, 0);
 
+
+    // lv_obj_t *card_1 = lv_img_create(popup_page);
+    // lv_img_set_src(card_1, &BG_1);
+    // lv_obj_set_pos(card_1, 20, 400);
+
+    // lv_obj_t *card_2 = lv_img_create(popup_page);
+    // lv_img_set_src(card_2, &BG_2);
+    // lv_obj_set_pos(card_2, 50, 400);
+
+    // lv_obj_t *card_3 = lv_img_create(popup_page);
+    // lv_img_set_src(card_3, &BG_3);
+    // lv_obj_set_pos(card_3, 100, 400);
+
+    // lv_obj_t *card_4 = lv_img_create(popup_page);
+    // lv_img_set_src(card_4, &BG_4);
+    // lv_obj_set_pos(card_4, 150, 400);
+    // lv_obj_add_flag(card_4,LV_OBJ_FLAG_HIDDEN);
+    
+
+
+
+
+
+
     //连接服务器
     create_client_led();
 
@@ -317,7 +341,7 @@ static void led_Controls_event_cb(lv_event_t *e)
                 break;
         
             case 2:
-                sendto(led_fd, packet_led3, sizeof(packet_led2)/sizeof(packet_led2[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
+                sendto(led_fd, packet_led3, sizeof(packet_led3)/sizeof(packet_led3[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
                 break;
         }
     }
