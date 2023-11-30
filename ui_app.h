@@ -250,6 +250,7 @@
 #include "lv_node/src/setting/Screensaver/Screensaver.h"
 #include "lv_node/src/setting/Screen/Screen.h"
 #include "lv_node/src/setting/Language/Language.h"
+#include "lv_node/src/setting/Language/ui_mlang.h"
 #include "lv_node/src/setting/Add/add_event.h"
 #include "lv_node/src/setting/Add/add_device.h"
 #include "lv_node/src/setting/disposition.h"

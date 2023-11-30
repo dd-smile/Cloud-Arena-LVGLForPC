@@ -41,5 +41,6 @@ extern char PUB_BUF[256];
 extern bool password_flag;
 
 void create_lv_layout(lv_obj_t *scr);
+void Judgmentmode(void);
 
 #endif

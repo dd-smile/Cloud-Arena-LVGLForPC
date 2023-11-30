@@ -15,10 +15,15 @@ Sensor_Data sensor_data;
 uint16_t hour;   //当前时间
 uint16_t last_hour;  //上一次时间
 weather_t weather = {0};
-char buf[1024];
-char buffer[1024];  
-int fd;
+lv_obj_t * chart;
+lv_chart_series_t * ser1; //温度数据系列
+lv_chart_series_t * ser2; //湿度数据系列
+static char buf[1024];   //用来发送get请求
+static char buffer[1024];   //用来接收心知天气的数据
+static int fd;   //用于与心知天气通信
 int iDataNum;
+static lv_coord_t temp_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+static lv_coord_t hum_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 //解析json
 void aita_ParseJsonNow(char *msg, weather_t *w) {
@@ -199,6 +204,49 @@ void get_localtime()
     hour = tm_now->tm_hour;
 }
 
+/**
+ * 计算温湿度数据平均数
+ * @param temp     读取到的实时温度
+*/
+static void display_average_data(char *temp, char *hum)
+{
+    get_localtime();
+
+    static double temp_average;
+    static double hum_average;
+    static double temp_f;
+    static double hum_f;
+
+    if(temp != NULL && hum != NULL)
+    {
+        temp_f = atof(temp);
+        hum_f = atof(hum);
+    }else
+    {
+        temp_f = 0.0;
+        hum_f = 0.0;
+    }
+    if(last_hour != hour)
+    {
+        last_hour = hour;
+        temp_average_buf[hour] = temp_average;
+        hum_average_buf[hour] = hum_average;
+        printf("小时温度: %d, 小时湿度: %d\n", temp_average_buf[hour], hum_average_buf[hour]);
+        lv_chart_set_ext_y_array(chart, ser1, temp_average_buf);
+        lv_chart_set_ext_y_array(chart, ser2, hum_average_buf);
+        lv_chart_refresh(chart);
+    }else
+    {
+        temp_average = (temp_f + (temp_average - temp_f) / 2.0);
+        hum_average = (hum_f + (hum_average - hum_f) / 2.0);
+        printf("平均温度: %.2f, 平均湿度: %.2f\n", temp_average, hum_average);
+    }
+}
+
+void timer_average_callback(lv_timer_t * timer) 
+{
+    display_average_data(temp_data, hum_data);
+}
 
 /**
  * 创建心知天气定时器回调函数
@@ -313,7 +361,6 @@ static void Create_TempeHumChart(lv_obj_t *parent)
     card_create_20_text(parent, "历史温湿度数据:", 10,-200);
 
     /*创建图表*/
-    lv_obj_t * chart;
     chart = lv_chart_create(parent);
     lv_obj_set_style_bg_color(chart, lv_color_make(31, 38, 51), LV_STATE_DEFAULT);
     lv_obj_set_size(chart, 420, 179);
@@ -333,8 +380,8 @@ static void Create_TempeHumChart(lv_obj_t *parent)
     lv_chart_set_point_count(chart, 24);  //设置２４个点
 
     /*添加两个数据系列*/
-    lv_chart_series_t * ser1 = lv_chart_add_series(chart, lv_palette_main(LV_PALETTE_RED), LV_CHART_AXIS_PRIMARY_Y);  //红色数据线
-    lv_chart_series_t * ser2 = lv_chart_add_series(chart, lv_palette_main(LV_PALETTE_GREEN), LV_CHART_AXIS_PRIMARY_Y);  //绿色数据线
+    ser1 = lv_chart_add_series(chart, lv_palette_main(LV_PALETTE_RED), LV_CHART_AXIS_PRIMARY_Y);  //红色数据线
+    ser2 = lv_chart_add_series(chart, lv_palette_main(LV_PALETTE_GREEN), LV_CHART_AXIS_PRIMARY_Y);  //绿色数据线
     uint32_t i;
     for(i = 0; i < 24; i++) {
         lv_chart_set_next_value(chart, ser1, lv_rand(60,90));

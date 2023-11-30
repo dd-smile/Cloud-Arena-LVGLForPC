@@ -252,28 +252,25 @@ void *JudgmentConnection(void *parg)
   }
 }
 
-void *Judgmentmode(void *parg)
+/**
+ * 检测是否有点击模式转换
+ * */
+void Judgmentmode(void)
 {
-  while(1)
+  switch (mode_num)
   {
-    if(password_mode_lock == true)
-    {
-      switch (mode_num)
-      {
-      case 0:
-        mode_num = -1;
-        printf("训练模式\n");
-        break;
-      case 1:
-        mode_num = -1;
-        printf("演出模式\n");
-        break;
-      case 2:
-        mode_num = -1;
-        printf("比赛模式\n");
-        break;
-      }
-    }
+  case 0:
+    mode_num = -1;
+    mode_train_Controls();
+    break;
+  case 1:
+    mode_num = -1;
+    mode_performance_Controls();
+    break;
+  case 2:
+    mode_num = -1;
+    mode_competition_Controls();
+    break;
   }
 }
 
@@ -323,8 +320,8 @@ static void *create_client_light()
 void create_lv_layout(lv_obj_t *scr)
 {
 
-  pthread_t mode_tid;
-  pthread_create(&mode_tid, NULL, Judgmentmode, NULL);
+  // pthread_t mode_tid;
+  // pthread_create(&mode_tid, NULL, Judgmentmode, NULL);
 
   // 读取屏幕配置文件
   updateSettingData(&setting, SCREEN_SETTING_JSON);
@@ -337,7 +334,7 @@ void create_lv_layout(lv_obj_t *scr)
   lv_timer_create(UpdateTask, 500, NULL);
 
   //创建更新温湿度数据任务
-  //lv_timer_create(timer_data_callback, 60000, NULL);
+  // lv_timer_create(timer_data_callback, 50000, NULL);
 
   //创建更新天气数据任务
   // lv_timer_create(timer_weather_callback, 60000, NULL);
@@ -345,9 +342,14 @@ void create_lv_layout(lv_obj_t *scr)
   //创建ＭＱＴＴ心跳任务
   //lv_timer_create(timer_mqtt_callback, 20000, NULL);
 
+  //创建更新历史温湿度数据
+  // lv_timer_create(timer_average_callback, 60000, NULL);
+
   CreateHomePage(home_data.home_page);       // 主页
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
+
+  //lv_gui_password_keyboard_display();
 
   //connect_mqtt();   // 连接mqtt服务器
   //create_client_light();  //　连接灯光服务器

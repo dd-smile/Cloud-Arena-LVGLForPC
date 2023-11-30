@@ -16,6 +16,7 @@ static lv_obj_t *pwd_text_area = NULL; // 密码输入框
 
 lv_style_t style_indic;
 lv_obj_t * mask; 
+lv_obj_t * anaim_label;
  
 static const char * keyboard_map[] =
 {
@@ -509,13 +510,14 @@ static void confirm_mode_event_callback(lv_event_t* event)
             const char *pwd_txt = lv_textarea_get_text(pwd_text_area);
             if ((pwd_txt != NULL))
             {
-                if (strcmp(pwd_txt, "1111") == 0)
+                if (strcmp(pwd_txt, "1234") == 0)
                 {
                     if (hint_label != NULL)
                     {
                         lv_label_set_text(hint_label, "Password correct!");
                         lv_obj_del(pwd_main_cont);
 						password_mode_lock = true;
+                        Judgmentmode();
 						lv_bar_change();
                     }
                 }
@@ -636,12 +638,21 @@ static void cancel_btn_event_callback(lv_event_t* event)
 	}
 }
 
+/**
+ * 进度条回调，用于设置进度条值
+ * @param bar      哪个进度条
+ * @param temp     设置的值
+*/
 static void set_temp(void * bar, int32_t temp)
 {
 
     lv_bar_set_value(bar, temp, LV_ANIM_ON);
 }
 
+/**
+ * 定时器回调，用于延迟删除样式和对象
+ * @param timer    创建的定时器
+*/
 static void lv_example_bar_3_del_back(lv_timer_t * timer)
 {
     lv_style_reset(&style_indic);
@@ -650,22 +661,24 @@ static void lv_example_bar_3_del_back(lv_timer_t * timer)
         lv_timer_del(timer);
 }
 
+/**
+ * 转换成功动画结束时的回调，创建定时器来延时
+*/
 static void set_del_back(void)
 {
-    lv_timer_t *del_timer = lv_timer_create(lv_example_bar_3_del_back, 2000, NULL);
+    lv_label_set_text(anaim_label, "转换成功");
+    lv_timer_t *del_timer = lv_timer_create(lv_example_bar_3_del_back, 3000, NULL);
 }
 
 /**
- * A temperature meter example
+ * 转换模式进度条
  */
 static void lv_bar_change(void)
 {
     static lv_style_t style_indic;
     lv_obj_t * anaim_bar;
-    lv_obj_t * anaim_label;
 
     mask = lv_mode_create_mask_box(lv_scr_act());
-
 
     lv_style_init(&style_indic);
     lv_style_set_bg_opa(&style_indic, LV_OPA_COVER);
@@ -681,9 +694,9 @@ static void lv_bar_change(void)
 
     anaim_label = lv_label_create(mask);
     lv_obj_set_style_text_color(anaim_label, lv_color_hex(0xffffff), LV_PART_MAIN);
-	lv_obj_set_style_text_font(anaim_label, &PuHuiTi_Regular_16, LV_PART_MAIN);
-    lv_label_set_text(anaim_label, "转换成功");
-    lv_obj_align_to(anaim_label, anaim_bar, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+	lv_obj_set_style_text_font(anaim_label, &PuHuiTi_Regular_30, LV_PART_MAIN);
+    lv_label_set_text(anaim_label, "正在转换");
+    lv_obj_align_to(anaim_label, anaim_bar, LV_ALIGN_TOP_MID, 0, 80);
 
     lv_anim_t a;
     lv_anim_init(&a);
@@ -698,17 +711,16 @@ static void lv_bar_change(void)
     lv_anim_t a_label;
     lv_anim_init(&a_label);
     lv_anim_set_var(&a_label, anaim_label);
-    lv_anim_set_exec_cb(&a_label, (lv_anim_exec_xcb_t)lv_obj_set_y); // y轴移动
-    lv_anim_set_time(&a_label, 1000);
-    lv_anim_set_values(&a_label, -100, 310);
-    lv_anim_set_path_cb(&a_label, lv_anim_path_bounce); //模拟弹性物体下落动画
+    // lv_anim_set_exec_cb(&a_label, (lv_anim_exec_xcb_t)lv_obj_set_y); // y轴移动
+    lv_anim_set_time(&a_label, 40000);
+    // lv_anim_set_values(&a_label, -100, 310);
+    // lv_anim_set_path_cb(&a_label, lv_anim_path_bounce); //模拟弹性物体下落动画
     lv_anim_set_ready_cb(&a_label, set_del_back);
-
 
 
     lv_anim_timeline_t* anim_timeline = lv_anim_timeline_create();
     lv_anim_timeline_add(anim_timeline, 0, &a);
-    lv_anim_timeline_add(anim_timeline, 30000, &a_label);
+    lv_anim_timeline_add(anim_timeline, 0, &a_label);
     lv_anim_timeline_start(anim_timeline);
 
 }

@@ -38,6 +38,7 @@ void CreateDisplayPage(lv_obj_t *parent);
 void timer_data_callback(lv_timer_t * timer);
 void get_localtime();
 void timer_weather_callback(lv_timer_t * timer); 
+void timer_average_callback(lv_timer_t * timer);
 
 
 

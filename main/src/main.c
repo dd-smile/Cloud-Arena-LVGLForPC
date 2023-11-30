@@ -1,4 +1,3 @@
-
 /**
  * @file main
  *
@@ -71,7 +70,7 @@ char *cBuf;   //用于存放从套接字中接收到的数据
  *   GLOBAL FUNCTIONS
  **********************/
 
-// //获取温度数据
+//获取温度数据
 // int searchTemp(char *Buf, char *Res)
 // {
 // 	char *Begin = NULL;    //定义开始指针
@@ -145,26 +144,26 @@ char *cBuf;   //用于存放从套接字中接收到的数据
 
 // }
 
-/**
- * 创建多轨控制客户端
- * @param parent            指向父对象的指针     
- * */
-void *create_client_mu(void * parg)
-{   
-    multitrack_fd = createSocket();  //创建套接字
-    multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
-    while (1)
-    {
-      if(socketconnected(multitrack_fd) == 0)
-      {
-        closeSocket(multitrack_fd);
-        multitrack_fd = createSocket();  //创建套接字
-        multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
-      }
-      sleep(3);
-    }
+// /**
+//  * 创建多轨控制客户端
+//  * @param parent            指向父对象的指针     
+//  * */
+// void *create_client_mu(void * parg)
+// {   
+//     multitrack_fd = createSocket();  //创建套接字
+//     multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+//     while (1)
+//     {
+//       if(socketconnected(multitrack_fd) == 0)
+//       {
+//         closeSocket(multitrack_fd);
+//         multitrack_fd = createSocket();  //创建套接字
+//         multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+//       }
+//       sleep(3);
+//     }
     
-}
+// }
 
 int main(int argc, char **argv)
 {
@@ -188,8 +187,8 @@ int main(int argc, char **argv)
 
   create_lv_layout(lv_disp_get_scr_act(NULL));
 
-  pthread_t tid_mu;
-  pthread_create(&tid_mu, NULL, create_client_mu, NULL);
+  // pthread_t tid_mu;
+  // pthread_create(&tid_mu, NULL, create_client_mu, NULL);
   // pthread_t tid_listen;  //用于监听
   // //创建监听的套接字
   // lfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -210,7 +209,7 @@ int main(int argc, char **argv)
   // printf("服务器的IP地址: %s, 端口: %d\n",
   //         inet_ntop(AF_INET, &addr.sin_addr.s_addr, pp, sizeof(pp)),
   //         ntohs(addr.sin_port));
-  // 设置ＳＯ_ＲＥＵＳＥＡＤＤＲ，快速重启服务器，防止出现Address in use
+  // // 设置ＳＯ_ＲＥＵＳＥＡＤＤＲ，快速重启服务器，防止出现Address in use
   // int on = 1;
   // setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
   // int ret = bind(lfd, (struct sockaddr*)&addr, sizeof(addr));
@@ -231,6 +230,8 @@ int main(int argc, char **argv)
   // pthread_create(&tid_listen, NULL, listening, NULL);
   
 
+
+
   // ui_label_set_text();
   // ui_init();
   // ();
@@ -245,8 +246,8 @@ int main(int argc, char **argv)
 
   // close(cfd);
   // close(lfd);
-  closeSocket(multitrack_fd);
-  closeSocket(mqtt_fd);
+  // closeSocket(multitrack_fd);
+  // closeSocket(mqtt_fd);
 
   // threadpool_distory(thp);
 

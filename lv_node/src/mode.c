@@ -170,6 +170,25 @@ static lv_obj_t *lv_home_card_create(lv_obj_t *parent, int x, int y)
     return card;
 }
 
+/*训练模式*/
+void mode_train_Controls(void)
+{
+    printf("训练模式\n");
+}
+
+/*演出模式*/
+void mode_performance_Controls(void)
+{
+    printf("演出模式\n");
+}
+
+/*比赛模式*/
+void mode_competition_Controls(void)
+{
+    printf("比赛模式\n");
+}
+
+
 /**
  * 创建模式页面
  * @param obj         指向父对象的指针

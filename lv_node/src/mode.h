@@ -14,5 +14,10 @@ extern int mode_num;
 void CreateModePage(lv_obj_t *obj);
 void manual_Controls_event_cb(lv_event_t *e);
 
+void mode_train_Controls(void);
+void mode_performance_Controls(void);
+void mode_competition_Controls(void);
+
+
 
 #endif

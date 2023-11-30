@@ -136,7 +136,7 @@ static void DeviceTextareaEvent(lv_event_t *e)
     if (lv_event_get_code(e) == LV_EVENT_CLICKED) // 如果是点击事件
     {
         printf("输入设备名称\n");
-        lv_keypage_create(lv_scr_act());   //需要更改实现方式，有死机ｂｕｇ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //lv_keypage_create(lv_scr_act());   //需要更改实现方式，有死机ｂｕｇ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 }
 
