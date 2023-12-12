@@ -638,6 +638,58 @@ static void cancel_btn_event_callback(lv_event_t* event)
 	}
 }
 
+static void Scram_reset_event_cb(lv_event_t* event)
+{
+    lv_event_code_t code = lv_event_get_code(event);
+    lv_obj_t* obj = lv_event_get_current_target(event);   //获取当前点击对象
+
+    if (code == LV_EVENT_CLICKED)
+    {
+        //判断是哪个按钮，进行封装数据   Master_scram    Total_reduction
+        switch ((int)obj->user_data)
+        {
+            case 0:
+                printf("急停\n");
+                break;
+            
+            case 1:
+                printf("复位\n");
+                break;
+        }
+    }
+}
+
+/**
+ * 创建按钮
+ * @param obj          指向父对象的指针    
+ * @param text         按钮的名称
+ * @param x_ofs        水平偏移 x_ofs
+ * @param y_ofs        水平偏移 y_ofs
+ * @param index        按到第几个按钮
+ * */
+static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, uint8_t index)
+{
+    lv_obj_t *btn = lv_obj_create(obj);
+    lv_obj_set_size(btn, 70, 40);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 15, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+
+    
+    lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
+    lv_obj_add_event_cb(btn, Scram_reset_event_cb, LV_EVENT_ALL, NULL);  
+    
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+
 /**
  * 进度条回调，用于设置进度条值
  * @param bar      哪个进度条
@@ -679,6 +731,9 @@ static void lv_bar_change(void)
     lv_obj_t * anaim_bar;
 
     mask = lv_mode_create_mask_box(lv_scr_act());
+
+    create_button(mask, "急停", -50, -100, 0);
+    create_button(mask, "复位", 50, -100, 1);
 
     lv_style_init(&style_indic);
     lv_style_set_bg_opa(&style_indic, LV_OPA_COVER);

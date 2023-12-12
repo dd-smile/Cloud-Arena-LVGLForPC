@@ -265,6 +265,8 @@
 #include "lv_node/src/mqtt/MqttKit.h"
 #include "lv_node/src/mqtt/onenet.h"
 
+extern lv_obj_t * pcr_obj;
+
 LV_FONT_DECLARE(PuHuiTi_Regular_16);
 LV_FONT_DECLARE(PuHuiTi_Regular_30);
 LV_FONT_DECLARE(PuHuiTi_Regular_20);

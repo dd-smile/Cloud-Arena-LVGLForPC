@@ -86,6 +86,6 @@ static lv_obj_t *lv_create_recv_time(lv_obj_t *parent)
 void create_wifi_and_time(lv_obj_t *parent)
 {
   lv_obj_t* wifi = create_wifi(parent);
-  lv_obj_t *recv_time = lv_create_recv_time(parent);
+  lv_obj_t* recv_time = lv_create_recv_time(parent);
   lv_timer_create(lv_set_time, 1000, recv_time);   //以一秒为单位调用周期
 }

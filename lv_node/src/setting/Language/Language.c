@@ -1,5 +1,4 @@
 #include "ui_app.h"
-// #include "Language.h"
 
 
 static lv_obj_t *lastClickedObj = NULL;

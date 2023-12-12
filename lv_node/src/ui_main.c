@@ -324,14 +324,14 @@ void create_lv_layout(lv_obj_t *scr)
   // pthread_create(&mode_tid, NULL, Judgmentmode, NULL);
 
   // 读取屏幕配置文件
-  updateSettingData(&setting, SCREEN_SETTING_JSON);
+  // updateSettingData(&setting, SCREEN_SETTING_JSON);
 
   home_bg(scr);              // 设置主页背景
   home_page_box(scr);        // 框架(创建滑动页面)
   create_wifi_and_time(scr); // wifi 和 时间
 
   // 创建屏保任务
-  lv_timer_create(UpdateTask, 500, NULL);
+  // lv_timer_create(UpdateTask, 500, NULL);
 
   //创建更新温湿度数据任务
   // lv_timer_create(timer_data_callback, 50000, NULL);

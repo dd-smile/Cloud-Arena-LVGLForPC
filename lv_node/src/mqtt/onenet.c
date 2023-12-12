@@ -29,7 +29,7 @@ _Bool OneNet_DevLink(void)
 	_Bool status = 1;
 	
 	
-	if(MQTT_PacketConnect(PROID, AUTH_INFO, DEVID, 20, 0, MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) == 0)
+	if(MQTT_PacketConnect(PROID, AUTH_INFO, DEVID, 256, 0, MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) == 0)
 	{
 		write(mqtt_fd, mqttPacket._data, mqttPacket._len);			//上传平台
 		
@@ -67,6 +67,14 @@ void OneNet_HeartBeat(void)
 	while(sCount--)
 	{
 //---------------------------------------------步骤二：发送数据-----------------------------------------
+		if(socketconnected(mqtt_fd) == 0)
+		{
+			closeSocket(mqtt_fd);
+			mqtt_fd = createSocket();
+			connectToHost(mqtt_fd, "112.74.105.251", 1883);
+
+			OneNet_DevLink();
+		}
 		write(mqtt_fd, mqttPacket._data, mqttPacket._len);
 
 	}

@@ -38,6 +38,8 @@ int lfd = 0;
 int cfd = 0;
 char *cBuf;   //用于存放从套接字中接收到的数据
 
+lv_obj_t * pcr_obj;
+
 /**********************
  *  STATIC VARIABLES
  **********************/
@@ -185,6 +187,12 @@ int main(int argc, char **argv)
 
   hal_init();                   //硬件初始化：包括显示设备、输入设备   
 
+  // lv_obj_t *scr = lv_disp_get_scr_act(NULL);
+  // pcr_obj = lv_obj_create(scr);
+  // lv_obj_remove_style_all(pcr_obj);
+  // lv_obj_set_style_opa(pcr_obj, LV_OPA_COVER, LV_PART_MAIN);
+  // lv_obj_set_style_bg_color(pcr_obj, lv_color_black(), LV_PART_MAIN);
+  // lv_obj_set_size(pcr_obj, 1024, 600);
   create_lv_layout(lv_disp_get_scr_act(NULL));
 
   // pthread_t tid_mu;
