@@ -110,6 +110,21 @@ void telescopic_Controls_event_cb(lv_event_t *e)
                 OneNet_Publish("/mytest/ycg", PUB_BUF);
             }
             break;
+        case 4: //舞台急停
+            if(data_flag == false && stop_flag == false)
+            {
+                stop_flag = true;
+                lv_obj_add_state(obj, LV_STATE_PRESSED);   //BUTTON高亮
+                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_stop_opertion\",\"v\":\"%d\"}]}",1);
+                OneNet_Publish("/mytest/ycg", PUB_BUF);
+            }
+            else
+            {
+                stop_flag = false;
+                lv_obj_clear_state(obj, LV_STATE_PRESSED);   //BUTTON取消高亮
+                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_stop_opertion\",\"v\":\"%d\"}]}",0);
+                OneNet_Publish("/mytest/ycg", PUB_BUF);
+            }
         }
     }
 }
@@ -298,7 +313,7 @@ void CreateContractionPage(uint8_t device_num)
   cs_data->collapseBtnText = "一键收合";
 
   cs_data->StandOpenBtnText = "数据刷新";
-  cs_data->StandClosureBtnText = NULL;
+  cs_data->StandClosureBtnText = "舞台急停";
   cs_data->SeatRiseBtnText = NULL;
   cs_data->SeatTipBtnText = NULL;
 

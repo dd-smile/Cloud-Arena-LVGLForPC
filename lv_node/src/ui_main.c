@@ -236,6 +236,16 @@ void timer_mqtt_callback(lv_timer_t *timer)
 }
 
 /**
+ * 推送温湿度数据到慧馆家
+ * @param timer         指向定时器
+*/
+void timer_push_callback(lv_timer_t *timer)
+{
+  sprintf(PUB_BUF,"{\"Temp\":%s,\"Hum\":%s}",temp_data, hum_data);
+  OneNet_Publish("/avant/Cloud_Arena_sports/u", PUB_BUF); 
+}
+
+/**
  * 检测与灯光服务器的TCP连接是否断开，断开的话进行重新连接
  * @param parg         线程传入的参数
  * */
@@ -340,10 +350,13 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_weather_callback, 60000, NULL);
 
   //创建ＭＱＴＴ心跳任务
-  //lv_timer_create(timer_mqtt_callback, 20000, NULL);
+  // lv_timer_create(timer_mqtt_callback, 20000, NULL);
 
-  //创建更新历史温湿度数据
+  // 创建更新历史温湿度数据
   // lv_timer_create(timer_average_callback, 60000, NULL);
+
+  // 创建推送数据到慧馆家平台
+  // lv_timer_create(timer_push_callback, 60000, NULL);
 
   CreateHomePage(home_data.home_page);       // 主页
   CreateModePage(home_data.mode_page);       // 模式页面
@@ -351,7 +364,7 @@ void create_lv_layout(lv_obj_t *scr)
 
   //lv_gui_password_keyboard_display();
 
-  //connect_mqtt();   // 连接mqtt服务器
+  connect_mqtt();   // 连接mqtt服务器
   //create_client_light();  //　连接灯光服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */

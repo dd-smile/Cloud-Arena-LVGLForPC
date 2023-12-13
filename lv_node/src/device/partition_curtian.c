@@ -57,7 +57,7 @@ void set_partition_stop_state(uint8_t num, uint8_t state)
     
     switch (num) // 选择设备号
     {
-    case 1:// 球架1, 
+    case 1:
         if(state == 1)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_1\",\"v\":\"%d\"}]}",1);
@@ -69,7 +69,7 @@ void set_partition_stop_state(uint8_t num, uint8_t state)
         }
         break;
 
-    case 2:// 球架2, 
+    case 2:
         if(state == 1)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_2\",\"v\":\"%d\"}]}",1);

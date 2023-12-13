@@ -1034,10 +1034,12 @@ lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num
     index_t *index2 = add_index_t(device_num, 1);
     index_t *index3 = add_index_t(device_num, 2);
     index_t *index4 = add_index_t(device_num, 3);
+    index_t *index5 = add_index_t(device_num, 4);
     CreateContractionControlsButton(bg, data->expandBtnText, -320, 142, index1);       
     CreateContractionControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); 
     CreateContractionControlsButton(bg, data->collapseBtnText, -80, 142, index3);       
-    CreateContractionControlsButton(bg, data->StandOpenBtnText, -200, 188, index4);
+    CreateContractionControlsButton(bg, data->StandOpenBtnText, -320, 188, index4);
+    CreateContractionControlsButton(bg, data->StandClosureBtnText, -80, 188, index5);
     
     CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
     CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮

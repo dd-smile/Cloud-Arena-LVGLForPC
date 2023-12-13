@@ -35,7 +35,9 @@ void manual_Controls_event_cb(lv_event_t *e)
     {
         switch (index)
         {
-        case 0:  
+        case 0:  //总急停
+            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Master_scram\",\"v\":\"%d\"}]}",1);
+            OneNet_Publish("/mytest/ycg", PUB_BUF);
             break;
         case 1:   //打开手动模式
             if(stop_flag == false)
@@ -52,7 +54,9 @@ void manual_Controls_event_cb(lv_event_t *e)
                 lv_obj_clear_state(obj,LV_STATE_PRESSED);
             }
             break;
-        case 2:   
+        case 2:   //总复位
+            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Total_reduction\",\"v\":\"%d\"}]}",1);
+            OneNet_Publish("/mytest/ycg", PUB_BUF);
             break;
         }
     }

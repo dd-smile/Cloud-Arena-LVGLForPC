@@ -890,3 +890,12 @@ lv_obj_t *create_popup_page(lv_obj_t *parent, const char *title, lv_coord_t x, l
     return popup_page;
 }
 
+//打印内存情况
+void lv_memory_print(void)
+{
+    lv_mem_monitor_t mem;
+    lv_mem_monitor(&mem);
+    printf("LV_MEM===> total:%d free:%d max_free :%d max_used :%d cnt %d/%d frg %d/%d \n", mem.total_size, mem.free_size,
+    mem.free_biggest_size, mem.max_used, mem.free_cnt, mem.used_cnt, mem.used_pct,mem.frag_pct);
+}
+

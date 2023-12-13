@@ -43,6 +43,8 @@ lv_obj_t *create_popup_page(lv_obj_t *parent, const char *title, lv_coord_t x, l
 lv_obj_t *create_recv_time(lv_obj_t *parent, const lv_font_t *value, lv_coord_t x, lv_coord_t y);
 lv_obj_t *CreateSlider(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int32_t min, int32_t max, lv_color_t value, int32_t num_value, lv_coord_t w, lv_coord_t h, bool status);
 
+void lv_memory_print(void);
+
 extern lv_obj_t *Textarea_Pinyin;
 
 

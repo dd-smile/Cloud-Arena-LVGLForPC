@@ -72,7 +72,7 @@ lv_obj_t * pcr_obj;
  *   GLOBAL FUNCTIONS
  **********************/
 
-//获取温度数据
+// // 获取温度数据
 // int searchTemp(char *Buf, char *Res)
 // {
 // 	char *Begin = NULL;    //定义开始指针
@@ -153,7 +153,9 @@ lv_obj_t * pcr_obj;
 // void *create_client_mu(void * parg)
 // {   
 //     multitrack_fd = createSocket();  //创建套接字
+//     synchronous_fd = createSocket();  //创建套接字
 //     multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+//     synchronous_red = connectToHost(synchronous_fd, "192.168.17.20", 11011);  //连接服务器
 //     while (1)
 //     {
 //       if(socketconnected(multitrack_fd) == 0)
@@ -161,11 +163,17 @@ lv_obj_t * pcr_obj;
 //         closeSocket(multitrack_fd);
 //         multitrack_fd = createSocket();  //创建套接字
 //         multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+//       }else if (socketconnected(synchronous_fd) == 0)
+//       {
+//         closeSocket(synchronous_fd);
+//         synchronous_fd = createSocket();
+//         synchronous_red = connectToHost(synchronous_fd, "192.168.17.20", 11011);
 //       }
 //       sleep(3);
 //     }
     
 // }
+
 
 int main(int argc, char **argv)
 {
@@ -194,6 +202,8 @@ int main(int argc, char **argv)
   // lv_obj_set_style_bg_color(pcr_obj, lv_color_black(), LV_PART_MAIN);
   // lv_obj_set_size(pcr_obj, 1024, 600);
   create_lv_layout(lv_disp_get_scr_act(NULL));
+
+  pthread_t tid_mem;
 
   // pthread_t tid_mu;
   // pthread_create(&tid_mu, NULL, create_client_mu, NULL);

@@ -193,7 +193,7 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
     else if(image == 7)  //灯光
         dev_card = lv_box_create(parent, x, y, "打开", "关闭", NULL, index);
     else if(image == 8)  //手动模式
-        dev_card = lv_box_create(parent, x, y, NULL, "打开", NULL, index);
+        dev_card = lv_box_create(parent, x, y, "总急停", "打开", "总复位", index);
 
     //printf("index:%d %d\n", index->num, index->ind);
 

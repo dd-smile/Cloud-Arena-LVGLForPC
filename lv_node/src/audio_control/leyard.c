@@ -8,10 +8,11 @@
  */
 #include "ui_app.h"
 
-// int synchronous_fd = 0;  //实时控制客户端的文件描述符
+int synchronous_fd = 0;  //实时控制客户端的文件描述符
 int multitrack_fd = 0;   //多轨控制客户端的文件描述符
 int led_fd = 0;   //LED大屏客户端的文件描述符
 int multitrack_red = -1;   //多轨控制客户端是否连接上服务器
+int synchronous_red = -1;
 struct sockaddr_in seraddr;
 char buf[1024];  //用于存放发送的数据
 unsigned char packet[16];  //存放静音16进制数据
@@ -65,20 +66,6 @@ void audio_working()
         write(multitrack_fd, buf, strlen(buf)+1);
     }
 }
-
-
-/**
- * 创建实时控制客户端
- * @param parent            指向父对象的指针     
- * */
-// static void *create_client_sy()
-// {   
-//     if(synchronous_fd == 0)
-//     {
-//         synchronous_fd = createSocket();  //创建套接字
-//         connectToHost(synchronous_fd, "192.168.17.20", 11011);  //连接服务器
-//     }
-// }
 
 
 /**

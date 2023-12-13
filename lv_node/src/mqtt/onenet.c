@@ -6,7 +6,7 @@
 
 #define AUTH_INFO	"public"
 
-#define DEVID		"avant_ddd"
+#define DEVID		"avant_test"
 
 
 
