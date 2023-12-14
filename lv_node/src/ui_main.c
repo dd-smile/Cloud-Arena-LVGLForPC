@@ -275,11 +275,11 @@ void Judgmentmode(void)
     break;
   case 1:
     mode_num = -1;
-    mode_performance_Controls();
+    mode_competition_Controls();
     break;
   case 2:
     mode_num = -1;
-    mode_competition_Controls();
+    mode_performance_Controls();
     break;
   }
 }

@@ -12,8 +12,13 @@ lv_obj_t *home_modes[4];   //暂时没有用到
 static lv_obj_t *mode_labels[4];   //模式卡片模板
 static bool states[] = {false, false, false, false};
 int mode_num = -1; 
+char *performance_msh[] = {
+    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"1\"}]}",
+    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"0\"}]}",
+    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable1\",\"v\":\"1\"}]}"
+};
 
-// 事件   暂时没有用到
+// 事件   
 static void toggle_label(lv_obj_t *label, bool state)
 {
     const char *text = state ? "已开启" : "未开启";
@@ -183,7 +188,10 @@ void mode_train_Controls(void)
 /*演出模式*/
 void mode_performance_Controls(void)
 {
-    printf("演出模式\n");
+    for(uint8_t i = 0; i < 3; i++){
+        OneNet_Publish("/mytest/ycg", performance_msh[i]);
+        usleep(50 * 2000);
+    }
 }
 
 /*比赛模式*/
