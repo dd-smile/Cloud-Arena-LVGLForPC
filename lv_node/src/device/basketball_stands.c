@@ -12,6 +12,110 @@
 DevicePageData basketball_stands_data = {0};
 DevicePageData *bs_data = &basketball_stands_data;
 
+bool basketball_flag[4] = {false, false, false, false}; // true为收拢
+
+/* 通过state的值选择打开的电机 */
+void set_basketball_stands_state(uint8_t num, uint8_t state)
+{
+    
+    switch (num) 
+    {
+    case 1:// 球架1, 
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[4]);
+        }else if (state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[5]);
+        }
+        break;
+
+    case 2:// 球架2, 
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[6]);
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[7]);
+        }  
+        break;
+
+    case 3:// 球架3, 
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[8]);
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[9]);
+        } 
+        break;
+
+    case 4:// 球架4, 
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[10]);
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[11]);
+        } 
+        break;
+
+    default:
+        break;
+    }
+    
+}
+
+void set_basketball_stop_state(uint8_t num, uint8_t state)
+{
+    
+    switch (num) 
+    {
+    case 1:// 球架1,
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[12]);
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[13]);
+        }
+        break;
+
+    case 2:// 球架2, 
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[14]);  
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[15]);  
+        }
+        break;
+
+    case 3:// 球架3, 
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[16]);
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[17]);
+        }
+        break;
+
+    case 4:// 球架4, 
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[18]);
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[19]);
+        }
+        break;
+    default:
+        break;
+    }
+    
+}
+
 /**
  * 设备卡片悬空球架控制事件   与设备详情页的控制事件一样
  * @param e          指向要设置对象的指针
@@ -29,11 +133,10 @@ void basketball_Controls_event_cb(lv_event_t *e)
     {
         switch (index)
         {
-        case 0: //看台收拢才能打开球架
+        case 0: 
             if (stop_flag == false) 
             {
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_1\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                set_basketball_stands_state(device_num, 1);
             }
             break;
         case 1:  //急停
@@ -41,20 +144,19 @@ void basketball_Controls_event_cb(lv_event_t *e)
             {
                 stop_flag = true;   //表示急停产生
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_1\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                set_basketball_stop_state(device_num, 1);
             }
             else
             {
                 stop_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);  //移除长按属性
+                set_basketball_stop_state(device_num, 0);
             }
             break;
         case 2:  //收拢球架
             if (stop_flag == false)
             {   
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_up_1\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                set_basketball_stands_state(device_num, 0);
             }
             break;
         }

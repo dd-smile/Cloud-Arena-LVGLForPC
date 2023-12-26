@@ -22,24 +22,20 @@ void set_wallhanging_stands_state(uint8_t num, uint8_t state)
     case 1:// 壁挂球架1 
         if(state == 1)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_open_1\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[28]);
         }else if (state == 0)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_shut_1\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[29]);
         }
         break;
 
     case 2:// 壁挂球架2
         if(state == 1)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_open_2\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[30]);
         }else if(state == 0)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_shut_2\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[31]);
         }  
         break;
 
@@ -49,19 +45,29 @@ void set_wallhanging_stands_state(uint8_t num, uint8_t state)
     
 }
 
-void set_wallhanging_stop_state(uint8_t num)
+void set_wallhanging_stop_state(uint8_t num, uint8_t state)
 {
     
-    switch (num) // 选择设备号
+    switch (num) 
     {
     case 1:// 壁挂球架1 
-        sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_stop_1\",\"v\":\"%d\"}]}",1);
-        OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[32]);
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[33]);
+        }
         break;
 
     case 2:// 壁挂球架2
-        sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_stop_2\",\"v\":\"%d\"}]}",1);
-        OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);  
+        if(state == 1)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[34]);  
+        }else if(state == 0)
+        {
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[35]);  
+        }
         break;
 
     default:
@@ -96,13 +102,15 @@ void wallhanging_Controls_event_cb(lv_event_t *e)
             {
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                set_wallhanging_stop_state(device_num);
+                set_wallhanging_stop_state(device_num, 1);
  
             }
             else
             {
                 stop_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
+                set_wallhanging_stop_state(device_num, 0);
+ 
             }           
             break;          
         case 2:    //壁挂球架收起

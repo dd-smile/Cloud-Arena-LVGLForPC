@@ -25,24 +25,20 @@ void set_partition_stands_state(uint8_t num, uint8_t state)
     case 1:// 分隔幕1 
         if(state == 1)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_down_1\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[20]);
         }else if (state == 0)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_up_1\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[21]);
         }
         break;
 
     case 2:// 分隔幕2
         if(state == 1)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_down_2\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[22]);
         }else if(state == 0)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_up_2\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[23]);
         }  
         break;
 
@@ -60,24 +56,20 @@ void set_partition_stop_state(uint8_t num, uint8_t state)
     case 1:
         if(state == 1)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_1\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[24]);
         }else if(state == 0)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_1\",\"v\":\"%d\"}]}",0);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[25]);
         }
         break;
 
     case 2:
         if(state == 1)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_2\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[26]);
         }else if(state == 0)
         {
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_2\",\"v\":\"%d\"}]}",0);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[27]);
         }
         break;
 

@@ -55,8 +55,7 @@ void manual_Controls_event_cb(lv_event_t *e)
         switch (index)
         {
         case 0:  //总急停
-            sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Master_scram\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[60]);
             break;
         case 1:   //打开手动模式
             if(stop_flag == false)
@@ -64,8 +63,7 @@ void manual_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;   
 
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Manual_mode\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[61]);
             }
             else
             {
@@ -78,15 +76,13 @@ void manual_Controls_event_cb(lv_event_t *e)
             {
                 reduction_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Total_reduction\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[62]);
             }
             else
             {
                 reduction_flag = false;
                 lv_obj_clear_state(obj,LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Total_reduction\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[63]);
             }
             break;
         }
