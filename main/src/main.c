@@ -203,8 +203,6 @@ int main(int argc, char **argv)
   // lv_obj_set_size(pcr_obj, 1024, 600);
   create_lv_layout(lv_disp_get_scr_act(NULL));
 
-  pthread_t tid_mem;
-
   // pthread_t tid_mu;
   // pthread_create(&tid_mu, NULL, create_client_mu, NULL);
   // pthread_t tid_listen;  //用于监听

@@ -24,11 +24,11 @@ void set_folding_stands_state(uint8_t num, uint8_t state)
         if(state == 1)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_up_1\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish("/mytest/ycg", PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
         }else if (state == 0)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_shut_1\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish("/mytest/ycg", PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
         }
         break;
 
@@ -36,11 +36,11 @@ void set_folding_stands_state(uint8_t num, uint8_t state)
         if(state == 1)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_up_2\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish("/mytest/ycg", PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
         }else if(state == 0)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_shut_2\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish("/mytest/ycg", PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
         }  
         break;
 
@@ -59,11 +59,11 @@ void set_folding_stop_state(uint8_t num, uint8_t state)
         if(state == 1)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_sea_stop_1\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish("/mytest/ycg", PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
         }else if(state == 0)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_sea_stop_1\",\"v\":\"%d\"}]}",0);
-            OneNet_Publish("/mytest/ycg", PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
         }
         break;
 
@@ -71,11 +71,11 @@ void set_folding_stop_state(uint8_t num, uint8_t state)
         if(state == 1)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_sea_stop_2\",\"v\":\"%d\"}]}",1);
-            OneNet_Publish("/mytest/ycg", PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
         }else if(state == 0)
         {
             sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_sea_stop_2\",\"v\":\"%d\"}]}",0);
-            OneNet_Publish("/mytest/ycg", PUB_BUF);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
         }
         break;
 

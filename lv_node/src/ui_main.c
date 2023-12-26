@@ -9,9 +9,9 @@ struct
   int y;
   const char *label;
 } obj_buttons[] = {
-    {&home_off, &home_on, 10, -5, "设备"},
-    {&mode_off, &mode_on, 10, -2, "模式"},
-    {&setting_off, &setting_on, 10, -2, "设置"},
+    {&home_off, &home_on, 10, -5, "facility"},
+    {&mode_off, &mode_on, 10, -15, "mode"},    //-2
+    {&setting_off, &setting_on, 10, -15, "setting"},    //-2
 };
 
 static bool enteredScreenMode = false; // 屏保标志位
@@ -178,7 +178,6 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
     password_lock_open = false;
     lv_gui_password_keyboard_display();
     enteredScreenMode = false;
-    password_flag = true;
   }
 }
 
@@ -330,18 +329,15 @@ static void *create_client_light()
 void create_lv_layout(lv_obj_t *scr)
 {
 
-  // pthread_t mode_tid;
-  // pthread_create(&mode_tid, NULL, Judgmentmode, NULL);
-
   // 读取屏幕配置文件
-  // updateSettingData(&setting, SCREEN_SETTING_JSON);
+  updateSettingData(&setting, SCREEN_SETTING_JSON);
 
   home_bg(scr);              // 设置主页背景
   home_page_box(scr);        // 框架(创建滑动页面)
   create_wifi_and_time(scr); // wifi 和 时间
 
   // 创建屏保任务
-  // lv_timer_create(UpdateTask, 500, NULL);
+  lv_timer_create(UpdateTask, 500, NULL);
 
   //创建更新温湿度数据任务
   // lv_timer_create(timer_data_callback, 50000, NULL);
@@ -362,9 +358,10 @@ void create_lv_layout(lv_obj_t *scr)
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
 
-  //lv_gui_password_keyboard_display();
+  lv_gui_password_keyboard_display();
+  password_flag = true;
 
-  connect_mqtt();   // 连接mqtt服务器
+  // connect_mqtt();   // 连接mqtt服务器
   //create_client_light();  //　连接灯光服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */

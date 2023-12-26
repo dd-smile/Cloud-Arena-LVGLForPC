@@ -205,6 +205,8 @@
 
 #define DEVICE_NAME "Please enter the device name\n"
 
+#define MQTT_PUBLIC_SPORTS_DEVICE_THEME "/mytest/ycg"
+
 #include "stdio.h"
 #include "lvgl/lvgl.h"
 #include <unistd.h>

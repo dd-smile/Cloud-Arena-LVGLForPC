@@ -37,14 +37,14 @@ void contraction_Controls_event_cb(lv_event_t *e)
             if (stop_flag == false)
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_mode\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }
             break;            
         case 1:   //舞台表演打开
             if(stop_flag == false)
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Chorus_mode\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
  
             }          
             break;          
@@ -52,7 +52,7 @@ void contraction_Controls_event_cb(lv_event_t *e)
             if(stop_flag == false)
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_closed_operation\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }          
             break;
         }
@@ -76,14 +76,14 @@ void telescopic_Controls_event_cb(lv_event_t *e)
             if (data_flag == false)
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_mode\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }
             break;            
         case 1:   //舞台表演打开
             if(data_flag == false)
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Chorus_mode\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
  
             }          
             break;          
@@ -91,7 +91,7 @@ void telescopic_Controls_event_cb(lv_event_t *e)
             if(data_flag == false)
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_closed_operation\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }          
             break;
         case 3:  //数据刷新
@@ -100,14 +100,14 @@ void telescopic_Controls_event_cb(lv_event_t *e)
                 data_flag = true;    //表示数据刷新按钮被按了下去
                 lv_obj_add_state(obj, LV_STATE_PRESSED);   //BUTTON高亮
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             else
             {
                 data_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);   //BUTTON取消高亮
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             break;
         case 4: //舞台急停
@@ -116,14 +116,14 @@ void telescopic_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);   //BUTTON高亮
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_stop_opertion\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             else
             {
                 stop_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);   //BUTTON取消高亮
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_stop_opertion\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
         }
     }
@@ -150,14 +150,14 @@ void revolving_Controls_event_cb(lv_event_t *e)
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             break;            
         case 1:   //急停
@@ -166,7 +166,7 @@ void revolving_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
  
             }
             else
@@ -174,7 +174,7 @@ void revolving_Controls_event_cb(lv_event_t *e)
                 stop_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             break;                   
         case 2:    //下降
@@ -183,14 +183,14 @@ void revolving_Controls_event_cb(lv_event_t *e)
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }  
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }        
             break;
         }
@@ -218,14 +218,14 @@ void stage_Controls_event_cb(lv_event_t *e)
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             break;            
         case 1:   //急停
@@ -234,7 +234,7 @@ void stage_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
  
             }
             else
@@ -242,7 +242,7 @@ void stage_Controls_event_cb(lv_event_t *e)
                 stop_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             break;                   
         case 2:    //下降
@@ -251,14 +251,14 @@ void stage_Controls_event_cb(lv_event_t *e)
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }  
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }        
             break;
         case 3:    //正转
@@ -267,14 +267,14 @@ void stage_Controls_event_cb(lv_event_t *e)
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_turning\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }   
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_turning\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }       
             break;
         case 4:    //反转
@@ -283,14 +283,14 @@ void stage_Controls_event_cb(lv_event_t *e)
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_reversal\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             } 
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_reversal\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish("/mytest/ycg", PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
             }         
             break;
         }

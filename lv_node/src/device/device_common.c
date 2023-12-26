@@ -28,9 +28,9 @@ static void CreateBiaoge(lv_obj_t *parent)
     lv_img_set_src(lvLogo, &biaoge);
     lv_obj_align(lvLogo, LV_ALIGN_CENTER, 185, 100);
 
-    card_create_12_text(lvLogo, "检验时间", -105, -30);
-    card_create_12_text(lvLogo, "检查状态", 0, -30);
-    card_create_12_text(lvLogo, "结果", 105, -30);
+    card_create_12_text(lvLogo, "Inspection time", -105, -30);
+    card_create_12_text(lvLogo, "Inspection status", 0, -30);
+    card_create_12_text(lvLogo, "Result", 105, -30);
 
     create_12_Green_text(lvLogo, "2023/06/27", -105, -7);
     create_12_Green_text(lvLogo, "exception", 0, -7);
@@ -802,19 +802,63 @@ lv_obj_t *BsCreateBreakdownPageBg(lv_obj_t *parent)
  * */
 lv_obj_t *CreateDevicePageBg(const DevicePageData *data, uint8_t device_num)
 {
+    // lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    // lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    // CreatrLine(bg);                                      // 创建分割线
+    // card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    // card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    // card_create_16_text(bg, "制造商简介: ", 100, -195);
+    // card_create_12_text(bg, "采购时间: ", 75, -5);
+    // card_create_12_text(bg, data->date, 140, -5);
+    // card_create_12_text(bg, "检修周期: ", 260, -5);
+    // card_create_12_text(bg, data->period, 330, -5);
+    // card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    // card_create_12_text(bg, data->phoneNumber, 200, 25);
+    // image_create(bg, data->image, -200, -100);                        // 创建图片
+    // CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    // //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
+    // index_t *index0 = add_index_t(device_num, 0);
+    // index_t *index1 = add_index_t(device_num, 1);
+    // index_t *index2 = add_index_t(device_num, 2);
+    // index_t *index3 = add_index_t(device_num, 3);
+    // index_t *index4 = add_index_t(device_num, 4);
+    // index_t *index5 = add_index_t(device_num, 5);
+    // index_t *index6 = add_index_t(device_num, 6);
+
+    // CreateControlsButton(bg, data->expandBtnText, -320, 142, index0);                // 创建一键打开按钮
+    // CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1);         // 创建急停按钮
+    // CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2);               // 创建一键收合按钮
+
+    // CreateControlsButton(bg, data->StandOpenBtnText, -350, 188, index3);     //看台展开
+    // CreateControlsButton(bg, data->StandClosureBtnText, -250, 188, index4);  //看台收合
+    // CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188, index5);      //座椅展开
+    // CreateControlsButton(bg, data->SeatTipBtnText, -50, 188, index6);        //座椅收合
+
+    // CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);            // 创建改名按钮
+    // CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton); // 创建检修正常按钮 
+    // CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton); // 创建故障申报按钮  
+    // CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                   // 创建返回按钮
+
+    // CreateLoge(bg); // 制造商Logo
+
+    // CreateBiaoge(bg); // 表格
+
+    // return bg;
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
     CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 75, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 200, 25);
+    card_create_16_text(bg, "Device name: ", -300, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -140, 30); // 创建设备名称
+    card_create_16_text(bg, "Equipment brand: ", 100, -190);
+    create_12_text(bg, "Purchase Time: ", 80, -10);
+    create_12_text(bg, data->date, 160, -10);
+    create_12_text(bg, "Inspection cycle: ", 260, -10);
+    create_12_text(bg, data->period, 350, -10);
+    create_12_text(bg, "Supplier Service Phone: ", 105, 20);
+    create_12_text(bg, data->phoneNumber, 245, 20);
     image_create(bg, data->image, -200, -100);                        // 创建图片
     CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
@@ -834,12 +878,12 @@ lv_obj_t *CreateDevicePageBg(const DevicePageData *data, uint8_t device_num)
     CreateControlsButton(bg, data->StandOpenBtnText, -350, 188, index3);     //看台展开
     CreateControlsButton(bg, data->StandClosureBtnText, -250, 188, index4);  //看台收合
     CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188, index5);      //座椅展开
-    CreateControlsButton(bg, data->SeatTipBtnText, -50, 188, index6);        //座椅收合
+    CreateControlsButton(bg, data->SeatTipBtnText, -50, 188, index6);        //座椅收合;
+    CreateFeatureButton(bg, "reporting", 245, ReportCreateButton); // 创建收起按钮
 
-    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);            // 创建改名按钮
-    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton); // 创建检修正常按钮 
-    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton); // 创建故障申报按钮  
-    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                   // 创建返回按钮
+    CreateFeatureButton(bg, "rename", 50, RenameCreateButton);            // 创建收起按钮
+    CreateFeatureButton(bg, "Maintenance", 145, MaintenanceCreateButton); // 创建收起按钮   //
+    CreateFeatureButton(bg, "Back", 340, lv_back_Mask);                   // 创建收起按钮
 
     CreateLoge(bg); // 制造商Logo
 

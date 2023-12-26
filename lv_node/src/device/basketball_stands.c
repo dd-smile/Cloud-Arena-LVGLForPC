@@ -33,7 +33,7 @@ void basketball_Controls_event_cb(lv_event_t *e)
             if (stop_flag == false) 
             {
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_1\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             break;
         case 1:  //急停
@@ -42,7 +42,7 @@ void basketball_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;   //表示急停产生
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_1\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             else
             {
@@ -54,7 +54,7 @@ void basketball_Controls_event_cb(lv_event_t *e)
             if (stop_flag == false)
             {   
                 sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_up_1\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish("/mytest/ycg", PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
             }
             break;
         }

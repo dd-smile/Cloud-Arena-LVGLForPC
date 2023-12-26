@@ -58,12 +58,6 @@ LV_IMG_DECLARE(mode3_off);
 LV_IMG_DECLARE(mode3_on);
 LV_IMG_DECLARE(manual_mode);
 
-LV_IMG_DECLARE(BG_1);
-LV_IMG_DECLARE(BG_2);
-LV_IMG_DECLARE(BG_3);
-LV_IMG_DECLARE(BG_4);
-LV_IMG_DECLARE(kotiao);
-
 LV_IMG_DECLARE(biaoge);
 
 /**弹出框图片**/ 

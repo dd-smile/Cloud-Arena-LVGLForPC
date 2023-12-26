@@ -284,19 +284,19 @@ static void lv_create_device(lv_event_t *e)
 void CreateDevicePage(lv_obj_t *parent)
 {
 
-    card_class(parent, 0, 0,"活动看台", 0, 1);      //创建活动看台卡片   倒数第二个参数是设备类型，倒数第一个是设备号
-    card_class(parent, 1, 0, "悬空球架1", 1, 1);
-    card_class(parent, 2, 0, "悬空球架2", 1, 2);
-    card_class(parent, 3, 0, "悬空球架3", 1, 3);
-    card_class(parent, 0, 1, "悬空球架4", 1, 4);
-    card_class(parent, 1, 1, "自动分隔幕1", 2, 1);
-    card_class(parent, 2, 1, "自动分隔幕2", 2, 2);
-    card_class(parent, 3, 1, "壁挂球架1", 3, 1);
-    card_class(parent, 0, 2, "壁挂球架2", 3, 2);
-    card_class(parent, 1, 2, "地埋翻转座椅1", 4, 1);
-    card_class(parent, 2, 2, "地埋翻转座椅2", 4, 2);
-    card_class(parent, 3, 2, "伸缩舞台", 5, 1);
-    card_class(parent, 0, 3, "升降旋转舞台", 6, 1);
-    card_class(parent, 1, 3, "场馆灯光", 7, 1);
-    card_class(parent, 2, 3, "手动模式", 8, 1);
+    card_class(parent, 0, 0,"movable stand", 0, 1);      //创建活动看台卡片   倒数第二个参数是设备类型，倒数第一个是设备号
+    card_class(parent, 1, 0, "Hanging ball rack 1", 1, 1);
+    card_class(parent, 2, 0, "Hanging ball rack 2", 1, 2);
+    card_class(parent, 3, 0, "Hanging ball rack 3", 1, 3);
+    card_class(parent, 0, 1, "Hanging ball rack 4", 1, 4);
+    card_class(parent, 1, 1, "Automatic divider 1", 2, 1);
+    card_class(parent, 2, 1, "Automatic divider 2", 2, 2);
+    card_class(parent, 3, 1, "Wall hanging ball rack 1", 3, 1);
+    card_class(parent, 0, 2, "Wall hanging ball rack 2", 3, 2);
+    card_class(parent, 1, 2, "Buried flip seat 1", 4, 1);
+    card_class(parent, 2, 2, "Buried flip seat 2", 4, 2);
+    card_class(parent, 3, 2, "Telescopic stage", 5, 1);
+    card_class(parent, 0, 3, "Elevating rotary stage", 6, 1);
+    card_class(parent, 1, 3, "Venue lighting", 7, 1);
+    card_class(parent, 2, 3, "manual mode", 8, 1);
 }

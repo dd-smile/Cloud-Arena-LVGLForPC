@@ -9,15 +9,18 @@
 #ifndef __LEYARD_H__
 #define __LEYARD_H__
 
-// extern int synchronous_fd;
 extern int led_fd;
 extern int multitrack_fd;
 extern int multitrack_red;
 extern int synchronous_fd;
 extern int synchronous_red;
 extern char buf_audio[1024];
+extern unsigned char packet_led2[39];
+extern unsigned char packet_led4[39];
+extern struct sockaddr_in seraddr;
 
 void CreateAudioPage(lv_obj_t *parent);
+void *create_client_led();
 
 
 
