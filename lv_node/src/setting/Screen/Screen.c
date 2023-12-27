@@ -3,9 +3,9 @@
 
 lv_setting_data_t setting; //屏幕设置结构体   用于退出页面时候的保存
 lv_setting_data_t setting_buf; //屏幕设置结构体   用于处于页面详情时候的保存
-lv_obj_t *In_slider;   //暂时没有用到
-lv_obj_t *On_slider;   //暂时没有用到
-lv_obj_t *In_slider;   //暂时没有用到
+lv_obj_t *In_slider;   
+lv_obj_t *On_slider;   
+lv_obj_t *In_slider;   
 
 uint32_t btnmatrix_id;   // 屏保按钮id
 lv_obj_t *lv_scr_obj;    // 屏保对象
@@ -87,7 +87,11 @@ void slider_event_cb(lv_event_t *e)
     lv_snprintf(buf, sizeof(buf), "%d", (int)lv_slider_get_value(slider));
     lv_label_set_text(slider_label, buf);
     sprintf(setting.On_screen, "%s", buf);
-    printf("外面的亮度 = %s\n", setting.On_screen);
+    // printf("外面的亮度 = %s\n", setting.On_screen);
+    char cmd[128];
+    sprintf(cmd, "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle", (int)lv_slider_get_value(slider));
+    system(cmd);
+    saveSettingData(&setting, SCREEN_SETTING_JSON);
 }
 
 // 里面的亮度
@@ -99,7 +103,11 @@ void Inslider_event_cb(lv_event_t *e)
     lv_snprintf(buf, sizeof(buf), "%d", (int)lv_slider_get_value(slider));
     lv_label_set_text(InSliderLabel, buf);
     sprintf(setting.In_screen, "%s", buf);
-    printf("里面的亮度 = %s\n", setting.In_screen);
+    // printf("里面的亮度 = %s\n", setting.In_screen);
+    char cmd[128];
+    sprintf(cmd, "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle", (int)lv_slider_get_value(slider));
+    system(cmd);
+    saveSettingData(&setting, SCREEN_SETTING_JSON);
 }
 
 /**
@@ -228,7 +236,7 @@ void CreateScreen(lv_obj_t *parent)
 
     if(setting.brightness == 0)
     {
-        setting.brightness = 50; // 什么都没有设置的时候默认值为63
+        setting.brightness = 50; // 什么都没有设置的时候默认值为50
     }
 
     sprintf(setting.On_screen, "%d", setting.brightness);
