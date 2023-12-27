@@ -136,7 +136,8 @@
     "wallhanging.h": "c",
     "sstream": "c",
     "language.h": "c",
-    "ui_mlang.h": "c"
+    "ui_mlang.h": "c",
+    "display.h": "c"
   },
   "C_Cpp.errorSquiggles": "Disabled",
   "C_Cpp_Runner.cCompilerPath": "gcc",

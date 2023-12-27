@@ -230,11 +230,10 @@
 #include <linux/tcp.h>
 
 #include "lv_node/material/image/image.h"
+#include "lv_node/material/lv_100ask_pinyin_ime/lv_100ask_pinyin_ime.h"
 #include "lv_node/src/ui_main.h"
 #include "lv_node/src/home.h"
 #include "lv_node/src/mode.h"
-#include "lv_node/src/setting/settings.h"
-#include "lv_node/src/common/time_wifi.h"
 #include "lv_node/src/device/telescopic_stand.h"
 #include "lv_node/src/device/basketball_stands.h"
 #include "lv_node/src/device/partition_curtian.h"
@@ -246,8 +245,10 @@
 #include "lv_node/src/device/device_common.h"
 #include "lv_node/src/common/common.h"
 #include "lv_node/src/common/lock.h"
-#include "lv_node/material/lv_100ask_pinyin_ime/lv_100ask_pinyin_ime.h"
+#include "lv_node/src/common/time_wifi.h"
+#include "lv_node/src/common/parson.h"
 
+#include "lv_node/src/setting/settings.h"
 #include "lv_node/src/setting/Time/time_setting.h"
 #include "lv_node/src/setting/Screensaver/Screensaver.h"
 #include "lv_node/src/setting/Screen/Screen.h"
@@ -259,9 +260,9 @@
 
 #include "lv_node/src/display/display.h"
 #include "lv_node/src/display/connect_common.h"
-#include "lv_node/src/audio_control/leyard.h"
 #include "lv_node/src/cJSON/cJSON.h"
-#include "lv_node/src/common/parson.h"
+#include "lv_node/src/audio_control/leyard.h"
+#include "lv_node/src/audio_control/light_vsu.h"
 
 #include "lv_node/src/mqtt/mqtt_common.h"
 #include "lv_node/src/mqtt/MqttKit.h"

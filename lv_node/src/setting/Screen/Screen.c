@@ -87,11 +87,11 @@ void slider_event_cb(lv_event_t *e)
     lv_snprintf(buf, sizeof(buf), "%d", (int)lv_slider_get_value(slider));
     lv_label_set_text(slider_label, buf);
     sprintf(setting.On_screen, "%s", buf);
-    // printf("外面的亮度 = %s\n", setting.On_screen);
-    char cmd[128];
-    sprintf(cmd, "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle", (int)lv_slider_get_value(slider));
-    system(cmd);
-    saveSettingData(&setting, SCREEN_SETTING_JSON);
+    printf("外面的亮度 = %s\n", setting.On_screen);
+    // char cmd[128];
+    // sprintf(cmd, "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle", (int)lv_slider_get_value(slider));
+    // system(cmd);
+    // saveSettingData(&setting, SCREEN_SETTING_JSON);
 }
 
 // 里面的亮度
@@ -103,11 +103,11 @@ void Inslider_event_cb(lv_event_t *e)
     lv_snprintf(buf, sizeof(buf), "%d", (int)lv_slider_get_value(slider));
     lv_label_set_text(InSliderLabel, buf);
     sprintf(setting.In_screen, "%s", buf);
-    // printf("里面的亮度 = %s\n", setting.In_screen);
-    char cmd[128];
-    sprintf(cmd, "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle", (int)lv_slider_get_value(slider));
-    system(cmd);
-    saveSettingData(&setting, SCREEN_SETTING_JSON);
+    printf("里面的亮度 = %s\n", setting.In_screen);
+    // char cmd[128];
+    // sprintf(cmd, "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle", (int)lv_slider_get_value(slider));
+    // system(cmd);
+    // saveSettingData(&setting, SCREEN_SETTING_JSON);
 }
 
 /**

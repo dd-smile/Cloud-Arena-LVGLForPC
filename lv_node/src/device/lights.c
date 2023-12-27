@@ -26,11 +26,11 @@ void lights_Controls_event_cb(lv_event_t *e)
         switch (index)
         {
         case 0:           
-                write(light_fd, packet_open, sizeof(packet_open));             
+                SetLightingscene(0x01);            
             break; 
 
         case 1:                               
-                write(light_fd, packet_close, sizeof(packet_close));                   
+                SetLightingscene(0x02);               
             break;
         }
     }
