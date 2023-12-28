@@ -12,7 +12,7 @@
 void CreateWallhangingPage(uint8_t device_num);
 void wallhanging_Controls_event_cb(lv_event_t *e);
 void set_wallhanging_stands_state(uint8_t num, uint8_t state);
-void set_wallhanging_stop_state(uint8_t num);
+void set_wallhanging_stop_state(uint8_t num, uint8_t state);
 
 
 #endif

@@ -18,9 +18,11 @@ extern char buf_audio[1024];
 extern unsigned char packet_led2[39];
 extern unsigned char packet_led4[39];
 extern struct sockaddr_in seraddr;
+extern lv_obj_t *connect_label;
 
-void CreateAudioPage(lv_obj_t *parent);
 void *create_client_led();
+void led_Controls_event_cb(lv_event_t *e);
+void multitrack_Controls_event_cb(lv_event_t *e);
 
 
 

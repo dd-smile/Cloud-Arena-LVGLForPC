@@ -46,6 +46,7 @@ lv_obj_t *CreateSlider(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int32_t min
 void lv_memory_print(void);
 
 extern lv_obj_t *Textarea_Pinyin;
+extern char *usrnet_mqtt_msh[];
 
 
 
