@@ -9,7 +9,6 @@
 #ifndef __LEYARD_H__
 #define __LEYARD_H__
 
-extern int led_fd;
 extern int multitrack_fd;
 extern int multitrack_red;
 extern int synchronous_fd;
@@ -17,11 +16,8 @@ extern int synchronous_red;
 extern char buf_audio[1024];
 extern unsigned char packet_led2[39];
 extern unsigned char packet_led4[39];
-extern struct sockaddr_in seraddr;
 extern lv_obj_t *connect_label;
 
-void *create_client_led();
-void led_Controls_event_cb(lv_event_t *e);
 void multitrack_Controls_event_cb(lv_event_t *e);
 
 

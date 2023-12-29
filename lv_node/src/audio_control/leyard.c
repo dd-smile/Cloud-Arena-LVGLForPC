@@ -10,10 +10,8 @@
 
 int synchronous_fd = 0;  //实时控制客户端的文件描述符
 int multitrack_fd = 0;   //多轨控制客户端的文件描述符
-int led_fd = 0;   //LED大屏客户端的文件描述符
 int multitrack_red = -1;   //多轨控制客户端是否连接上服务器
 int synchronous_red = -1;
-struct sockaddr_in seraddr;
 char buf_audio[1024];  //用于存放发送的数据
 
 //                                        00 10 00 80 00 C1 00 03 00 0F 00 00 00 00 00 FF       16
@@ -81,58 +79,6 @@ void audio_working()
 }
 
 
-/**
- * 创建LED客户端
- * @param parent            指向父对象的指针     
- * */
-void *create_client_led()
-{
-    if(led_fd == 0)
-    {
-        // 1. 创建通信的套接字
-        led_fd= socket(AF_INET, SOCK_DGRAM, 0);
-        if(led_fd == -1)
-        {
-            perror("socket");
-            exit(0);
-        }
-        
-        // 初始化服务器地址信息
-        seraddr.sin_family = AF_INET;
-        seraddr.sin_port = htons(48631);    // 大端
-        // inet_pton(AF_INET, "192.168.1.223", &seraddr.sin_addr.s_addr);
-        inet_pton(AF_INET, "192.168.1.101", &seraddr.sin_addr.s_addr);
-    }
-}
-
-
-
-/**LED大屏控制按钮点击事件**/
-void led_Controls_event_cb(lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t* obj = lv_event_get_current_target(e);   //获取当前点击对象
-
-    if (code == LV_EVENT_CLICKED)
-    {
-        //判断是哪个按钮，进行封装数据
-        switch ((int)obj->user_data)
-        {
-            case 0: 
-                sendto(led_fd, packet_led1, sizeof(packet_led1)/sizeof(packet_led1[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
-                break;
-
-            case 1:  
-                sendto(led_fd, packet_led2, sizeof(packet_led2)/sizeof(packet_led2[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
-                break;
-        
-            case 2:
-                sendto(led_fd, packet_led3, sizeof(packet_led3)/sizeof(packet_led3[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
-                break;
-        }
-    }
-
-}
 
 /**多轨控制按钮点击事件**/
 void multitrack_Controls_event_cb(lv_event_t *e)

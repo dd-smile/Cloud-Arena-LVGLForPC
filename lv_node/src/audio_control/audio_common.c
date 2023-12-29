@@ -33,6 +33,42 @@ static void add_Audio_event_cb(lv_event_t *e)
     }
 }
 
+/**LED大屏控制按钮点击事件**/
+static void led_Controls_event_cb(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t* obj = lv_event_get_current_target(e);   //获取当前点击对象
+
+    if (code == LV_EVENT_CLICKED)
+    {
+        //判断是哪个按钮，进行封装数据
+        switch ((int)obj->user_data)
+        {
+            case 0: 
+                SetLedinputsource_aoto(0x01, 0x01, 0x00);   //图层２，卡槽２，第１路输入
+                break;
+
+            case 1:  
+                SetLedinputsource_aoto(0x01, 0x01, 0x01);
+                break;
+        
+            case 2:
+                SetLedinputsource_aoto(0x01, 0x01, 0x02);
+                break;
+            case 3:
+                SetLedinputsource_aoto(0x01, 0x01, 0x03);
+                break;
+            case 4:
+                synchronous_mutework();
+                break;
+            case 5:
+                synchronous_unmutework();
+                break;
+        }
+    }
+
+}
+
 /**
  * 创建矩形对象，作为按钮的模板
  * @param obj           指向父对象的指针    
