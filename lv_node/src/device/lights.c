@@ -26,11 +26,11 @@ void lights_Controls_event_cb(lv_event_t *e)
         switch (index)
         {
         case 0:           
-                SetLightingscene(0x01);            
+                SetLightingscene_vsu(0x01);            
             break; 
 
         case 1:                               
-                SetLightingscene(0x02);               
+                SetLightingscene_vsu(0x02);               
             break;
         }
     }

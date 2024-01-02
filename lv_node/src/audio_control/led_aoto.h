@@ -12,7 +12,6 @@
 extern int led_fd;
 extern struct sockaddr_in seraddr;
 
-unsigned char checksum8(const unsigned char *data, size_t size);
 void SetLedinputsource_aoto(uint8_t coverage, uint8_t neck, uint8_t addr);
 void *create_client_led();
 

@@ -35,7 +35,7 @@ static void sy_timer_handler(lv_timer_t * timer)
     if((performance_timer++) == 10)
     {
         performance_timer = 0;
-        sendto(led_fd, packet_led2, sizeof(packet_led2)/sizeof(packet_led2[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
+        SetLedinputsource_aoto(0x01, 0x01, 0x01);
         synchronous_mutework();
         if(timer)
             lv_timer_del(timer);
@@ -230,10 +230,7 @@ void mode_performance_Controls(void)
     }
 
     while(sCount--)
-    {
-        write(light_fd, packet_close, sizeof(packet_close));
-        usleep(50 * 1000);
-    }
+        SetLightingscene_vsu(0x02); 
 
     if(multitrack_red != -1)
     {
@@ -241,7 +238,7 @@ void mode_performance_Controls(void)
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
     }
 
-    sendto(led_fd, packet_led4, sizeof(packet_led4)/sizeof(packet_led4[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
+    SetLedinputsource_aoto(0x01, 0x01, 0x03);
     synchronous_unmutework();
 
     lv_timer_t *sy_timer = lv_timer_create(sy_timer_handler, 60000, NULL);

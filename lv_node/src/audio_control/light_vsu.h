@@ -9,9 +9,9 @@
 #ifndef __LIGHT_VSU_H__
 #define __LIGHT_VSU_H__
 
-void SetLightingscene(uint8_t addr);
-void SetLightSwitch(uint8_t addr, uint8_t port_number, uint8_t status);
-void Setdimming(uint8_t addr, uint8_t port_number, uint8_t status);
+void SetLightingscene_vsu(uint8_t addr);
+void SetLightSwitch_vsu(uint8_t addr, uint8_t port_number, uint8_t status);
+void Setdimming_vsu(uint8_t addr, uint8_t port_number, uint8_t status);
 
 
 #endif

@@ -18,7 +18,7 @@
 //unsigned char packet_close[12] = {0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0xf0, 0x05, 0x00, 0x02, 0xFF, 0x00};
 
 //设置灯光场景
-void SetLightingscene(uint8_t addr)
+void SetLightingscene_vsu(uint8_t addr)
 {
     unsigned char packet[12];
 
@@ -41,7 +41,7 @@ void SetLightingscene(uint8_t addr)
     usleep(50 * 1000);
 }
 
-void SetLightSwitch(uint8_t addr, uint8_t port_number, uint8_t status)
+void SetLightSwitch_vsu(uint8_t addr, uint8_t port_number, uint8_t status)
 {
     unsigned char packet[12];
 
@@ -69,7 +69,7 @@ void SetLightSwitch(uint8_t addr, uint8_t port_number, uint8_t status)
 }
 
 //status : 64为100亮度，00为0亮度
-void Setdimming(uint8_t addr, uint8_t port_number, uint8_t status)
+void Setdimming_vsu(uint8_t addr, uint8_t port_number, uint8_t status)
 {
     unsigned char packet[12];
 

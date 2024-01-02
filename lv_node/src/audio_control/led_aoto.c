@@ -13,7 +13,7 @@ int led_fd = 0;
 struct sockaddr_in seraddr;
 
 //从第三个开始
-unsigned char checksum8(const unsigned char *data, size_t size)
+static unsigned char checksum8(const unsigned char *data, size_t size)
 {
     unsigned char sum = 0;
     
@@ -25,7 +25,12 @@ unsigned char checksum8(const unsigned char *data, size_t size)
     return sum & 0xFF;
 }
 
-
+/**
+ * 设置led大屏输入源-奥拓
+ * @param coverage              图层
+ * @param neck                  卡槽
+ * @param addr                  输入端口
+*/
 void SetLedinputsource_aoto(uint8_t coverage, uint8_t neck, uint8_t addr)
 {
     unsigned char packet[39];
@@ -70,6 +75,7 @@ void SetLedinputsource_aoto(uint8_t coverage, uint8_t neck, uint8_t addr)
     packet[37] = 0x55;
     packet[38] = checksum8(packet, sizeof(packet)-1);
 
+    //默认连接方式　　ＵＤＰ
     sendto(led_fd, packet, sizeof(packet)/sizeof(packet[0]), 0, (struct sockaddr*)&seraddr, sizeof(seraddr));
 
 }
