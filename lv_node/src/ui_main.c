@@ -262,6 +262,23 @@ void *JudgmentConnection(void *parg)
 }
 
 /**
+ * 检测与艾比森ｐｌｃ服务器的TCP连接是否断开，断开的话进行重新连接
+ * @param parg         线程传入的参数
+ * */
+void *abesnConnection(void *parg)
+{
+  while (1)
+  {
+    if (socketconnected(plc_fd) == 0)
+    {
+      plc_fd = createSocket();  //创建套接字
+      connectToHost(plc_fd, "192.168.0.15", 5000);  //连接服务器
+    }
+    usleep(100 * 1000);
+  }
+}
+
+/**
  * 检测是否有点击模式转换
  * */
 void Judgmentmode(void)
@@ -326,6 +343,18 @@ static void *create_client_light()
     pthread_create(&tid, NULL, JudgmentConnection, NULL);
 }
 
+/**
+ * 创建modbus TCP 艾比森的ｌｅｄ电源控制
+*/
+static void *create_client_abesn()
+{
+  plc_fd = createSocket();  //创建套接字
+  connectToHost(plc_fd, "192.168.0.15", 5000);  
+
+  pthread_t tid;
+  pthread_create(&tid, NULL, abesnConnection, NULL);
+}
+
 void create_lv_layout(lv_obj_t *scr)
 {
 
@@ -363,6 +392,7 @@ void create_lv_layout(lv_obj_t *scr)
 
   // connect_mqtt();   // 连接mqtt服务器
   //create_client_light();  //　连接灯光服务器
+  // create_client_abesn();  //连接艾比森ｐｌｃ服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
   // thp = threadpool_create(3, 10, 10);

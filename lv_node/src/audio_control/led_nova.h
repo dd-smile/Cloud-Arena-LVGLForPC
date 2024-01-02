@@ -9,5 +9,6 @@
 #ifndef __LED_NOVA_H__
 #define __LED_NOVA_H__
 
+void SetLedinputsource_nova(uint8_t addr0, uint8_t addr1, uint8_t addr2, uint8_t addr3, uint8_t cardno);
 
 #endif

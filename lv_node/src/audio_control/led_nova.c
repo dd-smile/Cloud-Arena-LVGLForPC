@@ -71,7 +71,7 @@ static void calculateSumHL(unsigned int sum, unsigned char *sum_h, unsigned char
 */
 void SetLedinputsource_nova(uint8_t addr0, uint8_t addr1, uint8_t addr2, uint8_t addr3, uint8_t cardno)
 {
-    unsigned char packet[22];
+    unsigned char packet[23];
 
     packet[0] = 0x55;
     packet[1] = 0xaa;
@@ -104,6 +104,8 @@ void SetLedinputsource_nova(uint8_t addr0, uint8_t addr1, uint8_t addr2, uint8_t
     //ＴＣＰ连接方式，　需要修改客户端连接
     if (socketconnected(led_fd) != 0) 
         write(led_fd, packet, sizeof(packet));
+
+    usleep(50 * 1000);
 
 }
 
