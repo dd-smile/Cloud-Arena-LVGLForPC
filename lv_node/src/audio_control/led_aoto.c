@@ -29,7 +29,7 @@ static unsigned char checksum8(const unsigned char *data, size_t size)
  * 设置led大屏输入源-奥拓
  * @param coverage              图层
  * @param neck                  卡槽
- * @param addr                  输入端口
+ * @param addr                  输入源
 */
 void SetLedinputsource_aoto(uint8_t coverage, uint8_t neck, uint8_t addr)
 {

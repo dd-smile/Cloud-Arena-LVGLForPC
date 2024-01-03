@@ -266,6 +266,7 @@
 #include "lv_node/src/audio_control/light_vsu.h"
 #include "lv_node/src/audio_control/led_aoto.h"
 #include "lv_node/src/audio_control/led_nova.h"
+#include "lv_node/src/audio_control/led_unilumin.h"
 
 #include "lv_node/src/mqtt/mqtt_common.h"
 #include "lv_node/src/mqtt/MqttKit.h"
