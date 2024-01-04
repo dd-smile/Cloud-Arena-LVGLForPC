@@ -297,6 +297,10 @@ void Judgmentmode(void)
     mode_num = -1;
     mode_performance_Controls();
     break;
+  case 3:
+    mode_num = -1;
+    mode_halfcourt_Controls();
+    break;
   }
 }
 

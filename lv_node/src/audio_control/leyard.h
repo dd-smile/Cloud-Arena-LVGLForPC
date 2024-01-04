@@ -17,7 +17,8 @@ extern char buf_audio[1024];
 extern lv_obj_t *connect_label;
 
 void multitrack_Controls_event_cb(lv_event_t *e);
-
+void synchronous_mutework();
+void synchronous_unmutework();
 
 
 

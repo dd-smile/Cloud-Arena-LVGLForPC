@@ -1,9 +1,9 @@
 /*** 
  * @Description: 
  * @Author: mai
- * @LastEditors: mai
+ * @LastEditors: da
  * @Date: 2023-03-09 11:28:37
- * @LastEditTime: 2023-07-03 14:25:10
+ * @LastEditTime: 2024-01-03 14:25:10
  * @FilePath: /new_home_smart/lv_node/src/mode.h
  */
 #ifndef _LV_MODE_H
@@ -17,6 +17,7 @@ void manual_Controls_event_cb(lv_event_t *e);
 void mode_train_Controls(void);
 void mode_performance_Controls(void);
 void mode_competition_Controls(void);
+void mode_halfcourt_Controls(void);
 
 
 

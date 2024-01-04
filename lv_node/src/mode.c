@@ -8,7 +8,6 @@
  */
 
 #include "ui_app.h"
-lv_obj_t *home_modes[4];   //暂时没有用到
 static lv_obj_t *mode_labels[4];   //模式卡片模板
 static bool states[] = {false, false, false, false};
 static bool reduction_flag = false;
@@ -30,6 +29,9 @@ static void toggle_label(lv_obj_t *label, bool state)
     lv_obj_set_style_text_color(label, color, 0);
 }
 
+/**
+ * 演出模式结束后自动切屏和关闭音乐
+*/
 static void sy_timer_handler(lv_timer_t * timer)
 {   
     if((performance_timer++) == 10)
@@ -98,11 +100,13 @@ void manual_Controls_event_cb(lv_event_t *e)
 static void toggle_image(lv_obj_t *obj, uint8_t index, bool type)
 {
     static const lv_img_dsc_t *mode_images[] = {
-        &mode2_on, &mode1_on, &mode3_on,
-        &mode2_off, &mode1_off, &mode3_off
-    };    //六张模式图片
+        &test_on, &test_on, &test_on, &test_on,
+        &test_off, &test_off, &test_off, &test_off,
+        // &mode2_on, &mode1_on, &mode3_on,
+        // &mode2_off, &mode1_off, &mode3_off
+    };    //八张模式图片
 
-    uint8_t image_index = (type ? index + 3 : index);  //类型为０，返回ｏｆｆ。类型为１，返回ｏｎ
+    uint8_t image_index = (type ? index + 4 : index);  //类型为０，返回ｏｆｆ。类型为１，返回ｏｎ
     lv_img_set_src(obj, mode_images[image_index]);
 }
 
@@ -120,7 +124,7 @@ static void lv_event_handler(lv_event_t *e)
     if (code == LV_EVENT_CLICKED)
     {   
         password_mode_lock = false;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             // 如果等于事件最初针对的对象(被点击的卡片)
             if (obj == mode_labels[i]->parent)  // mode_labels[i]->parent  =  mode_images[i]
@@ -144,6 +148,9 @@ static void lv_event_handler(lv_event_t *e)
         }else if(num == 2)
         {
             mode_num = 2;
+        }else if(num == 3)
+        {
+            mode_num = 3;
         }
         lv_mode_password_keyboard_display();
 
@@ -204,7 +211,6 @@ static lv_obj_t *lv_home_card_create(lv_obj_t *parent, int x, int y)
 /*训练模式*/
 void mode_train_Controls(void)
 {
-    printf("训练模式\n");
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable2\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
@@ -247,7 +253,6 @@ void mode_performance_Controls(void)
 /*比赛模式*/
 void mode_competition_Controls(void)
 {
-    printf("比赛模式\n");
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable3\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
@@ -261,6 +266,24 @@ void mode_competition_Controls(void)
     }
 }
 
+/*3vs3训练模式*/
+void mode_halfcourt_Controls(void)
+{
+    printf("3vs3训练模式\n");
+
+    sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable4\",\"v\":\"%d\"}]}",1);
+    OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+
+    if(multitrack_red != -1)
+    {
+        sprintf(buf_audio, "-15db@5F");
+        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
+        usleep(50 * 1000);
+        sprintf(buf_audio, "music2@5F");  //播放
+        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
+    }
+}
+
 
 /**
  * 创建模式页面
@@ -268,17 +291,20 @@ void mode_competition_Controls(void)
  * */
 void CreateModePage(lv_obj_t *obj)
 {
-    static const char *mode_names[] = {"Training Model", "Match Model", "Entertainment Model"};   //要切换模式的名字
-    static lv_obj_t *mode_cards[3];   //模式卡片
-    static lv_obj_t *mode_images[3];  //模式卡片图片
+    static const char *mode_names[] = {"训练模式", "比赛模式", "演出模式", "3vs3模式"};   //要切换模式的名字
+    static lv_obj_t *mode_cards[4];   //模式卡片
+    static lv_obj_t *mode_images[4];  //模式卡片图片
 
-    for (int i = 0; i < 3; i++)
+    lv_obj_set_scrollbar_mode(obj, LV_SCROLLBAR_MODE_AUTO); 
+
+    for (int i = 0; i < 4; i++)
     {
-        mode_cards[i] = lv_home_card_create(obj, 30 + 270 * i, 150);       //创建三张模式卡片
+        mode_cards[i] = lv_home_card_create(obj, 30 + 270 * i, 150);       //创建四张模式卡片  220
         //以创建好的模式卡片作为父类，赋予模式的图片
         mode_images[i] = lv_img_create(mode_cards[i]);                     
-        lv_img_set_src(mode_images[i], i == 0 ? &mode2_on : i == 1 ? &mode1_off
-                                                        :  &mode3_off
+        lv_img_set_src(mode_images[i], i == 0 ? &test_off : i == 1 ? &test_off
+                                                        :  i == 2 ? &test_off
+                                                        :  &test_off
                                                                    );
         lv_c_label_create(mode_cards[i], mode_names[i]);          //设置卡片名字
         mode_labels[i] = lv_d_label_caeate(mode_images[i]);       //初始化生成模式卡片模板

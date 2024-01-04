@@ -71,7 +71,7 @@ static void calculateSumHL(unsigned int sum, unsigned char *sum_h, unsigned char
 */
 void SetLedinputsource_nova(uint8_t addr0, uint8_t addr1, uint8_t addr2, uint8_t addr3, uint8_t cardno)
 {
-    unsigned char packet[23];
+    unsigned int packet[23];
 
     packet[0] = 0x55;
     packet[1] = 0xaa;
