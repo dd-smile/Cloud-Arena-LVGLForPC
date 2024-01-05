@@ -8,7 +8,7 @@
  */
 #include "ui_app.h"
 
-//场景调用灯光控制
+//modbus TCP
 /*
                                     06功能码
                                     00   02    00    00    00 06         f0            05 00          02         FF 00
@@ -17,7 +17,10 @@
 //unsigned char packet_open[12] = {0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0xf0, 0x05, 0x00, 0x01, 0xFF, 0x00};
 //unsigned char packet_close[12] = {0x00, 0x02, 0x00, 0x00, 0x00, 0x06, 0xf0, 0x05, 0x00, 0x02, 0xFF, 0x00};
 
-//设置灯光场景
+/**
+ * 设置灯光场景
+ * @param addr       灯光场景编号
+*/
 void SetLightingscene_vsu(uint8_t addr)
 {
     unsigned char packet[12];
@@ -41,6 +44,12 @@ void SetLightingscene_vsu(uint8_t addr)
     usleep(50 * 1000);
 }
 
+/**
+ * 设置灯光开关
+ * @param addr               模块ID号
+ * @param port_number        端口号
+ * @param status             状态值   FF为开, 00为关
+*/
 void SetLightSwitch_vsu(uint8_t addr, uint8_t port_number, uint8_t status)
 {
     unsigned char packet[12];
@@ -68,7 +77,12 @@ void SetLightSwitch_vsu(uint8_t addr, uint8_t port_number, uint8_t status)
     usleep(50 * 1000);
 }
 
-//status : 64为100亮度，00为0亮度
+/**
+ * 设置灯光的亮度
+ * @param addr               模块ID号
+ * @param port_number        端口号
+ * @param status             状态值   64为100亮度，00为0亮度
+*/
 void Setdimming_vsu(uint8_t addr, uint8_t port_number, uint8_t status)
 {
     unsigned char packet[12];
