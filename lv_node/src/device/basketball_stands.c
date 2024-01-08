@@ -21,40 +21,44 @@ void set_basketball_stands_state(uint8_t num, uint8_t state)
     switch (num) 
     {
     case 1:// 球架1, 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[4]);
-        }else if (state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[5]);
         }
         break;
 
     case 2:// 球架2, 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[6]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[7]);
         }  
         break;
 
     case 3:// 球架3, 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[8]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[9]);
         } 
         break;
 
     case 4:// 球架4, 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[10]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[11]);
         } 
@@ -72,44 +76,49 @@ void set_basketball_stop_state(uint8_t num, uint8_t state)
     switch (num) 
     {
     case 1:// 球架1,
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[12]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[13]);
         }
         break;
 
     case 2:// 球架2, 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[14]);  
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[15]);  
         }
         break;
 
     case 3:// 球架3, 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[16]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[17]);
         }
         break;
 
     case 4:// 球架4, 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[18]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[19]);
         }
         break;
+
     default:
         break;
     }
@@ -139,6 +148,7 @@ void basketball_Controls_event_cb(lv_event_t *e)
                 set_basketball_stands_state(device_num, 1);
             }
             break;
+
         case 1:  //急停
             if (stop_flag == false )
             {
@@ -153,12 +163,17 @@ void basketball_Controls_event_cb(lv_event_t *e)
                 set_basketball_stop_state(device_num, 0);
             }
             break;
+
         case 2:  //收拢球架
             if (stop_flag == false)
             {   
                 set_basketball_stands_state(device_num, 0);
             }
             break;
+            
+        default:
+            break;
+            
         }
     }
 }

@@ -26,51 +26,67 @@ static lv_coord_t temp_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 static lv_coord_t hum_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 //解析json
-void aita_ParseJsonNow(char *msg, weather_t *w) {
+void aita_ParseJsonNow(char *msg, weather_t *w) 
+{
     cJSON *json, *ja, *jo, *josub, *item;
     json = cJSON_Parse(msg); //parse string to cJSON type
-    if(json == NULL) {
+    if (json == NULL) 
+    {
         printf("json type cast error: %s", cJSON_GetErrorPtr());
         return;
-    } else {
+    } 
+    else 
+    {
         printf("parse now pack\n");
-        if((ja=cJSON_GetObjectItem(json, "results")) != NULL) { //get results array
-            if((jo=cJSON_GetArrayItem(ja, 0)) != NULL) {        //get array[0](the only item)
+        if ((ja=cJSON_GetObjectItem(json, "results")) != NULL) { //get results array
+            if ((jo=cJSON_GetArrayItem(ja, 0)) != NULL) {        //get array[0](the only item)
                 //get location object
-                if((josub=cJSON_GetObjectItem(jo, "location")) != NULL) {
-                    if((item=cJSON_GetObjectItem(josub, "id")) != NULL) {
+                if ((josub=cJSON_GetObjectItem(jo, "location")) != NULL) 
+                {
+                    if ((item=cJSON_GetObjectItem(josub, "id")) != NULL) 
+                    {
                         memcpy(w->id, item->valuestring, strlen(item->valuestring));
                     }
-                    if((item=cJSON_GetObjectItem(josub, "name")) != NULL) {
+                    if ((item=cJSON_GetObjectItem(josub, "name")) != NULL) 
+                    {
                         memcpy(w->name, item->valuestring, strlen(item->valuestring));
                     }
-                    if((item=cJSON_GetObjectItem(josub, "country")) != NULL) {
+                    if ((item=cJSON_GetObjectItem(josub, "country")) != NULL) 
+                    {
                         memcpy(w->country, item->valuestring, strlen(item->valuestring));
                     }
-                    if((item=cJSON_GetObjectItem(josub, "path")) != NULL) {
+                    if ((item=cJSON_GetObjectItem(josub, "path")) != NULL) 
+                    {
                         memcpy(w->path, item->valuestring, strlen(item->valuestring));
                     }
-                    if((item=cJSON_GetObjectItem(josub, "timezone")) != NULL) {
+                    if ((item=cJSON_GetObjectItem(josub, "timezone")) != NULL) 
+                    {
                         memcpy(w->timezone, item->valuestring, strlen(item->valuestring));
                     }
-                    if((item=cJSON_GetObjectItem(josub, "timezone_offset")) != NULL) {
+                    if ((item=cJSON_GetObjectItem(josub, "timezone_offset")) != NULL) 
+                    {
                         memcpy(w->tz_offset, item->valuestring, strlen(item->valuestring));
                     }
                 }
                 //get now object
-                if((josub=cJSON_GetObjectItem(jo, "now")) != NULL) {
-                    if((item=cJSON_GetObjectItem(josub, "text")) != NULL) {
+                if ((josub=cJSON_GetObjectItem(jo, "now")) != NULL) 
+                {
+                    if ((item=cJSON_GetObjectItem(josub, "text")) != NULL) 
+                    {
                         memcpy(w->text, item->valuestring, strlen(item->valuestring));
                     }
-                    if((item=cJSON_GetObjectItem(josub, "code")) != NULL) {
+                    if ((item=cJSON_GetObjectItem(josub, "code")) != NULL) 
+                    {
                         memcpy(w->code, item->valuestring, strlen(item->valuestring));
                     }
-                    if((item=cJSON_GetObjectItem(josub, "temperature")) != NULL) {
+                    if ((item=cJSON_GetObjectItem(josub, "temperature")) != NULL) 
+                    {
                         memcpy(w->temp, item->valuestring, strlen(item->valuestring));
                     }
                 }
                 //get last_update object
-                if((josub=cJSON_GetObjectItem(jo, "last_update")) != NULL) {
+                if ((josub=cJSON_GetObjectItem(jo, "last_update")) != NULL) 
+                {
                     memcpy(w->last_update, josub->valuestring, strlen(josub->valuestring));                 
                 }
             }
@@ -81,7 +97,8 @@ void aita_ParseJsonNow(char *msg, weather_t *w) {
     return;
 }
 
-void aita_PrintWeather(weather_t *w) {
+void aita_PrintWeather(weather_t *w) 
+{
     printf("id: %s\n", w->id);
     printf("name: %s\n", w->name);
     printf("country: %s\n", w->country);
@@ -104,19 +121,23 @@ static void event_cb(lv_event_t * e)
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * chart = lv_event_get_target(e);
 
-    if(code == LV_EVENT_VALUE_CHANGED) {
+    if (code == LV_EVENT_VALUE_CHANGED) 
+    {
         lv_obj_invalidate(chart);  //如果发生滑动，更新图表
     }
-    if(code == LV_EVENT_REFR_EXT_DRAW_SIZE) {
+    if (code == LV_EVENT_REFR_EXT_DRAW_SIZE) 
+    {
         lv_coord_t * s = lv_event_get_param(e);
         *s = LV_MAX(*s, 20);
     }
-    else if(code == LV_EVENT_DRAW_POST_END) {
+    else if (code == LV_EVENT_DRAW_POST_END) 
+    {
         int32_t id = lv_chart_get_pressed_point(chart);
-        if(id == LV_CHART_POINT_NONE) return;
+        if (id == LV_CHART_POINT_NONE) return;
 
         lv_chart_series_t * ser = lv_chart_get_series_next(chart, NULL);
-        while(ser) {
+        while (ser) 
+        {
             lv_point_t p;
             lv_chart_get_point_pos_by_id(chart, ser, id, &p);  //获取点的位置
 
@@ -148,7 +169,8 @@ static void event_cb(lv_event_t * e)
             ser = lv_chart_get_series_next(chart, ser);
         }
     }
-    else if(code == LV_EVENT_RELEASED) {
+    else if (code == LV_EVENT_RELEASED) 
+    {
         lv_obj_invalidate(chart);
     }
 }
@@ -160,11 +182,12 @@ static void event_cb(lv_event_t * e)
 static void chart_draww_event_cb(lv_event_t * e)
 {
     lv_obj_draw_part_dsc_t *dsc = lv_event_get_draw_part_dsc(e);
-    if(!lv_obj_draw_part_check_type(dsc, &lv_chart_class, LV_CHART_DRAW_PART_TICK_LABEL))
+    if (!lv_obj_draw_part_check_type(dsc, &lv_chart_class, LV_CHART_DRAW_PART_TICK_LABEL))
         return;
-    if(dsc->text)
+
+    if (dsc->text)
     {
-        if(dsc->id == LV_CHART_AXIS_PRIMARY_X )
+        if (dsc->id == LV_CHART_AXIS_PRIMARY_X )
         {
             const char *time[] = {"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00"
             , "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
@@ -182,16 +205,19 @@ static void chart_draww_event_cb(lv_event_t * e)
 void display_float_number(lv_obj_t *label, char *number, int type)
 {
     char buffer[20];
+
     switch (type)
     {
     case 0:  //温度
         snprintf(buffer, sizeof(buffer), "室内温度: %s", number);
         lv_label_set_text(label, buffer);
         break;
+
     case 1:  //湿度
         snprintf(buffer, sizeof(buffer), "室内湿度: %s", number);
         lv_label_set_text(label, buffer);
         break;
+
     }
 }
 
@@ -217,16 +243,17 @@ static void display_average_data(char *temp, char *hum)
     static double temp_f;
     static double hum_f;
 
-    if(temp != NULL && hum != NULL)
+    if (temp != NULL && hum != NULL)
     {
         temp_f = atof(temp);
         hum_f = atof(hum);
-    }else
+    }
+    else
     {
         temp_f = 0.0;
         hum_f = 0.0;
     }
-    if(last_hour != hour)
+    if (last_hour != hour)
     {
         last_hour = hour;
         temp_average_buf[hour] = temp_average;
@@ -235,7 +262,8 @@ static void display_average_data(char *temp, char *hum)
         lv_chart_set_ext_y_array(chart, ser1, temp_average_buf);
         lv_chart_set_ext_y_array(chart, ser2, hum_average_buf);
         lv_chart_refresh(chart);
-    }else
+    }
+    else
     {
         temp_average = (temp_f + (temp_average - temp_f) / 2.0);
         hum_average = (hum_f + (hum_average - hum_f) / 2.0);
@@ -257,12 +285,12 @@ void timer_weather_callback(lv_timer_t * timer)
 
     char buffer_weather[1024];
 
-    if(last_hour != hour)
+    if (last_hour != hour)
     {
         last_hour = hour;
         // 1. 创建通信的套接字
         int fd = socket(AF_INET, SOCK_STREAM, 0);
-        if(fd == -1)
+        if (fd == -1)
         {
             perror("socket");
             exit(0);
@@ -275,7 +303,7 @@ void timer_weather_callback(lv_timer_t * timer)
         inet_pton(AF_INET, "116.62.81.138", &addr.sin_addr.s_addr);
 
         int ret = connect(fd, (struct sockaddr*)&addr, sizeof(addr));
-        if(ret == -1)
+        if (ret == -1)
         {
             perror("connect");
             exit(0);
@@ -383,7 +411,8 @@ static void Create_TempeHumChart(lv_obj_t *parent)
     ser1 = lv_chart_add_series(chart, lv_palette_main(LV_PALETTE_RED), LV_CHART_AXIS_PRIMARY_Y);  //红色数据线
     ser2 = lv_chart_add_series(chart, lv_palette_main(LV_PALETTE_GREEN), LV_CHART_AXIS_PRIMARY_Y);  //绿色数据线
     uint32_t i;
-    for(i = 0; i < 24; i++) {
+    for (i = 0; i < 24; i++) 
+    {
         lv_chart_set_next_value(chart, ser1, lv_rand(60,90));
         lv_chart_set_next_value(chart, ser2, lv_rand(10,40));
     }

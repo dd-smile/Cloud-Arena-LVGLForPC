@@ -23,20 +23,22 @@ void set_partition_stands_state(uint8_t num, uint8_t state)
     switch (num) // 选择设备号
     {
     case 1:// 分隔幕1 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[20]);
-        }else if (state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[21]);
         }
         break;
 
     case 2:// 分隔幕2
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[22]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[23]);
         }  
@@ -54,20 +56,22 @@ void set_partition_stop_state(uint8_t num, uint8_t state)
     switch (num) // 选择设备号
     {
     case 1:
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[24]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[25]);
         }
         break;
 
     case 2:
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[26]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[27]);
         }
@@ -99,9 +103,10 @@ void partition_Controls_event_cb(lv_event_t *e)
             {
                 set_partition_stands_state(device_num, 1);
             }
-            break;            
+            break;  
+
         case 1:
-            if(stop_flag == false)
+            if (stop_flag == false)
             {
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
@@ -114,13 +119,15 @@ void partition_Controls_event_cb(lv_event_t *e)
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 set_partition_stop_state(device_num, 0);
             }           
-            break;          
+            break; 
+
         case 2:    //分隔幕收起
-            if(stop_flag == false)
+            if (stop_flag == false)
             {
                 set_partition_stands_state(device_num, 0);
             }          
             break;
+            
         }
     }
 }

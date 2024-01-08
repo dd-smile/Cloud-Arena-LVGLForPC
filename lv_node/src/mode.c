@@ -8,11 +8,11 @@
  */
 
 #include "ui_app.h"
+int g_mode_num = -1; 
 static lv_obj_t *mode_labels[4];   //模式卡片模板
 static bool states[] = {false, false, false, false};
 static bool reduction_flag = false;
-int mode_num = -1; 
-int performance_timer = 0;
+static int performance_timer = 0;
 char *performance_msh[] = {
     "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"1\"}]}",
     "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"0\"}]}",
@@ -34,13 +34,15 @@ static void toggle_label(lv_obj_t *label, bool state)
 */
 static void sy_timer_handler(lv_timer_t * timer)
 {   
-    if((performance_timer++) == 10)
+    if ((performance_timer++) == 10)
     {
         performance_timer = 0;
         SetLedinputsource_aoto(0x01, 0x01, 0x01);
         synchronous_mutework();
-        if(timer)
+        if (timer)
+        {
             lv_timer_del(timer);
+        }
     }
 }
 
@@ -52,15 +54,16 @@ void manual_Controls_event_cb(lv_event_t *e)
     index_t *user_data = lv_event_get_user_data(e);
     uint8_t index = user_data->ind; //判断按钮号
 
-    if(code == LV_EVENT_CLICKED)
+    if (code == LV_EVENT_CLICKED)
     {
         switch (index)
         {
         case 0:  //总急停
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[60]);
             break;
+
         case 1:   //打开手动模式
-            if(stop_flag == false)
+            if (stop_flag == false)
             {
                 stop_flag = true;   
 
@@ -73,8 +76,9 @@ void manual_Controls_event_cb(lv_event_t *e)
                 lv_obj_clear_state(obj,LV_STATE_PRESSED);
             }
             break;
+
         case 2:   //总复位
-            if(reduction_flag == false)
+            if (reduction_flag == false)
             {
                 reduction_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
@@ -87,6 +91,7 @@ void manual_Controls_event_cb(lv_event_t *e)
                 OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[63]);
             }
             break;
+
         }
     }
 }
@@ -124,6 +129,7 @@ static void lv_event_handler(lv_event_t *e)
     if (code == LV_EVENT_CLICKED)
     {   
         password_mode_lock = false;
+
         for (int i = 0; i < 4; i++)
         {
             // 如果等于事件最初针对的对象(被点击的卡片)
@@ -138,20 +144,24 @@ static void lv_event_handler(lv_event_t *e)
                 toggle_image( mode_labels[i]->parent, i, 1);    //关闭的图片
             }
         }
-        if(num == 0)
+        
+        if (num == 0)
         {
-            mode_num = 0;
+            g_mode_num = 0;
         }
-        else if(num == 1)
+        else if (num == 1)
         {
-            mode_num = 1;
-        }else if(num == 2)
-        {
-            mode_num = 2;
-        }else if(num == 3)
-        {
-            mode_num = 3;
+            g_mode_num = 1;
         }
+        else if (num == 2)
+        {
+            g_mode_num = 2;
+        }
+        else if (num == 3)
+        {
+            g_mode_num = 3;
+        }
+        
         lv_mode_password_keyboard_display();
 
     }
@@ -214,7 +224,7 @@ void mode_train_Controls(void)
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable2\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
-    if(multitrack_red != -1)
+    if (multitrack_red != -1)
     {
         sprintf(buf_audio, "-15db@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
@@ -230,15 +240,15 @@ void mode_performance_Controls(void)
     unsigned char sCount = 2;
     create_client_led();
 
-    for(uint8_t i = 0; i < 3; i++){
+    for (uint8_t i = 0; i < 3; i++){
         OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, performance_msh[i]);
         usleep(50 * 2000);
     }
 
-    while(sCount--)
+    while (sCount--)
         SetLightingscene_vsu(0x02); 
 
-    if(multitrack_red != -1)
+    if (multitrack_red != -1)
     {
         sprintf(buf_audio, "stop@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
@@ -256,7 +266,7 @@ void mode_competition_Controls(void)
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable3\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
-    if(multitrack_red != -1)
+    if (multitrack_red != -1)
     {
         sprintf(buf_audio, "-15db@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
@@ -274,7 +284,7 @@ void mode_halfcourt_Controls(void)
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable4\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
-    if(multitrack_red != -1)
+    if (multitrack_red != -1)
     {
         sprintf(buf_audio, "-15db@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);

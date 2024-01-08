@@ -18,11 +18,13 @@ threadpool_t *thp;
 int createSocket()
 {
     int fd = socket(AF_INET, SOCK_STREAM, 0);
-    if(fd == -1)
+
+    if (fd == -1)
     {
         perror("socket");
         return -1;
     }
+
     //printf("套接字创建成功, fd=%d\n", fd);
     return fd;
 }
@@ -39,11 +41,13 @@ int bindSocket(int lfd, unsigned short port)
     saddr.sin_port = htons(port);
     saddr.sin_addr.s_addr = INADDR_ANY;  // 0 = 0.0.0.0
     int ret = bind(lfd, (struct sockaddr*)&saddr, sizeof(saddr));
-    if(ret == -1)
+
+    if (ret == -1)
     {
         perror("bind");
         return -1;
     }
+
     printf("套接字绑定成功, ip: %s, port: %d\n",
            inet_ntoa(saddr.sin_addr), port);
     return ret;
@@ -56,11 +60,12 @@ int bindSocket(int lfd, unsigned short port)
 int setListen(int lfd)
 {
     int ret = listen(lfd, 128);
-    if(ret == -1)
+    if (ret == -1)
     {
         perror("listen");
         return -1;
     }
+
     printf("设置监听成功...\n");
     return ret;
 }
@@ -73,7 +78,8 @@ int setListen(int lfd)
 int acceptConn(int lfd, struct sockaddr_in *addr)
 {
     int cfd = -1;
-    if(addr == NULL)
+
+    if (addr == NULL)
     {
         cfd = accept(lfd, NULL, NULL);
     }
@@ -82,11 +88,13 @@ int acceptConn(int lfd, struct sockaddr_in *addr)
         int addrlen = sizeof(struct sockaddr_in);
         cfd = accept(lfd, (struct sockaddr*)addr, &addrlen);
     }
-    if(cfd == -1)
+
+    if (cfd == -1)
     {
         perror("accept");
         return -1;
-    }       
+    }   
+
     printf("成功和客户端建立连接...\n");
     return cfd; 
 }
@@ -105,11 +113,13 @@ int connectToHost(int fd, const char* ip, unsigned short port)
     saddr.sin_port = htons(port);
     inet_pton(AF_INET, ip, &saddr.sin_addr.s_addr);
     int ret = connect(fd, (struct sockaddr*)&saddr, sizeof(saddr));
-    if(ret == -1)
+
+    if (ret == -1)
     {
         //perror("connect");
         return -1;
     }
+
     printf("成功和服务器建立连接...\n");
     return ret;
 }
@@ -121,10 +131,12 @@ int connectToHost(int fd, const char* ip, unsigned short port)
 int closeSocket(int fd)
 {
     int ret = close(fd);
-    if(ret == -1)
+
+    if (ret == -1)
     {
         perror("close");
     }
+
     return ret;
 }
 
@@ -138,13 +150,19 @@ int socketconnected(int sockfd)
 	int len = sizeof(info);//如果此返回值为1，则说明socket连接正常，如果返回值为0，则说明连接异常。
 							//所以我们也可以直接用一个整形变量来存这个值，然后进行判断即可。
 	if (sockfd <= 0)
+    {
 		return 0;
+    }
+
 	getsockopt(sockfd, IPPROTO_TCP, TCP_INFO, &info, (socklen_t *) & len);
-	if((info.tcpi_state == 1)) 
+
+	if ((info.tcpi_state == 1)) 
 	{
 		//printf("socket connected\n");
 		return 1;
-	} else {
+	} 
+    else 
+    {
 		//printf("socket disconnected\n");
 		return 0;
 	}
@@ -164,18 +182,19 @@ int writen(int fd, const char* msg, int size)
     int nwrite = 0;
     const char* p = msg;
 
-    while(left > 0)
+    while (left > 0)
     {
-        if((nwrite = write(fd, msg, left)) > 0)
+        if ((nwrite = write(fd, msg, left)) > 0)
         {
             p += nwrite;
             left -= nwrite;
         }
-        else if(nwrite == -1)
+        else if (nwrite == -1)
         {
             return -1;
         }
     }
+
     return size;
 }
 
@@ -189,10 +208,11 @@ int writen(int fd, const char* msg, int size)
 */
 int sendMsg(int cfd, char* msg, int len)
 {
-   if(msg == NULL || len <= 0 || cfd <=0)
+   if (msg == NULL || len <= 0 || cfd <=0)
    {
        return -1;
    }
+
    // 申请内存空间: 数据长度 + 包头4字节(存储数据长度)
    char* data = (char*)malloc(len+4);
    int bigLen = htonl(len);
@@ -253,12 +273,14 @@ int recvMsg(int cfd, char** msg)
     // 根据读出的长度分配内存，+1 -> 这个字节存储\0
     char *buf = (char*)malloc(len+1);
     int ret = readn(cfd, buf, len);
-    if(ret != len)
+
+    if (ret != len)
     {
         close(cfd);
         free(buf);
         return -1;
     }
+
     buf[len] = '\0';
     *msg = buf;
 
@@ -291,9 +313,11 @@ threadpool_t *threadpool_create(int min_thread_num, int max_thread_num, int queu
     int i;
     threadpool_t *pool = NULL;
     
-    do {
+    do 
+    {
         pool = (threadpool_t *)malloc(sizeof(threadpool_t));
-        if (pool == NULL) {
+        if (pool == NULL) 
+        {
             printf("malloc threadpool fail\n");
             goto err_1;
         }
@@ -310,7 +334,8 @@ threadpool_t *threadpool_create(int min_thread_num, int max_thread_num, int queu
         
         /*根据最大线程上限数，给工作线程数据开辟空间，并清零*/
         pool->workers_tid = (pthread_t *)malloc(sizeof(pthread_t) * max_thread_num);
-        if (pool->workers_tid == NULL) {
+        if (pool->workers_tid == NULL) 
+        {
             printf("malloc workers_tid fail\n");
             goto err_2;
         }
@@ -318,7 +343,8 @@ threadpool_t *threadpool_create(int min_thread_num, int max_thread_num, int queu
         
         /* 队列开辟空间 */
         pool->task_queue = (threadpool_task_t *)malloc(sizeof(threadpool_task_t) * queue_max_size);
-        if (pool->task_queue == NULL) {
+        if (pool->task_queue == NULL) 
+        {
             printf("malloc task_queue fail\n");
             goto err_3;
         }
@@ -333,7 +359,8 @@ threadpool_t *threadpool_create(int min_thread_num, int max_thread_num, int queu
         }
         
         /* 启动 min_thread_num 个 work thread */
-        for (i = 0; i < min_thread_num; i++) {
+        for (i = 0; i < min_thread_num; i++) 
+        {
             pthread_create(&(pool->workers_tid[i]), NULL, workers_thread,(void *)pool); /*pool指向当前线程池*/
             printf("start thread  0x%x...\n", (unsigned int)pool->workers_tid[i]);
         }
@@ -374,7 +401,8 @@ void *manager_thread(void *threadpool)
     threadpool_t *pool = (threadpool_t *)threadpool;
     int i;
     
-    while (!pool->shutdown) {
+    while (!pool->shutdown) 
+    {
         sleep(DEFAULT_TIME);   /*定时对线程池管理*/
         
         pthread_mutex_lock(&(pool->lock));
@@ -389,14 +417,17 @@ void *manager_thread(void *threadpool)
         /* 创建新线程算法，任务数大于最小线程池个数，
          * 且存活的线程数小于最大线程数时
          */
-        if (queue_size >= MIN_WAIT_TASK_NUM && live_thread_num < pool->max_thread_num){
+        if (queue_size >= MIN_WAIT_TASK_NUM && live_thread_num < pool->max_thread_num)
+        {
             pthread_mutex_lock(&(pool->lock));
             int add = 0;
             
             /* 一次增加 DEFAULT_THREAD_VERY 个线程*/
             for (i = 0; i < pool->max_thread_num && add < DEFAULT_THREAD_VERY
-                    && pool->live_thread_num < pool->max_thread_num; i++) {
-                if (pool->workers_tid[i] == 0 || !is_thread_alive(pool->workers_tid[i])) {
+                    && pool->live_thread_num < pool->max_thread_num; i++) 
+            {
+                if (pool->workers_tid[i] == 0 || !is_thread_alive(pool->workers_tid[i])) 
+                {
                     pthread_create(&(pool->workers_tid[i]), NULL, workers_thread,(void *)pool);
                     add++;
                     pool->live_thread_num++;
@@ -409,13 +440,15 @@ void *manager_thread(void *threadpool)
         /* 销毁多余的空闲线程算法，忙线程 x2 小于存活的线程数 且 
          * 存活的线程数大于最小线程数时
          */
-        if (busy_thread_num * 2 < live_thread_num && live_thread_num > pool->min_thread_num) {
+        if (busy_thread_num * 2 < live_thread_num && live_thread_num > pool->min_thread_num) 
+        {
             /*一次销毁 DEFAULT_THREAD_VERY 个线程*/
             pthread_mutex_lock(&(pool->lock));
             pool->wait_exit_thr_num = DEFAULT_THREAD_VERY;
             pthread_mutex_unlock(&(pool->lock));
             
-            for (i = 0; i < DEFAULT_THREAD_VERY; i++) {
+            for (i = 0; i < DEFAULT_THREAD_VERY; i++) 
+            {
                 /*通知处在空闲状态的线程，他们会自行终止，线程自杀*/
                 pthread_cond_signal(&(pool->queue_not_empty));
             }
@@ -448,7 +481,8 @@ void *workers_thread(void *threadpool)
     threadpool_t *pool = (threadpool_t *)threadpool;
     threadpool_task_t task;
 
-    while(1) {
+    while(1) 
+    {
         /* Lock must be taken to wait on condition variable */
         /* 刚创建出线程，等待任务队列里面有任务，否则阻塞等待任务队列里有任务再唤醒
          * 接收任务
@@ -456,14 +490,17 @@ void *workers_thread(void *threadpool)
         pthread_mutex_lock(&(pool->lock));
         
         /* queue_size == 0 说明没有任务，调wait 阻塞在条件变量上，若有任务，跳过该while */
-        while((pool->queue_size == 0) && (!pool->shutdown)) {
+        while((pool->queue_size == 0) && (!pool->shutdown)) 
+        {
             //printf("Workers'thread ID 0x%x is waiting\n", (unsigned int)pthread_self());
             pthread_cond_wait(&(pool->queue_not_empty), &(pool->lock));
             
             /* 清除指定数目的空闲线程，如果要结束的线程个数大于0，结束线程 */
-            if (pool->wait_exit_thr_num > 0) { 
+            if (pool->wait_exit_thr_num > 0) 
+            { 
                 /* 如果线程池里的线程个数大于最小值时可以结束当前线程 */
-                if (pool->live_thread_num > pool->min_thread_num) {
+                if (pool->live_thread_num > pool->min_thread_num) 
+                {
                     printf("Workers'thread ID 0x%x is exiting\n", (unsigned int)pthread_self());
                     pool->live_thread_num--;
 					pool->wait_exit_thr_num--;
@@ -474,7 +511,8 @@ void *workers_thread(void *threadpool)
         }
         
         /*如果关闭了线程池，自行退出处理*/
-        if (pool->shutdown == 1) {
+        if (pool->shutdown == 1) 
+        {
 			printf("Workers'thread ID 0x%x is exiting\n", (unsigned int)pthread_self());
             pthread_mutex_unlock(&(pool->lock));
             pthread_exit(NULL);
@@ -533,11 +571,13 @@ int threadpool_add(threadpool_t *pool, void *function(void *arg), void *arg)
     pthread_mutex_lock(&(pool->lock));
     
     /*为真，队列已满，调wait等待*/
-    while ((pool->queue_size == pool->queue_max_size) && (!pool->shutdown)) {
+    while ((pool->queue_size == pool->queue_max_size) && (!pool->shutdown)) 
+    {
         pthread_cond_wait(&(pool->queue_not_empty), &(pool->lock));
     }
     
-    if (pool->shutdown) {
+    if (pool->shutdown) 
+    {
         pthread_mutex_unlock(&(pool->lock));
 		return 0;
     }
@@ -577,7 +617,8 @@ int threadpool_add(threadpool_t *pool, void *function(void *arg), void *arg)
 int threadpool_distory(threadpool_t *pool)
 {
     int i;
-    if (pool == NULL) {
+    if (pool == NULL) 
+    {
         return -1;
     }
 
@@ -586,10 +627,12 @@ int threadpool_distory(threadpool_t *pool)
     /*先销毁管理线程*/
     pthread_join(pool->manager_tid, NULL);
     
-    for (i = 0; i < pool->live_thread_num; i++) {/*通知所有空闲线程*/
+    for (i = 0; i < pool->live_thread_num; i++) 
+    {/*通知所有空闲线程*/
         pthread_cond_broadcast(&(pool->queue_not_empty));
     }
-    for (i = 0; i < pool->live_thread_num; i++) {/*回收所有管理者线程资源*/
+    for (i = 0; i < pool->live_thread_num; i++) 
+    {/*回收所有管理者线程资源*/
         pthread_join(pool->workers_tid[i], NULL);
     }
     threadpool_free(pool);
@@ -613,16 +656,19 @@ int threadpool_distory(threadpool_t *pool)
 ****************************************************************************/
 int threadpool_free(threadpool_t *pool)
 {
-    if (pool == NULL) {
+    if (pool == NULL) 
+    {
         printf("thread pool is already free\n");
         return -1;
     }
     
-    if (pool->task_queue) {
+    if (pool->task_queue) 
+    {
         free(pool->task_queue);
     }
     
-    if (pool->workers_tid) {
+    if (pool->workers_tid) 
+    {
         free(pool->workers_tid);
         pthread_mutex_lock(&(pool->lock));
         pthread_mutex_destroy(&(pool->lock));
@@ -653,7 +699,8 @@ int threadpool_free(threadpool_t *pool)
 int is_thread_alive(pthread_t tid)
 {
     int kill_rc = pthread_kill(tid, 0); /*发0号信号，测试线程是否存活*/
-    if (kill_rc == ESRCH) {
+    if (kill_rc == ESRCH) 
+    {
         return 0;
     }   
     return 1;

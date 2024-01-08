@@ -15,8 +15,7 @@ struct
 };
 
 static bool enteredScreenMode = false; // 屏保标志位
-bool password_flag = false;  //给第一次弹出密码框
-int mqtt_fd;    //连接ｍｑｔｔ套接字
+static bool password_flag = false;  //给第一次弹出密码框
 int light_fd;   //连接灯光套接字
 char PUB_BUF[256];      //上传给ＭＱＴＴ服务器数据的buf
 All_Data home_data;
@@ -61,6 +60,7 @@ static void home_page_box(lv_obj_t *parent)
   {
     home_data.home_pages[i] = lv_tileview_add_tile(home_data.content, 0, i, LV_DIR_BOTTOM | LV_DIR_TOP);    //添加页面(上下滚动)
   }
+
   home_data.home_page = home_data.home_pages[0];
   home_data.mode_page = home_data.home_pages[1];
   home_data.setting_page = home_data.home_pages[2];
@@ -171,6 +171,7 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
 {
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t *obj = lv_event_get_target(e);
+
   if (code == LV_EVENT_CLICKED)
   {
 
@@ -179,6 +180,7 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
     lv_gui_password_keyboard_display();
     enteredScreenMode = false;
   }
+
 }
 
 /**
@@ -187,10 +189,11 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
  * */
 static void SettingScreenBox(lv_obj_t *parent)
 {
-  if(password_flag == true && password_lock_open == false)
+  if (password_flag == true && password_lock_open == false)
   { 
     lv_obj_del(pwd_main_cont);
   }
+
   lv_img_t *img_arr[] = { &Image1_big,
                           &Image2_big,
                           &Image3_big, 
@@ -209,14 +212,15 @@ static void SettingScreenBox(lv_obj_t *parent)
  * */
 void UpdateTask(lv_timer_t *timer)
 {
-    if(setting.screen_save_time == 0)
+    if (setting.screen_save_time == 0)
     {
       setting.screen_save_time = 60*1000;
     }  
+
     uint32_t screenModeTime = setting.screen_save_time;
     uint32_t idle_time = lv_disp_get_inactive_time(lv_disp_get_default());
 
-    if(idle_time < 7200*1000 && idle_time >= screenModeTime && !enteredScreenMode)
+    if (idle_time < 7200*1000 && idle_time >= screenModeTime && !enteredScreenMode)
     {
       printf("进入屏保模式%ld\n",idle_time);
       SettingScreenBox(lv_scr_act());
@@ -283,55 +287,25 @@ void *abesnConnection(void *parg)
  * */
 void Judgmentmode(void)
 {
-  switch (mode_num)
+  switch (g_mode_num)
   {
   case 0:
-    mode_num = -1;
+    g_mode_num = -1;
     mode_train_Controls();
     break;
   case 1:
-    mode_num = -1;
+    g_mode_num = -1;
     mode_competition_Controls();
     break;
   case 2:
-    mode_num = -1;
+    g_mode_num = -1;
     mode_performance_Controls();
     break;
   case 3:
-    mode_num = -1;
+    g_mode_num = -1;
     mode_halfcourt_Controls();
     break;
   }
-}
-
-/**
- * 创建MQTT连接
- * */
-static void connect_mqtt()
-{
-   // 1. 创建通信的套接字
-  mqtt_fd = socket(AF_INET, SOCK_STREAM, 0);
-  if(mqtt_fd == -1)
-  {
-      perror("socket");
-      exit(0);
-  }
-
-  // 2. 连接服务器
-  struct sockaddr_in addr;
-  addr.sin_family = AF_INET;
-  addr.sin_port = htons(1883);   // 大端端口
-  inet_pton(AF_INET, "112.74.105.251", &addr.sin_addr.s_addr);
-
-  int ret = connect(mqtt_fd, (struct sockaddr*)&addr, sizeof(addr));
-  if(ret == -1)
-  {
-      perror("connect");
-      exit(0);
-  }
-
-  OneNet_DevLink();   //连接ＭＱＴＴ服务器
-
 }
 
 /**
@@ -361,6 +335,9 @@ static void *create_client_abesn()
 
 void create_lv_layout(lv_obj_t *scr)
 {
+
+  // pthread_t tid_mu;
+  // pthread_create(&tid_mu, NULL, create_client_mu, NULL);
 
   // 读取屏幕配置文件
   updateSettingData(&setting, SCREEN_SETTING_JSON);

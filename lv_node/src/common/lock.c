@@ -226,7 +226,7 @@ void lv_gui_password_keyboard_display()
  
     // 基于键盘背景对象创建确认按键
 	lv_obj_t * confirm_btn = lv_btn_create(pwd_bg_cont);
-	if(pwd_bg_cont == NULL)
+	if (pwd_bg_cont == NULL)
 	{
 		printf("[%s:%d] pwd_bg_cont create failed\n", __FUNCTION__, __LINE__);
 		return;
@@ -249,7 +249,7 @@ void lv_gui_password_keyboard_display()
     lv_obj_center(confirm_btn_label); // 居中显示
  
     lv_obj_t * cancel_btn = lv_btn_create(pwd_bg_cont);
-	if(cancel_btn == NULL)
+	if (cancel_btn == NULL)
 	{
 		printf("[%s:%d] cancel_btn create failed\n", __FUNCTION__, __LINE__);
 		return;
@@ -447,7 +447,7 @@ void lv_mode_password_keyboard_display()
  
     // 基于键盘背景对象创建确认按键
 	lv_obj_t * confirm_btn = lv_btn_create(pwd_bg_cont);
-	if(pwd_bg_cont == NULL)
+	if (pwd_bg_cont == NULL)
 	{
 		printf("[%s:%d] pwd_bg_cont create failed\n", __FUNCTION__, __LINE__);
 		return;
@@ -470,7 +470,7 @@ void lv_mode_password_keyboard_display()
     lv_obj_center(confirm_btn_label); // 居中显示
  
     lv_obj_t * cancel_btn = lv_btn_create(pwd_bg_cont);
-	if(cancel_btn == NULL)
+	if (cancel_btn == NULL)
 	{
 		printf("[%s:%d] cancel_btn create failed\n", __FUNCTION__, __LINE__);
 		return;
@@ -715,7 +715,7 @@ static void lv_example_bar_3_del_back(lv_timer_t * timer)
 {
     lv_style_reset(&style_indic);
     lv_obj_del(mask);
-    if(timer)
+    if (timer)
         lv_timer_del(timer);
 }
 

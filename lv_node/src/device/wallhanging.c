@@ -20,20 +20,22 @@ void set_wallhanging_stands_state(uint8_t num, uint8_t state)
     switch (num) // 选择设备号
     {
     case 1:// 壁挂球架1 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[28]);
-        }else if (state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[29]);
         }
         break;
 
     case 2:// 壁挂球架2
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[30]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[31]);
         }  
@@ -51,20 +53,22 @@ void set_wallhanging_stop_state(uint8_t num, uint8_t state)
     switch (num) 
     {
     case 1:// 壁挂球架1 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[32]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[33]);
         }
         break;
 
     case 2:// 壁挂球架2
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[34]);  
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[35]);  
         }
@@ -96,9 +100,10 @@ void wallhanging_Controls_event_cb(lv_event_t *e)
             {
                 set_wallhanging_stands_state(device_num, 1);
             }
-            break;            
+            break;
+
         case 1:
-            if(stop_flag == false)
+            if (stop_flag == false)
             {
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
@@ -112,13 +117,15 @@ void wallhanging_Controls_event_cb(lv_event_t *e)
                 set_wallhanging_stop_state(device_num, 0);
  
             }           
-            break;          
+            break;   
+
         case 2:    //壁挂球架收起
-            if(stop_flag == false)
+            if (stop_flag == false)
             {
                 set_wallhanging_stands_state(device_num, 0);
             }          
             break;
+
         }
     }
 }

@@ -11,11 +11,10 @@
 
 extern int multitrack_fd;
 extern int multitrack_red;
-extern int synchronous_fd;
-extern int synchronous_red;
 extern char buf_audio[1024];
 extern lv_obj_t *connect_label;
 
+void *create_client_mu(void * parg);
 void multitrack_Controls_event_cb(lv_event_t *e);
 void synchronous_mutework();
 void synchronous_unmutework();

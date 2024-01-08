@@ -21,20 +21,22 @@ void set_folding_stands_state(uint8_t num, uint8_t state)
     switch (num) // 选择设备号
     {
     case 1:// 地面翻折座椅1 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[36]);
-        }else if (state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[37]);
         }
         break;
 
     case 2:// 地面翻折座椅2
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[38]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[39]);
         }  
@@ -52,20 +54,22 @@ void set_folding_stop_state(uint8_t num, uint8_t state)
     switch (num) // 选择设备号
     {
     case 1:// 地面翻折座椅1 
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[40]);
-        }else if(state == 0)
+        }
+        else if(state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[41]);
         }
         break;
 
     case 2:// 地面翻折座椅2
-        if(state == 1)
+        if (state == 1)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[42]);
-        }else if(state == 0)
+        }
+        else if (state == 0)
         {
             OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[43]);
         }
@@ -97,9 +101,10 @@ void folding_Controls_event_cb(lv_event_t *e)
             {
                 set_folding_stands_state(device_num, 1);
             }
-            break;            
+            break;  
+
         case 1:
-            if(stop_flag == false)
+            if (stop_flag == false)
             {
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
@@ -112,13 +117,15 @@ void folding_Controls_event_cb(lv_event_t *e)
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
                 set_folding_stop_state(device_num, 0);
             }           
-            break;          
+            break;
+
         case 2:    //地面翻折座椅收起
-            if(stop_flag == false)
+            if (stop_flag == false)
             {
                 set_folding_stands_state(device_num, 0);
             }          
             break;
+            
         }
     }
 }

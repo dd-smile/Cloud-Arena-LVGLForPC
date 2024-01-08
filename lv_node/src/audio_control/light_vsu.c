@@ -64,7 +64,7 @@ void SetLightSwitch_vsu(uint8_t addr, uint8_t port_number, uint8_t status)
     packet[7] = 0x05;
     packet[8] = 0x00;
     packet[9] = port_number;
-    if(status == 1)
+    if (status == 1)
         packet[10] = 0xFF;
     else
         packet[10] = 0x00;

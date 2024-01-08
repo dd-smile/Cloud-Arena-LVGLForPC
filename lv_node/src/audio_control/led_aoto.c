@@ -85,10 +85,10 @@ void SetLedinputsource_aoto(uint8_t coverage, uint8_t neck, uint8_t addr)
  * */
 void *create_client_led()
 {
-    if(led_fd == 0)
+    if (led_fd == 0)
     {
         led_fd= socket(AF_INET, SOCK_DGRAM, 0);
-        if(led_fd == -1)
+        if (led_fd == -1)
         {
             perror("socket");
             exit(0);

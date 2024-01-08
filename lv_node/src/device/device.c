@@ -57,36 +57,45 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, uin
     lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
     
     //判断是什么设备按钮，从而添加控制事件
-    switch(type)
+    switch (type)
     {
         //首页卡片的按钮
         case 0:   //活动看台
             lv_obj_add_event_cb(btn, telescoopic_Controls_event_cb, LV_EVENT_ALL, index); // 传入设备号和按钮号
             break;
+
         case 1:   //悬空球架
             lv_obj_add_event_cb(btn, basketball_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+
         case 2:  //分隔幕
             lv_obj_add_event_cb(btn, partition_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+
         case 3:  //壁挂球架
             lv_obj_add_event_cb(btn, wallhanging_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+
         case 4:  //地面翻折座椅
             lv_obj_add_event_cb(btn, folding_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+
         case 5:   //舞台
             lv_obj_add_event_cb(btn, contraction_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+
         case 6:   //升降旋转舞台
             lv_obj_add_event_cb(btn, revolving_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+
         case 7:   //灯光
             lv_obj_add_event_cb(btn, lights_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+
         case 8:   //手动模式
             lv_obj_add_event_cb(btn, manual_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+
         default:
             break;
     }
@@ -176,24 +185,42 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
 
     //创建设备卡片背景
     lv_obj_t *dev_card;
-    if(image == 0)  //如果设备是活动看台
+    if (image == 0)  //如果设备是活动看台
+    {
         dev_card = lv_box_create(parent, x, y, "展开", "急停", "收合", index);
-    else if(image == 1)  //如果设备是悬空球架
+    }
+    else if (image == 1)  //如果设备是悬空球架
+    {
         dev_card = lv_box_create(parent, x, y, "放下", "急停", "收起", index);
-    else if(image == 2)  //如果设备是分隔幕
+    }
+    else if (image == 2)  //如果设备是分隔幕
+    {
         dev_card = lv_box_create(parent, x, y, "放下", "急停", "收起", index);
-    else if(image == 3)  //壁挂球架
+    }
+    else if (image == 3)  //壁挂球架
+    {
         dev_card = lv_box_create(parent, x, y, "展开", "急停", "收合", index);
-    else if(image == 4)  //地面翻折座椅
+    }
+    else if (image == 4)  //地面翻折座椅
+    {
         dev_card = lv_box_create(parent, x, y, "打开", "急停", "关闭", index);
-    else if(image == 5)  //舞台
+    }
+    else if (image == 5)  //舞台
+    {
         dev_card = lv_box_create(parent, x, y, "表演", "合唱", "收合", index);
-    else if(image == 6)  //升降旋转舞台
+    }
+    else if (image == 6)  //升降旋转舞台
+    {
         dev_card = lv_box_create(parent, x, y, "上升", "急停", "下降", index);
-    else if(image == 7)  //灯光
+    }
+    else if (image == 7)  //灯光
+    {
         dev_card = lv_box_create(parent, x, y, "打开", "关闭", NULL, index);
-    else if(image == 8)  //手动模式
+    }
+    else if (image == 8)  //手动模式
+    {
         dev_card = lv_box_create(parent, x, y, "总急停", "打开", "总复位", index);
+    }
 
     //printf("index:%d %d\n", index->num, index->ind);
 

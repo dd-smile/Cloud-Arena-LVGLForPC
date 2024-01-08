@@ -107,7 +107,7 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_
 
     
     //判断是什么设备按钮，从而添加控制事件
-    switch(type)
+    switch (type)
     {
         case 0:     //LED大屏控制
             lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮

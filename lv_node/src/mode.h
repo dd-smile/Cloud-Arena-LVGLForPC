@@ -9,7 +9,7 @@
 #ifndef _LV_MODE_H
 #define _LV_MODE_H
 
-extern int mode_num;
+extern int g_mode_num;
 
 void CreateModePage(lv_obj_t *obj);
 void manual_Controls_event_cb(lv_event_t *e);

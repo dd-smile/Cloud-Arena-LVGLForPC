@@ -26,24 +26,24 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
     index_t *user_data = lv_event_get_user_data(e);
     uint8_t index = user_data->ind; //判断按钮号
 
-    if(code == LV_EVENT_CLICKED)
+    if (code == LV_EVENT_CLICKED)
     {
         switch (index)
         {
         case 0:  //一键打开
-            if(stop_flag == false) 
+            if (stop_flag == false) 
             {
                 OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[0]);
             }
             break;
+
         case 1:   //急停
-            if(stop_flag == false)
+            if (stop_flag == false)
             {
                 stop_flag = true;   //表示急停产生
 
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
                 OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[1]);
-               //       /mytest/ycg        /usr/plcnet/Cloud_Arena_sports/edge/d
             }
             else
             {
@@ -51,13 +51,16 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
                 lv_obj_clear_state(obj,LV_STATE_PRESSED);
             }
             break;
+
         case 2:   //一键关闭
             if (stop_flag == false)
             {
                 OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[2]);
             }
             break;
+
         }
+        
         Switch_status = index;   //保存区分按钮一键或单独控制
     }
 }

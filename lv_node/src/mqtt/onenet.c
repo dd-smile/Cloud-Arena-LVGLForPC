@@ -1,5 +1,11 @@
-
-
+/*
+ * @Description: MQTT通用控制,调用MqttKit库
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2023-10-25 11:28:17
+ * @LastEditTime: 2023-01-12 15:59:05
+ * @FilePath: lv_node/src/mqtt/onenet.c
+ */
 #include "ui_app.h"
 
 #define PROID		"admin"
@@ -8,7 +14,42 @@
 
 #define DEVID		"avant_test"
 
+#define MQTT_SERVER_IP 	"112.74.105.251"
 
+
+static int mqtt_fd;    //连接ｍｑｔｔ套接字
+
+/**
+ * 创建MQTT连接
+ * */
+void connect_mqtt()
+{
+   // 1. 创建通信的套接字
+  mqtt_fd = socket(AF_INET, SOCK_STREAM, 0);
+
+  if (mqtt_fd == -1)
+  {
+      perror("socket");
+      exit(0);
+  }
+
+  // 2. 连接服务器
+  struct sockaddr_in addr;
+  addr.sin_family = AF_INET;
+  addr.sin_port = htons(1883);   // 大端端口
+  inet_pton(AF_INET, MQTT_SERVER_IP, &addr.sin_addr.s_addr);
+
+  int ret = connect(mqtt_fd, (struct sockaddr*)&addr, sizeof(addr));
+  
+  if (ret == -1)
+  {
+      perror("connect");
+      exit(0);
+  }
+
+  OneNet_DevLink();   //连接ＭＱＴＴ服务器
+
+}
 
 //==========================================================
 //	函数名称：	OneNet_DevLink
@@ -71,7 +112,7 @@ void OneNet_HeartBeat(void)
 		{
 			closeSocket(mqtt_fd);
 			mqtt_fd = createSocket();
-			connectToHost(mqtt_fd, "112.74.105.251", 1883);
+			connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
 
 			OneNet_DevLink();
 		}

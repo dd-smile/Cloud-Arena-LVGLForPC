@@ -34,7 +34,9 @@ void SetLedpower_abesn(uint8_t status)
 
     //modbus TCP自己新建客户端  网口 IP：192.168.0.15 端口号为 5000
     if (socketconnected(plc_fd) != 0) 
+    {
         write(plc_fd, packet, sizeof(packet));
+    }
 
     usleep(50 * 1000);
 

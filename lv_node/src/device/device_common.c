@@ -575,7 +575,7 @@ static void AddDescriptionEvent(lv_event_t *e)
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t *obj = lv_event_get_target(e);
 
-    if( code == LV_EVENT_CLICKED)
+    if ( code == LV_EVENT_CLICKED)
     {
         char *inputVal = lv_textarea_get_text(Textarea_Pinyin);
         printf("描述故障： %s\n", inputVal);
@@ -594,7 +594,7 @@ static void AddRenameEventBtn(lv_event_t *e)
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t *obj = lv_event_get_target(e);
 
-    if( code == LV_EVENT_CLICKED)
+    if ( code == LV_EVENT_CLICKED)
     {
         char *inputVal = lv_textarea_get_text(Textarea_Pinyin);
         printf("添加文本 %s\n", inputVal);
@@ -681,7 +681,7 @@ static void DescriptionInputHandler(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
 
-    if( code == LV_EVENT_CLICKED)
+    if ( code == LV_EVENT_CLICKED)
     {
         lv_keypage_create(lv_scr_act(), AddDescriptionEvent);
     }

@@ -207,6 +207,8 @@
 
 #define MQTT_PUBLIC_SPORTS_DEVICE_THEME "/mytest/ycg"
 
+////       /mytest/ycg        /usr/plcnet/Cloud_Arena_sports/edge/d
+
 #include "stdio.h"
 #include "lvgl/lvgl.h"
 #include <unistd.h>

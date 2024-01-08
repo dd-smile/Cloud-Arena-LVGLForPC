@@ -8,10 +8,10 @@
  */
 #include "ui_app.h"
 
-int synchronous_fd = 0;  //实时控制客户端的文件描述符
+static int synchronous_fd = 0;  //实时控制客户端的文件描述符
+static int synchronous_red = -1;
 int multitrack_fd = 0;   //多轨控制客户端的文件描述符
 int multitrack_red = -1;   //多轨控制客户端是否连接上服务器
-int synchronous_red = -1;
 char buf_audio[1024];  //用于存放发送的数据
 
 //                                        00 10 00 80 00 C1 00 03 00 0F 00 00 00 00 00 FF       16
@@ -27,10 +27,39 @@ lv_obj_t *connect_label;  //连接提示框
 
 /*--------------------------------通信--------------------------------*/
 
+/**
+ * 创建多轨控制客户端
+ * @param parent            指向父对象的指针     
+ * */
+void *create_client_mu(void * parg)
+{   
+    multitrack_fd = createSocket();  //创建套接字
+    synchronous_fd = createSocket();  //创建套接字
+    multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+    synchronous_red = connectToHost(synchronous_fd, "192.168.17.20", 11011);  //连接服务器
+    while (1)
+    {
+      if(socketconnected(multitrack_fd) == 0)
+      {
+        closeSocket(multitrack_fd);
+        multitrack_fd = createSocket();  //创建套接字
+        multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+      }else if (socketconnected(synchronous_fd) == 0)
+      {
+        closeSocket(synchronous_fd);
+        synchronous_fd = createSocket();
+        synchronous_red = connectToHost(synchronous_fd, "192.168.17.20", 11011);
+      }
+      sleep(3);
+    }
+    
+}
+
+
 //发送静音的数据
 void synchronous_mutework()
 {
-    if(synchronous_red != -1)
+    if (synchronous_red != -1)
     {
         write(synchronous_fd, packet_mute_fifteen, sizeof(packet_mute_fifteen));
         usleep(50 * 1000);
@@ -41,7 +70,7 @@ void synchronous_mutework()
 //发送取消静音的数据
 void synchronous_unmutework()
 {
-    if(synchronous_red != -1)
+    if (synchronous_red != -1)
     {
         write(synchronous_fd, packet_unmute_fifteen, sizeof(packet_unmute_fifteen));
         usleep(50 * 1000);
