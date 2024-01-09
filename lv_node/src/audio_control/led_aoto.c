@@ -83,7 +83,7 @@ void SetLedinputsource_aoto(uint8_t coverage, uint8_t neck, uint8_t addr)
 /**
  * 创建LED客户端  UDP
  * */
-void *create_client_led()
+void *create_client_led(void)
 {
     if (led_fd == 0)
     {

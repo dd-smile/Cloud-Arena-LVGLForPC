@@ -205,6 +205,10 @@
 
 #define DEVICE_NAME "Please enter the device name\n"
 
+#define MQTT_MSG_128MT_TEMPLATE(pid, v) "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"" pid "\",\"v\":\"" v "\"}]}"
+
+#define MQTT_MSG_48MT_TEMPLATE(pid, v) "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_sports\",\"pid\":\"" pid "\",\"v\":\"" v "\"}]}"
+
 #define MQTT_PUBLIC_SPORTS_DEVICE_THEME "/mytest/ycg"
 
 ////       /mytest/ycg        /usr/plcnet/Cloud_Arena_sports/edge/d

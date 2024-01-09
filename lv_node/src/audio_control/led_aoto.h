@@ -13,6 +13,6 @@ extern int led_fd;
 extern struct sockaddr_in seraddr;
 
 void SetLedinputsource_aoto(uint8_t coverage, uint8_t neck, uint8_t addr);
-void *create_client_led();
+void *create_client_led(void);
 
 #endif

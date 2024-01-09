@@ -417,44 +417,60 @@ lv_100ask_pinyin_dict_t lv_100ask_def_pinyin[] = {
     {"zuo", "做作坐昨左佐座撮琢柞"},
     {NULL, NULL}};
 
+enum Sports_equipment{
+    MOVABLE_STAND_OPEN,
+    MOVABLE_STAND_STOP,
+    MOVABLE_STAND_CLOSE,
+};
+
 char *usrnet_mqtt_msh[] = {
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_open\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_stop\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_stop\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"movable_stand_shut\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_up_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_up_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_3\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_up_3\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_down_4\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_up_4\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_1\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_2\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_3\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_3\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_4\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Hanging_ball_rack_stop_4\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_down_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_up_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_down_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_up_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_1\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"divider_stop_2\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_open_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_shut_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_open_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_shut_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_stop_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_stop_1\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_stop_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Wall_hanging_ball_rack_stop_2\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_up_1\",\"v\":\"1\"}]}",
+    MQTT_MSG_128MT_TEMPLATE("movable_stand_open", "1"),//0
+    MQTT_MSG_128MT_TEMPLATE("movable_stand_stop", "1"),//1
+    MQTT_MSG_128MT_TEMPLATE("movable_stand_stop", "0"),//2
+    MQTT_MSG_128MT_TEMPLATE("movable_stand_shut", "1"),//3
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_down_1", "1"),//4
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_up_1", "1"),//5
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_down_2", "1"),//6
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_up_2", "1"),//7
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_down_3", "1"),//8
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_up_3", "1"),//9
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_down_4", "1"),//10
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_up_4", "1"),//11
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_stop_1", "1"),//12
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_stop_1", "0"),//13
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_stop_2", "1"),//14
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_stop_2", "0"),//15
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_stop_3", "1"),//16
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_stop_3", "0"),//17
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_stop_4", "1"),//18
+    MQTT_MSG_128MT_TEMPLATE("Hanging_ball_rack_stop_4", "0"),//19
+    MQTT_MSG_128MT_TEMPLATE("divider_down_1", "1"),//20
+    MQTT_MSG_128MT_TEMPLATE("divider_up_1", "1"),//21
+    MQTT_MSG_128MT_TEMPLATE("divider_down_2", "1"),//22
+    MQTT_MSG_128MT_TEMPLATE("divider_up_2", "1"),//23
+    MQTT_MSG_128MT_TEMPLATE("divider_stop_1", "1"),//24
+    MQTT_MSG_128MT_TEMPLATE("divider_stop_1", "0"),//25
+    MQTT_MSG_128MT_TEMPLATE("divider_stop_2", "1"),//26
+    MQTT_MSG_128MT_TEMPLATE("divider_stop_2", "0"),//27
+    MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_open_1", "1"),//28
+    MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_shut_1", "1"),//29
+    MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_open_2", "1"),//30
+    MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_shut_2", "1"),//31
+    MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_stop_1", "1"),//32
+    MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_stop_1", "0"),//33
+    MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_stop_2", "1"),//34
+    MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_stop_2", "0"),//35
+    MQTT_MSG_128MT_TEMPLATE("Floor_folding_seat_up_1", "1"),//36
+    MQTT_MSG_128MT_TEMPLATE(),//37
+    MQTT_MSG_128MT_TEMPLATE(),//38
+    MQTT_MSG_128MT_TEMPLATE(),//39
+    MQTT_MSG_128MT_TEMPLATE(),//40
+    MQTT_MSG_128MT_TEMPLATE(),//41
+    MQTT_MSG_128MT_TEMPLATE(),//42
+    MQTT_MSG_128MT_TEMPLATE(),//43
+    MQTT_MSG_128MT_TEMPLATE(),//44
+    MQTT_MSG_128MT_TEMPLATE(),//45
+
     "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_shut_1\",\"v\":\"1\"}]}",
     "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_up_2\",\"v\":\"1\"}]}",
     "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_shut_2\",\"v\":\"1\"}]}",

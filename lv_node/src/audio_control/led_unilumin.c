@@ -26,7 +26,9 @@ void unilumin_Heartbeat_packet(void)
 
     // TCP连接方式
     if (socketconnected(led_fd) != 0) 
+    {
         write(led_fd, packet, sizeof(packet));
+    }
 
 }
 
@@ -61,8 +63,10 @@ void SetLedinputsource_unilumin(uint8_t transmitter_l, uint8_t transmitter_h, ui
     packet[17] = addr;
 
     // TCP连接方式
-    if (socketconnected(led_fd) != 0) 
+    if (socketconnected(led_fd) != 0)
+    {
         write(led_fd, packet, sizeof(packet));
+    } 
 
     usleep(50 * 1000);
 

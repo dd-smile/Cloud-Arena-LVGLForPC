@@ -1,7 +1,7 @@
 /*** 
- * @Description: 
- * @Author: mai
- * @LastEditors: mai
+ * @Description: 锁屏界面
+ * @Author: da
+ * @LastEditors: da
  * @Date: 2023-06-16 09:55:17
  * @LastEditTime: 2023-06-16 09:58:06
  * @FilePath: lv_node/src/common/lock.c
@@ -52,7 +52,7 @@ static void lv_bar_change(void);
  
  
 // 显示键盘输入界面
-void lv_gui_password_keyboard_display()
+void lv_gui_password_keyboard_display(void)
 {
     // 当前页面的画布容器
     pwd_main_cont = lv_obj_create(lv_scr_act()); // 基于屏幕创建了一个容器
@@ -273,7 +273,7 @@ void lv_gui_password_keyboard_display()
  
 
 // 模式转换显示键盘输入界面
-void lv_mode_password_keyboard_display()
+void lv_mode_password_keyboard_display(void)
 {
     // 当前页面的画布容器
     pwd_main_cont = lv_obj_create(lv_scr_act()); // 基于屏幕创建了一个容器

@@ -34,7 +34,8 @@ SDI 55 aa 00 00 fe 00 00 00 00 00 01 00 72 00 02 13 03 00 03 00 00 e1 56
 static unsigned int calculateArraySum(const unsigned int *array, size_t length) 
 {
     unsigned int array_sum = 0;
-    for (size_t i = 2; i < length; ++i) {
+    for (size_t i = 2; i < length; ++i) 
+    {
         array_sum += array[i];
     }
     // 要相加的十六进制数
@@ -103,7 +104,9 @@ void SetLedinputsource_nova(uint8_t addr0, uint8_t addr1, uint8_t addr2, uint8_t
 
     //ＴＣＰ连接方式，　需要修改客户端连接
     if (socketconnected(led_fd) != 0) 
+    {
         write(led_fd, packet, sizeof(packet));
+    }
 
     usleep(50 * 1000);
 

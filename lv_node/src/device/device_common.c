@@ -93,14 +93,14 @@ static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t
 }
 
 /**
- * 创建活动看台控制按钮
+ * 创建设备详情控制按钮
  * @param obj             指向父对象的指针
  * @param text            文本，以'\0'结尾的字符串
  * @param x_ofs           x坐标偏移量
  * @param y_ofs           y坐标偏移量
  * @param index            (传入设备号和按钮号，取出按钮号)按到第几个按钮
  * */
-static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
+static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index, lv_event_cb_t event_cb)
 {
 
     lv_obj_t *btn = lv_obj_create(obj);
@@ -111,34 +111,7 @@ static void CreateControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_o
     lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
     lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
     lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, telescoopic_Controls_event_cb, LV_EVENT_ALL, index);  //设备详情页控制按钮事件
-    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
-
-    lv_obj_t *label = lv_label_create(btn);
-    lv_label_set_text(label, text);
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
-    lv_obj_center(label);
-}
-/**
- * 创建悬空球架控制按钮
- * @param obj             指向父对象的指针
- * @param text            文本，以'\0'结尾的字符串
- * @param x_ofs           x坐标偏移量
- * @param y_ofs           y坐标偏移量
- * @param index            (传入设备号和按钮号，取出按钮号)按到第几个按钮
- * */
-static void CreateBasketballControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
-{
-    lv_obj_t *btn = lv_obj_create(obj);
-
-    lv_obj_set_size(btn, 90, 35);
-    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
-    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, basketball_Controls_event_cb, LV_EVENT_ALL, index);
+    lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, index);  //设备详情页控制按钮事件
     lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
 
     lv_obj_t *label = lv_label_create(btn);
@@ -148,128 +121,6 @@ static void CreateBasketballControlsButton(lv_obj_t *obj, const char *text, lv_c
     lv_obj_center(label);
 }
 
-//创建分隔幕控制按钮
-static void CreatePartitionControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
-{
-
-    lv_obj_t *btn = lv_obj_create(obj);
-
-    lv_obj_set_size(btn, 90, 35);
-    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
-    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, partition_Controls_event_cb, LV_EVENT_ALL, index);
-    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
-
-    lv_obj_t *label = lv_label_create(btn);
-    lv_label_set_text(label, text);
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
-    lv_obj_center(label);
-}
-//创建壁挂球架控制按钮
-static void CreateWallhangingControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
-{
-    lv_obj_t *btn = lv_obj_create(obj);
-
-    lv_obj_set_size(btn, 90, 35);
-    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
-    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, wallhanging_Controls_event_cb, LV_EVENT_ALL, index);
-    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
-
-    lv_obj_t *label = lv_label_create(btn);
-    lv_label_set_text(label, text);
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
-    lv_obj_center(label);
-}
-//创地面翻折座椅控制按钮
-static void CreateFoldingControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
-{
-    lv_obj_t *btn = lv_obj_create(obj);
-
-    lv_obj_set_size(btn, 90, 35);
-    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
-    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, folding_Controls_event_cb, LV_EVENT_ALL, index);
-    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
-
-    lv_obj_t *label = lv_label_create(btn);
-    lv_label_set_text(label, text);
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
-    lv_obj_center(label);
-}
-//创建伸缩舞台控制按钮
-static void CreateContractionControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
-{
-    lv_obj_t *btn = lv_obj_create(obj);
-
-    lv_obj_set_size(btn, 90, 35);
-    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
-    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, telescopic_Controls_event_cb, LV_EVENT_ALL, index);
-    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
-
-    lv_obj_t *label = lv_label_create(btn);
-    lv_label_set_text(label, text);
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
-    lv_obj_center(label);
-}
-//创建升降旋转舞台控制按钮
-static void CreateRevolvingControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
-{
-    lv_obj_t *btn = lv_obj_create(obj);
-
-    lv_obj_set_size(btn, 90, 35);
-    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
-    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, stage_Controls_event_cb, LV_EVENT_ALL, index);
-    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
-
-    lv_obj_t *label = lv_label_create(btn);
-    lv_label_set_text(label, text);
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
-    lv_obj_center(label);
-}
-/*创建灯光控制按钮*/
-static void CreateLightControlsButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, index_t *index)
-{
-
-    lv_obj_t *btn = lv_obj_create(obj);
-
-    lv_obj_set_size(btn, 90, 35);
-    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_radius(btn, 20, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
-    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
-    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
-    lv_obj_add_event_cb(btn, lights_Controls_event_cb, LV_EVENT_ALL, index);
-    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
-
-    lv_obj_t *label = lv_label_create(btn);
-    lv_label_set_text(label, text);
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
-    lv_obj_center(label);
-}
 
 /**
  * 创建分割线
@@ -871,19 +722,19 @@ lv_obj_t *CreateDevicePageBg(const DevicePageData *data, uint8_t device_num)
     index_t *index5 = add_index_t(device_num, 5);
     index_t *index6 = add_index_t(device_num, 6);
 
-    CreateControlsButton(bg, data->expandBtnText, -320, 142, index0);                // 创建一键打开按钮
-    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1);         // 创建急停按钮
-    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2);               // 创建一键收合按钮
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index0, telescoopic_Controls_event_cb);                // 创建一键打开按钮
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1, telescoopic_Controls_event_cb);         // 创建急停按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2, telescoopic_Controls_event_cb);               // 创建一键收合按钮
 
-    CreateControlsButton(bg, data->StandOpenBtnText, -350, 188, index3);     //看台展开
-    CreateControlsButton(bg, data->StandClosureBtnText, -250, 188, index4);  //看台收合
-    CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188, index5);      //座椅展开
-    CreateControlsButton(bg, data->SeatTipBtnText, -50, 188, index6);        //座椅收合;
-    CreateFeatureButton(bg, "reporting", 245, ReportCreateButton); // 创建收起按钮
-
-    CreateFeatureButton(bg, "rename", 50, RenameCreateButton);            // 创建收起按钮
-    CreateFeatureButton(bg, "Maintenance", 145, MaintenanceCreateButton); // 创建收起按钮   //
-    CreateFeatureButton(bg, "Back", 340, lv_back_Mask);                   // 创建收起按钮
+    // CreateControlsButton(bg, data->StandOpenBtnText, -350, 188, index3, telescoopic_Controls_event_cb);     //看台展开
+    // CreateControlsButton(bg, data->StandClosureBtnText, -250, 188, index4, telescoopic_Controls_event_cb);  //看台收合
+    // CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188, index5, telescoopic_Controls_event_cb);      //座椅展开
+    // CreateControlsButton(bg, data->SeatTipBtnText, -50, 188, index6, telescoopic_Controls_event_cb);        //座椅收合;
+   
+    CreateFeatureButton(bg, "reporting", 245, ReportCreateButton);  
+    CreateFeatureButton(bg, "rename", 50, RenameCreateButton);            
+    CreateFeatureButton(bg, "Maintenance", 145, MaintenanceCreateButton); 
+    CreateFeatureButton(bg, "Back", 340, lv_back_Mask);                  
 
     CreateLoge(bg); // 制造商Logo
 
@@ -920,9 +771,9 @@ lv_obj_t *CreatebasketballPageBg(const DevicePageData *data, uint8_t device_num)
     index_t *index0 = add_index_t(device_num, 0);
     index_t *index1 = add_index_t(device_num, 1);
     index_t *index2 = add_index_t(device_num, 2);
-    CreateBasketballControlsButton(bg, data->expandBtnText, -320, 142, index0);                // 创建一键打开按钮
-    CreateBasketballControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1);         // 创建急停按钮
-    CreateBasketballControlsButton(bg, data->collapseBtnText, -80, 142, index2);               // 创建一键收合按钮
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index0, basketball_Controls_event_cb);                // 创建一键打开按钮
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1, basketball_Controls_event_cb);         // 创建急停按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2, basketball_Controls_event_cb);               // 创建一键收合按钮
 
     CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);            // 创建改名按钮
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton); // 创建检修正常按钮 
@@ -938,7 +789,12 @@ lv_obj_t *CreatebasketballPageBg(const DevicePageData *data, uint8_t device_num)
 }
 
 
-/*创建分隔幕设备详情页*/
+/**
+ * 创建分隔幕设备详情页
+ * @param data           要创建设备的基本数据
+ * @param device_num     设备号
+ * @return               返回指向已创建的设备详情页面的指针
+ * */
 lv_obj_t *CreatePartitionPageBg(const DevicePageData *data, uint8_t device_num)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
@@ -960,9 +816,9 @@ lv_obj_t *CreatePartitionPageBg(const DevicePageData *data, uint8_t device_num)
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
     index_t *index3 = add_index_t(device_num, 2);
-    CreatePartitionControlsButton(bg, data->expandBtnText, -320, 142, index1);        // 一键打开按钮
-    CreatePartitionControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); // 创建急停按钮
-    CreatePartitionControlsButton(bg, data->collapseBtnText, -80, 142, index3);       // 一键收合按钮
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, partition_Controls_event_cb);        // 一键打开按钮
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2, partition_Controls_event_cb); // 创建急停按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, partition_Controls_event_cb);       // 一键收合按钮
    
     
     CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
@@ -999,9 +855,9 @@ lv_obj_t *CreateWallhangingPageBg(const DevicePageData *data, uint8_t device_num
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
     index_t *index3 = add_index_t(device_num, 2);
-    CreateWallhangingControlsButton(bg, data->expandBtnText, -320, 142, index1);        // 一键打开按钮
-    CreateWallhangingControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); // 创建急停按钮
-    CreateWallhangingControlsButton(bg, data->collapseBtnText, -80, 142, index3);       // 一键收合按钮
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, wallhanging_Controls_event_cb);        // 一键打开按钮
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2, wallhanging_Controls_event_cb); // 创建急停按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, wallhanging_Controls_event_cb);       // 一键收合按钮
    
     
     CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
@@ -1038,9 +894,9 @@ lv_obj_t *CreateFoldingPageBg(const DevicePageData *data, uint8_t device_num)
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
     index_t *index3 = add_index_t(device_num, 2);
-    CreateFoldingControlsButton(bg, data->expandBtnText, -320, 142, index1);        // 一键打开按钮
-    CreateFoldingControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); // 创建急停按钮
-    CreateFoldingControlsButton(bg, data->collapseBtnText, -80, 142, index3);       // 一键收合按钮
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, folding_Controls_event_cb);        // 一键打开按钮
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2, folding_Controls_event_cb); // 创建急停按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, folding_Controls_event_cb);       // 一键收合按钮
    
     
     CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
@@ -1079,11 +935,11 @@ lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num
     index_t *index3 = add_index_t(device_num, 2);
     index_t *index4 = add_index_t(device_num, 3);
     index_t *index5 = add_index_t(device_num, 4);
-    CreateContractionControlsButton(bg, data->expandBtnText, -320, 142, index1);       
-    CreateContractionControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); 
-    CreateContractionControlsButton(bg, data->collapseBtnText, -80, 142, index3);       
-    CreateContractionControlsButton(bg, data->StandOpenBtnText, -320, 188, index4);
-    CreateContractionControlsButton(bg, data->StandClosureBtnText, -80, 188, index5);
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, telescopic_Controls_event_cb);       
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2, telescopic_Controls_event_cb); 
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, telescopic_Controls_event_cb);       
+    CreateControlsButton(bg, data->StandOpenBtnText, -320, 188, index4, telescopic_Controls_event_cb);
+    CreateControlsButton(bg, data->StandClosureBtnText, -80, 188, index5, telescopic_Controls_event_cb);
     
     CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
     CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
@@ -1121,11 +977,11 @@ lv_obj_t *CreateRevolvingPageBg(const DevicePageData *data, uint8_t device_num)
     index_t *index3 = add_index_t(device_num, 2);
     index_t *index4 = add_index_t(device_num, 3);
     index_t *index5 = add_index_t(device_num, 4);
-    CreateRevolvingControlsButton(bg, data->expandBtnText, -320, 142, index1);       
-    CreateRevolvingControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2); 
-    CreateRevolvingControlsButton(bg, data->collapseBtnText, -80, 142, index3);       
-    CreateRevolvingControlsButton(bg, data->StandOpenBtnText, -320, 188, index4);
-    CreateRevolvingControlsButton(bg, data->StandClosureBtnText, -80, 188, index5);
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, stage_Controls_event_cb);       
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2, stage_Controls_event_cb); 
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, stage_Controls_event_cb);       
+    CreateControlsButton(bg, data->StandOpenBtnText, -320, 188, index4, stage_Controls_event_cb);
+    CreateControlsButton(bg, data->StandClosureBtnText, -80, 188, index5, stage_Controls_event_cb);
     
     CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
     CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
@@ -1160,8 +1016,8 @@ lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
 
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
-    CreateLightControlsButton(bg, data->expandBtnText, -320, 142, index1);  // 一键打开按钮
-    CreateLightControlsButton(bg, data->collapseBtnText, -80, 142, index2); // 一键收合按钮
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, lights_Controls_event_cb);  // 一键打开按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2, lights_Controls_event_cb); // 一键收合按钮
 
    
 

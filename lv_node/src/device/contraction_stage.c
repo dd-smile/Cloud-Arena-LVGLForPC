@@ -18,7 +18,7 @@ extern bool stop_flag;
 bool data_flag = false;   //数据刷新   
 bool rotate_flag = false;     
 
-// 舞台
+// 伸缩舞台
 void contraction_Controls_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -59,7 +59,7 @@ void contraction_Controls_event_cb(lv_event_t *e)
     }
 }
 
-// 详情页面
+// 伸缩舞台详情页面
 void telescopic_Controls_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
