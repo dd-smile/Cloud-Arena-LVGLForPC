@@ -22,22 +22,22 @@ void set_wallhanging_stands_state(uint8_t num, uint8_t state)
     case 1:// 壁挂球架1 
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[28]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[WALL_HANGING_BALL_RACK_OPEN_ONE_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[29]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[WALL_HANGING_BALL_RACK_SHUT_ONE_FUNCTION_ENABLED]);
         }
         break;
 
     case 2:// 壁挂球架2
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[30]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[WALL_HANGING_BALL_RACK_OPEN_TWO_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[31]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[WALL_HANGING_BALL_RACK_SHUT_TWO_FUNCTION_ENABLED]);
         }  
         break;
 
@@ -55,22 +55,22 @@ void set_wallhanging_stop_state(uint8_t num, uint8_t state)
     case 1:// 壁挂球架1 
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[32]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[WALL_HANGING_BALL_RACK_STOP_ONE_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[33]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[WALL_HANGING_BALL_RACK_STOP_ONE_FUNCTION_UNENABLED]);
         }
         break;
 
     case 2:// 壁挂球架2
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[34]);  
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[WALL_HANGING_BALL_RACK_STOP_TWO_FUNCTION_ENABLED]);  
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[35]);  
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[WALL_HANGING_BALL_RACK_STOP_TWO_FUNCTION_UNENABLED]);  
         }
         break;
 
@@ -124,6 +124,9 @@ void wallhanging_Controls_event_cb(lv_event_t *e)
             {
                 set_wallhanging_stands_state(device_num, 0);
             }          
+            break;
+
+        default:
             break;
 
         }

@@ -18,7 +18,7 @@ extern bool stop_flag;
 bool data_flag = false;   //数据刷新   
 bool rotate_flag = false;     
 
-// 伸缩舞台
+// 伸缩舞台事件
 void contraction_Controls_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -36,14 +36,14 @@ void contraction_Controls_event_cb(lv_event_t *e)
         case 0:     //舞台表演打开
             if (stop_flag == false)
             {
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[44]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[STAGE_MODE_FUNCTION_ENABLED]); 
             }
             break; 
                        
         case 1:   //舞台合唱打开
             if (stop_flag == false)
             {
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[45]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[CHORUS_MODE_FUNCTION_ENABLED]); 
  
             }          
             break; 
@@ -51,15 +51,18 @@ void contraction_Controls_event_cb(lv_event_t *e)
         case 2:    //舞台收起
             if (stop_flag == false)
             {
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[46]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[STAGE_CLOSED_OPERATION_FUNCTION_ENABLED]); 
             }          
+            break;
+
+        default:
             break;
 
         }
     }
 }
 
-// 伸缩舞台详情页面
+// 伸缩舞台详情页面事件
 void telescopic_Controls_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -72,17 +75,17 @@ void telescopic_Controls_event_cb(lv_event_t *e)
     {
         switch (index)
         {
-        case 0:     //舞台合唱打开
+        case 0:     //舞台表演打开
             if (data_flag == false)
             {
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[47]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[STAGE_MODE_FUNCTION_ENABLED]); 
             }
             break; 
 
-        case 1:   //舞台表演打开
+        case 1:   //舞台合唱打开
             if (data_flag == false)
             {
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[48]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[CHORUS_MODE_FUNCTION_ENABLED]); 
  
             }          
             break; 
@@ -90,7 +93,7 @@ void telescopic_Controls_event_cb(lv_event_t *e)
         case 2:    //舞台收起
             if (data_flag == false)
             {
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[49]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[STAGE_CLOSED_OPERATION_FUNCTION_ENABLED]); 
             }          
             break;
 
@@ -99,13 +102,13 @@ void telescopic_Controls_event_cb(lv_event_t *e)
             {
                 data_flag = true;    //表示数据刷新按钮被按了下去
                 lv_obj_add_state(obj, LV_STATE_PRESSED);   //BUTTON高亮
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[50]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[STAGE_RESET_OPERTION_FUNCTION_ENABLED]);
             }
             else
             {
                 data_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);   //BUTTON取消高亮
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[51]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[STAGE_RESET_OPERTION_FUNCTION_UNENABLED]);
             }
             break;
 
@@ -114,21 +117,24 @@ void telescopic_Controls_event_cb(lv_event_t *e)
             {
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);   //BUTTON高亮
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[52]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[STAGE_STOP_OPERTION_FUNCTION_ENABLED]);
             }
             else
             {
                 stop_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);   //BUTTON取消高亮
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[53]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[STAGE_STOP_OPERTION_FUNCTION_UNENABLED]);
             }
+            break;
+
+        default:
             break;
 
         }
     }
 }
 
-// revolving stage
+// 升降旋转舞台事件
 void revolving_Controls_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -148,13 +154,13 @@ void revolving_Controls_event_cb(lv_event_t *e)
             {   
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[54]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[REVOLVING_STAGE_RISE_FUNCTION_ENABLED]); 
             }
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[55]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[REVOLVING_STAGE_RISE_FUNCTION_UNENABLED]);
             }
             break;     
 
@@ -163,14 +169,14 @@ void revolving_Controls_event_cb(lv_event_t *e)
             {   
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[56]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_STOP_FUNCTION_ENABLED]); 
  
             }
             else
             {
                 stop_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[57]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_STOP_FUNCTION_UNENABLED]);
             }
             break;  
 
@@ -179,21 +185,24 @@ void revolving_Controls_event_cb(lv_event_t *e)
             {   
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[58]); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_DESCENT_FUNCTION_ENABLED]); 
             }  
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[59]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_DESCENT_FUNCTION_UNENABLED]);
             }        
+            break;
+
+        default:
             break;
 
         }
     }
 }
 
-// 升降旋转舞台详情页面
+// 升降旋转舞台详情页面事件
 void stage_Controls_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -213,15 +222,13 @@ void stage_Controls_event_cb(lv_event_t *e)
             {   
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[REVOLVING_STAGE_RISE_FUNCTION_ENABLED]); 
             }
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[REVOLVING_STAGE_RISE_FUNCTION_UNENABLED]);
             }
             break;      
 
@@ -230,16 +237,14 @@ void stage_Controls_event_cb(lv_event_t *e)
             {   
                 stop_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_STOP_FUNCTION_ENABLED]); 
  
             }
             else
             {   
                 stop_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_STOP_FUNCTION_UNENABLED]);
             }
             break;    
 
@@ -248,15 +253,13 @@ void stage_Controls_event_cb(lv_event_t *e)
             {   
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_DESCENT_FUNCTION_ENABLED]); 
             }  
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_DESCENT_FUNCTION_UNENABLED]);
             }        
             break;
 
@@ -265,15 +268,13 @@ void stage_Controls_event_cb(lv_event_t *e)
             {   
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_turning\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_TURNING_FUNCTION_ENABLED]);
             }   
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_turning\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_TURNING_FUNCTION_UNENABLED]);
             }       
             break;
 
@@ -282,23 +283,27 @@ void stage_Controls_event_cb(lv_event_t *e)
             {   
                 rotate_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_reversal\",\"v\":\"%d\"}]}",1);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_REVERSAL_FUNCTION_ENABLED]);
             } 
             else
             {
                 rotate_flag = false;
                 lv_obj_clear_state(obj, LV_STATE_PRESSED);
-                sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_reversal\",\"v\":\"%d\"}]}",0);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF); 
+               OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ROTARY_STAGE_REVERSAL_FUNCTION_UNENABLED]);
             }         
+            break;
+
+        default:
             break;
 
         }
     }
 }
 
-
+/**
+ * 伸缩舞台详情页面数据
+ * @param device_num            设备编号
+*/
 void CreateContractionPage(uint8_t device_num)
 {
 
@@ -331,7 +336,10 @@ void CreateContractionPage(uint8_t device_num)
 
 }
 
-// revolving stage
+/**
+ * 升降旋转舞台详情页面数据
+ * @param device_num            设备编号
+*/
 void CreateRevolvingPage(uint8_t device_num)
 {
 

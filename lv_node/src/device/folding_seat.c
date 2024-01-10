@@ -23,22 +23,22 @@ void set_folding_stands_state(uint8_t num, uint8_t state)
     case 1:// 地面翻折座椅1 
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[36]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[FLOOR_FOLDING_SEAT_UP_ONE_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[37]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[FLOOR_FOLDING_SEAT_DOWN_ONE_FUNCTION_ENABLED]);
         }
         break;
 
     case 2:// 地面翻折座椅2
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[38]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[FLOOR_FOLDING_SEAT_UP_TWO_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[39]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[FLOOR_FOLDING_SEAT_DOWN_TWO_FUNCTION_ENABLED]);
         }  
         break;
 
@@ -56,22 +56,22 @@ void set_folding_stop_state(uint8_t num, uint8_t state)
     case 1:// 地面翻折座椅1 
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[40]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[FLOOR_FOLDING_SEAT_STOP_ONE_FUNCTION_ENABLED]);
         }
         else if(state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[41]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[FLOOR_FOLDING_SEAT_STOP_ONE_FUNCTION_UNENABLED]);
         }
         break;
 
     case 2:// 地面翻折座椅2
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[42]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[FLOOR_FOLDING_SEAT_STOP_TWO_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[43]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[FLOOR_FOLDING_SEAT_STOP_TWO_FUNCTION_UNENABLED]);
         }
         break;
 
@@ -124,6 +124,9 @@ void folding_Controls_event_cb(lv_event_t *e)
             {
                 set_folding_stands_state(device_num, 0);
             }          
+            break;
+
+        default:
             break;
             
         }

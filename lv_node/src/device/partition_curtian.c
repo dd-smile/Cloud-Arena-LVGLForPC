@@ -25,22 +25,22 @@ void set_partition_stands_state(uint8_t num, uint8_t state)
     case 1:// 分隔幕1 
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[20]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[DIVIDER_DOWN_ONE_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[21]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[DIVIDER_UP_ONE_FUNCTION_ENABLED]);
         }
         break;
 
     case 2:// 分隔幕2
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[22]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[DIVIDER_DOWN_TWO_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[23]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[DIVIDER_UP_TWO_FUNCTION_ENABLED]);
         }  
         break;
 
@@ -58,22 +58,22 @@ void set_partition_stop_state(uint8_t num, uint8_t state)
     case 1:
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[24]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[DIVIDER_STOP_ONE_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[25]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[DIVIDER_STOP_ONE_FUNCTION_UNENABLED]);
         }
         break;
 
     case 2:
         if (state == 1)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[26]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[DIVIDER_STOP_TWO_FUNCTION_ENABLED]);
         }
         else if (state == 0)
         {
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[27]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[DIVIDER_STOP_TWO_FUNCTION_UNENABLED]);
         }
         break;
 
@@ -128,6 +128,8 @@ void partition_Controls_event_cb(lv_event_t *e)
             }          
             break;
             
+        default:
+            break;
         }
     }
 }

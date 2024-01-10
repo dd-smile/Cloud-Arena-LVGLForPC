@@ -33,7 +33,7 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
         case 0:  //一键打开
             if (stop_flag == false) 
             {
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[0]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ACTIVE_STAND_OPEN_FUNCTION_ENABLED]);
             }
             break;
 
@@ -43,20 +43,24 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;   //表示急停产生
 
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[1]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ACTIVE_STAND_STOP_FUNCTION_ENABLED]);
             }
             else
             {
                 stop_flag = false;
                 lv_obj_clear_state(obj,LV_STATE_PRESSED);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ACTIVE_STAND_STOP_FUNCTION_UNENABLED]);
             }
             break;
 
         case 2:   //一键关闭
             if (stop_flag == false)
             {
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[2]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[ACTIVE_STAND_SHUT_FUNCTION_ENABLED]);
             }
+            break;
+        
+        default:
             break;
 
         }

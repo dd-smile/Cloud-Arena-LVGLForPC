@@ -32,6 +32,9 @@ void lights_Controls_event_cb(lv_event_t *e)
         case 1:                               
                 SetLightingscene_vsu(0x02);               
             break;
+        
+        default:
+            break;
         }
     }
 }

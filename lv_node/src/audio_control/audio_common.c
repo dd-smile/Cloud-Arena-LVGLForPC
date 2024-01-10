@@ -29,6 +29,9 @@ static void add_Audio_event_cb(lv_event_t *e)
         case 1:   //多轨控制
             MultitrackControl(lv_scr_act());
             break;
+
+        default:
+            break;
         }
     }
 }
@@ -63,6 +66,9 @@ static void led_Controls_event_cb(lv_event_t *e)
                 break;
             case 5:
                 synchronous_unmutework();
+                break;
+
+            default:
                 break;
         }
     }
@@ -116,6 +122,9 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_
         case 1:     //多轨控制
             lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
             lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
+            break;
+
+        default:
             break;
     }
     

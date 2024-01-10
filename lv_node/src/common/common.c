@@ -417,13 +417,7 @@ lv_100ask_pinyin_dict_t lv_100ask_def_pinyin[] = {
     {"zuo", "做作坐昨左佐座撮琢柞"},
     {NULL, NULL}};
 
-enum Sports_equipment{
-    MOVABLE_STAND_OPEN,
-    MOVABLE_STAND_STOP,
-    MOVABLE_STAND_CLOSE,
-};
-
-char *usrnet_mqtt_msh[] = {
+char *USRNET_MQTT_MSH[] = {
     MQTT_MSG_128MT_TEMPLATE("movable_stand_open", "1"),//0
     MQTT_MSG_128MT_TEMPLATE("movable_stand_stop", "1"),//1
     MQTT_MSG_128MT_TEMPLATE("movable_stand_stop", "0"),//2
@@ -461,53 +455,36 @@ char *usrnet_mqtt_msh[] = {
     MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_stop_2", "1"),//34
     MQTT_MSG_128MT_TEMPLATE("Wall_hanging_ball_rack_stop_2", "0"),//35
     MQTT_MSG_128MT_TEMPLATE("Floor_folding_seat_up_1", "1"),//36
-    MQTT_MSG_128MT_TEMPLATE(),//37
-    MQTT_MSG_128MT_TEMPLATE(),//38
-    MQTT_MSG_128MT_TEMPLATE(),//39
-    MQTT_MSG_128MT_TEMPLATE(),//40
-    MQTT_MSG_128MT_TEMPLATE(),//41
-    MQTT_MSG_128MT_TEMPLATE(),//42
-    MQTT_MSG_128MT_TEMPLATE(),//43
-    MQTT_MSG_128MT_TEMPLATE(),//44
-    MQTT_MSG_128MT_TEMPLATE(),//45
+    MQTT_MSG_128MT_TEMPLATE("Floor_folding_seat_shut_1", "1"),//37
+    MQTT_MSG_128MT_TEMPLATE("Floor_folding_seat_up_2", "1"),//38
+    MQTT_MSG_128MT_TEMPLATE("Floor_folding_seat_shut_2", "1"),//39
+    MQTT_MSG_128MT_TEMPLATE("Floor_folding_sea_stop_1", "1"),//40
+    MQTT_MSG_128MT_TEMPLATE("Floor_folding_sea_stop_1", "0"),//41
+    MQTT_MSG_128MT_TEMPLATE("Floor_folding_sea_stop_2", "1"),//42
+    MQTT_MSG_128MT_TEMPLATE("Floor_folding_sea_stop_2", "0"),//43
 
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_shut_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_up_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_seat_shut_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_sea_stop_1\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_sea_stop_1\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_sea_stop_2\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Floor_folding_sea_stop_2\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_mode\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Chorus_mode\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_closed_operation\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_mode\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Chorus_mode\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_closed_operation\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_stop_operation\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_stop_operation\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Revolving_stage_rise\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_stop\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_descent\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_turning\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_turning\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_reversal\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Rotary_stage_reversal\",\"v\":\"0\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Master_scram\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Manual_mode\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Total_reduction\",\"v\":\"1\"}]}",
-    "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"Total_reduction\",\"v\":\"0\"}]}",
+    MQTT_MSG_48MT_TEMPLATE("Stage_mode", "1"),//44
+    MQTT_MSG_48MT_TEMPLATE("Chorus_mode", "1"),//45
+    MQTT_MSG_48MT_TEMPLATE("Stage_closed_operation", "1"),//46
+    MQTT_MSG_48MT_TEMPLATE("Stage_reset_opertion", "1"),//47
+    MQTT_MSG_48MT_TEMPLATE("Stage_reset_opertion", "0"),//48
+    MQTT_MSG_48MT_TEMPLATE("Stage_stop_operation", "1"),//49
+    MQTT_MSG_48MT_TEMPLATE("Stage_stop_operation", "0"),//50
+
+    MQTT_MSG_128MT_TEMPLATE("Revolving_stage_rise", "1"),//51
+    MQTT_MSG_128MT_TEMPLATE("Revolving_stage_rise", "0"),//52
+    MQTT_MSG_128MT_TEMPLATE("Rotary_stage_stop", "1"),//53
+    MQTT_MSG_128MT_TEMPLATE("Rotary_stage_stop", "0"),//54
+    MQTT_MSG_128MT_TEMPLATE("Rotary_stage_descent", "1"),//55
+    MQTT_MSG_128MT_TEMPLATE("Rotary_stage_descent", "0"),//56
+    MQTT_MSG_128MT_TEMPLATE("Rotary_stage_turning", "1"),//57
+    MQTT_MSG_128MT_TEMPLATE("Rotary_stage_turning", "0"),//58
+    MQTT_MSG_128MT_TEMPLATE("Rotary_stage_reversal", "1"),//59
+    MQTT_MSG_128MT_TEMPLATE("Rotary_stage_reversal", "0"),//60
+    MQTT_MSG_128MT_TEMPLATE("Master_scram", "1"),//61
+    MQTT_MSG_128MT_TEMPLATE("Manual_mode", "1"),//62
+    MQTT_MSG_128MT_TEMPLATE("Total_reduction", "1"),//63
+    MQTT_MSG_128MT_TEMPLATE("Total_reduction", "0"),//64
 
 };
 

@@ -650,16 +650,19 @@ static void Scram_reset_event_cb(lv_event_t* event)
         {
             case 0:
                 printf("急停\n");
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[60]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[MASTER_SCRAM_FUNCTION_ENABLED]);
                 lv_style_reset(&style_indic);
                 lv_obj_del(mask);
                 break;
             
             case 1:
                 printf("复位\n");
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[62]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[TOTAL_REDUCTION_FUNCTION_ENABLED]);
                 lv_style_reset(&style_indic);
                 lv_obj_del(mask);
+                break;
+
+            default:
                 break;
         }
     }

@@ -59,7 +59,7 @@ void manual_Controls_event_cb(lv_event_t *e)
         switch (index)
         {
         case 0:  //总急停
-            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[60]);
+            OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[MASTER_SCRAM_FUNCTION_ENABLED]);
             break;
 
         case 1:   //打开手动模式
@@ -68,7 +68,7 @@ void manual_Controls_event_cb(lv_event_t *e)
                 stop_flag = true;   
 
                 lv_obj_add_state(obj, LV_STATE_PRESSED);  //添加长按属性，使得按钮保持被点击着的样子
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[61]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[MANUAL_MODE_FUNCTION_ENABLED]);
             }
             else
             {
@@ -82,14 +82,17 @@ void manual_Controls_event_cb(lv_event_t *e)
             {
                 reduction_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[62]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[TOTAL_REDUCTION_FUNCTION_ENABLED]);
             }
             else
             {
                 reduction_flag = false;
                 lv_obj_clear_state(obj,LV_STATE_PRESSED);
-                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, usrnet_mqtt_msh[63]);
+                OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[TOTAL_REDUCTION_FUNCTION_UNENABLED]);
             }
+            break;
+
+        default:
             break;
 
         }
@@ -145,21 +148,26 @@ static void lv_event_handler(lv_event_t *e)
             }
         }
         
-        if (num == 0)
+        switch (num)
         {
+        case 0:
             g_mode_num = 0;
-        }
-        else if (num == 1)
-        {
+            break;
+
+        case 1:
             g_mode_num = 1;
-        }
-        else if (num == 2)
-        {
+            break;
+
+        case 2:
             g_mode_num = 2;
-        }
-        else if (num == 3)
-        {
+            break;
+
+        case 3:
             g_mode_num = 3;
+            break;
+
+        default:
+            break;
         }
         
         lv_mode_password_keyboard_display();

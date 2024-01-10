@@ -151,6 +151,9 @@ void multitrack_Controls_event_cb(lv_event_t *e)
                 sprintf(buf_audio, "stop@5F");
                 audio_working();
             break;
+
+        default:
+            break;
         }
     }
 }

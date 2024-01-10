@@ -355,8 +355,8 @@ void create_lv_layout(lv_obj_t *scr)
   //创建更新天气数据任务
   // lv_timer_create(timer_weather_callback, 60000, NULL);
 
-  //创建ＭＱＴＴ心跳任务
-  // lv_timer_create(timer_mqtt_callback, 20000, NULL);
+  // 创建ＭＱＴＴ心跳任务
+  lv_timer_create(timer_mqtt_callback, 20000, NULL);
 
   // 创建更新历史温湿度数据
   // lv_timer_create(timer_average_callback, 60000, NULL);
@@ -371,7 +371,7 @@ void create_lv_layout(lv_obj_t *scr)
   lv_gui_password_keyboard_display();
   password_flag = true;
 
-  // connect_mqtt();   // 连接mqtt服务器
+  connect_mqtt();   // 连接mqtt服务器
   //create_client_light();  //　连接灯光服务器
   // create_client_abesn();  //连接艾比森ｐｌｃ服务器
 
