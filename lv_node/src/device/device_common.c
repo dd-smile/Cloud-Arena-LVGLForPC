@@ -68,7 +68,7 @@ static void CreateLoge(lv_obj_t *parent)
  * @param event_cb        要注册的事件           
  * @return                返回指向按钮的指针
  * */
-static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_event_cb_t event_cb)
+static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_event_cb_t event_cb, u_int8_t device_type)
 {
 
     lv_obj_t *btn = lv_btn_create(obj);
@@ -80,7 +80,8 @@ static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t
     lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
     lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, 185);
     lv_obj_add_flag(btn, LV_OBJ_FLAG_CLICKABLE);
-    lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);
+
+    lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, device_type);
 
     lv_obj_t *label = lv_label_create(btn);
     lv_label_set_text(label, text);
@@ -482,32 +483,63 @@ static void MaintenanceCreateButton(lv_event_t *e)
 }
 
 /**
- * 创建活动看台故障申报按钮的点击事件
+ * 创建故障申报按钮的点击事件
  * @param e               指向事件描述符的指针
  * */
 static void ReportCreateButton(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
 
-    if (code == LV_EVENT_CLICKED)
-    {
-        CreateBreakdownPageBg(lv_scr_act());
-    }
-}
+    lv_obj_t *user_data = lv_event_get_user_data(e);
 
-/**
- * 创建悬空球架故障申报按钮的点击事件
- * @param e               指向事件描述符的指针
- * */
-static void BsReportCreateButton(lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
 
     if (code == LV_EVENT_CLICKED)
     {
-        BsCreateBreakdownPageBg(lv_scr_act());
+        switch ((int)user_data)
+        {
+        case 0:
+            CreateBreakdownPageBg(lv_scr_act(), pPageData);
+            break;
+
+        case 1:
+            CreateBreakdownPageBg(lv_scr_act(), bs_data);
+            break;
+
+        case 2:
+            CreateBreakdownPageBg(lv_scr_act(), pc_data);
+            break;
+
+        case 3:
+            CreateBreakdownPageBg(lv_scr_act(), wa_data);
+            break;
+
+        case 4:
+            CreateBreakdownPageBg(lv_scr_act(), fs_data);
+            break;
+
+        case 5:
+            CreateBreakdownPageBg(lv_scr_act(), cs_data);
+            break;
+
+        case 6:
+            CreateBreakdownPageBg(lv_scr_act(), rs_data);
+            break;
+        
+        case 7:
+            CreateBreakdownPageBg(lv_scr_act(), l_data);
+            break;
+
+        case 8:
+            
+            break;
+
+        default:
+            break;
+
+        }
     }
 }
+
 
 /**
  * 创建检查记录表按钮的点击事件
@@ -553,25 +585,25 @@ static lv_obj_t *CreateDescriptionInput(lv_obj_t *parent)
 }
 
 /**
- * 创建活动看台设备故障详情页
+ * 创建设备故障详情页
  * @param parent           指向父对象的指针
  * @return                 返回指向设备故障详情页的指针
  * */
-lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent)
+lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent, const DevicePageData *data)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);                               // 创建背景
     CreatrLine(bg);                                                        // 创建分割线
     card_create_16_text(bg, "设备名称: ", -300, 30);                    // 创建设备名称
-    card_create_16_text(bg, pPageData->deviceName, -140, 30);              // 创建设备名称
-    image_create(bg, pPageData->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, pPageData->intro, 31, -100, 300, 59); // 创建产品简介
+    card_create_16_text(bg, data->deviceName, -140, 30);              // 创建设备名称
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
     card_create_12_text(bg, "制造商服务电话: ", 88, -50); // 制造商服务电话
-    card_create_12_text(bg, pPageData->ManufacturingTel, 180, -50);
+    card_create_12_text(bg, data->ManufacturingTel, 180, -50);
     card_create_12_text(bg, "制造商售后电话: ", 87, 5);
-    card_create_12_text(bg, pPageData->SalehAfterotline, 180, 5);
+    card_create_12_text(bg, data->SalehAfterotline, 180, 5);
 
     card_create_12_text(bg, "解决问题: ", 88, 50);
 
@@ -589,7 +621,7 @@ lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent)
 
     CreateDescriptionInput(bg);  //描述设备故障输入框
 
-    lv_obj_t *InspectButton = CreateFeatureButton(bg, "检查记录表", 50, InspectCreateButton); // 创建检查记录表按钮
+    lv_obj_t *InspectButton = CreateFeatureButton(bg, "检查记录表", 50, InspectCreateButton, NULL); // 创建检查记录表按钮
     lv_obj_set_size(InspectButton, 320, 39);
     lv_obj_align(InspectButton, LV_ALIGN_DEFAULT, 22, 350);
 
@@ -601,49 +633,6 @@ lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent)
     return bg;
 }
 
-/**
- * 创建悬空球架设备故障详情页
- * @param parent           指向父对象的指针
- * @return                 返回指向设备故障详情页的指针
- * */
-lv_obj_t *BsCreateBreakdownPageBg(lv_obj_t *parent)
-{
-    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
-
-    lv_obj_t *bg = CreateDeviceBgCard(mask);                               // 创建背景
-    CreatrLine(bg);                                                        // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -300, 30);                    // 创建设备名称
-    card_create_16_text(bg, bs_data->deviceName, -140, 30);              // 创建设备名称
-    image_create(bg, bs_data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, bs_data->intro, 31, -100, 300, 59); // 创建产品简介
-
-    card_create_12_text(bg, "制造商服务电话: ", 88, -50); // 制造商服务电话
-    card_create_12_text(bg, bs_data->ManufacturingTel, 180, -50);
-    card_create_12_text(bg, "制造商售后电话: ", 87, 5);
-    card_create_12_text(bg, bs_data->SalehAfterotline, 180, 5);
-
-    card_create_12_text(bg, "解决问题: ", 88, 50);
-
-    lv_obj_t *SolveInputBox = CreateInputBox(bg, -43, 244, 190, 35);
-    lv_obj_set_style_text_font(SolveInputBox, &lv_font_montserrat_12, 0); // set font
-    lv_obj_set_style_text_color(SolveInputBox, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-
-    card_create_12_text(bg, "结果: ", 55, 105);
-    CreateRadioBox(bg, 230, 287);  //结果选择框
-
-    CreateDescriptionInput(bg);  //描述设备故障输入框
-
-    lv_obj_t *InspectButton = CreateFeatureButton(bg, "检查记录表", 50, InspectCreateButton); // 创建检查记录表按钮
-    lv_obj_set_size(InspectButton, 320, 39);
-    lv_obj_align(InspectButton, LV_ALIGN_DEFAULT, 22, 350);
-
-    lv_obj_t *ConfirmBtn = btn_create_text(bg, false, "OK", 480, 353);     // 创建按钮
-    lv_obj_add_event_cb(ConfirmBtn, lv_back_Mask, LV_EVENT_CLICKED, NULL); // 添加返回事件
-    lv_obj_t *BackBtn = btn_create_text(bg, false, "Cancel", 620, 353);    // 创建按钮
-    lv_obj_add_event_cb(BackBtn, lv_back_Mask, LV_EVENT_CLICKED, NULL);    // 添加返回事件
-
-    return bg;
-}
 
 /**
  * 创建活动看台设备详情页
@@ -653,88 +642,44 @@ lv_obj_t *BsCreateBreakdownPageBg(lv_obj_t *parent)
  * */
 lv_obj_t *CreateDevicePageBg(const DevicePageData *data, uint8_t device_num)
 {
-    // lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
-    // lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    // CreatrLine(bg);                                      // 创建分割线
-    // card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    // card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    // card_create_16_text(bg, "制造商简介: ", 100, -195);
-    // card_create_12_text(bg, "采购时间: ", 75, -5);
-    // card_create_12_text(bg, data->date, 140, -5);
-    // card_create_12_text(bg, "检修周期: ", 260, -5);
-    // card_create_12_text(bg, data->period, 330, -5);
-    // card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    // card_create_12_text(bg, data->phoneNumber, 200, 25);
-    // image_create(bg, data->image, -200, -100);                        // 创建图片
-    // CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    CreatrLine(bg);                                      // 创建分割线
+    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(bg, "制造商简介: ", 100, -195);
+    card_create_12_text(bg, "采购时间: ", 75, -5);
+    card_create_12_text(bg, data->date, 140, -5);
+    card_create_12_text(bg, "检修周期: ", 260, -5);
+    card_create_12_text(bg, data->period, 330, -5);
+    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    card_create_12_text(bg, data->phoneNumber, 200, 25);
+    image_create(bg, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
-    // //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
-    // index_t *index0 = add_index_t(device_num, 0);
-    // index_t *index1 = add_index_t(device_num, 1);
-    // index_t *index2 = add_index_t(device_num, 2);
+    //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
+    index_t *index1 = add_index_t(device_num, 0);
+    index_t *index2 = add_index_t(device_num, 1);
+    index_t *index3 = add_index_t(device_num, 2);
     // index_t *index3 = add_index_t(device_num, 3);
     // index_t *index4 = add_index_t(device_num, 4);
     // index_t *index5 = add_index_t(device_num, 5);
     // index_t *index6 = add_index_t(device_num, 6);
 
-    // CreateControlsButton(bg, data->expandBtnText, -320, 142, index0);                // 创建一键打开按钮
-    // CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1);         // 创建急停按钮
-    // CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2);               // 创建一键收合按钮
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, telescoopic_Controls_event_cb);                // 创建一键打开按钮
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2, telescoopic_Controls_event_cb);         // 创建急停按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, telescoopic_Controls_event_cb);               // 创建一键收合按钮
 
     // CreateControlsButton(bg, data->StandOpenBtnText, -350, 188, index3);     //看台展开
     // CreateControlsButton(bg, data->StandClosureBtnText, -250, 188, index4);  //看台收合
     // CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188, index5);      //座椅展开
     // CreateControlsButton(bg, data->SeatTipBtnText, -50, 188, index6);        //座椅收合
 
-    // CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);            // 创建改名按钮
-    // CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton); // 创建检修正常按钮 
-    // CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton); // 创建故障申报按钮  
-    // CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                   // 创建返回按钮
-
-    // CreateLoge(bg); // 制造商Logo
-
-    // CreateBiaoge(bg); // 表格
-
-    // return bg;
-    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
-
-    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "Device name: ", -300, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -140, 30); // 创建设备名称
-    card_create_16_text(bg, "Equipment brand: ", 100, -190);
-    create_12_text(bg, "Purchase Time: ", 80, -10);
-    create_12_text(bg, data->date, 160, -10);
-    create_12_text(bg, "Inspection cycle: ", 260, -10);
-    create_12_text(bg, data->period, 350, -10);
-    create_12_text(bg, "Supplier Service Phone: ", 105, 20);
-    create_12_text(bg, data->phoneNumber, 245, 20);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
-
-    //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
-    index_t *index0 = add_index_t(device_num, 0);
-    index_t *index1 = add_index_t(device_num, 1);
-    index_t *index2 = add_index_t(device_num, 2);
-    index_t *index3 = add_index_t(device_num, 3);
-    index_t *index4 = add_index_t(device_num, 4);
-    index_t *index5 = add_index_t(device_num, 5);
-    index_t *index6 = add_index_t(device_num, 6);
-
-    CreateControlsButton(bg, data->expandBtnText, -320, 142, index0, telescoopic_Controls_event_cb);                // 创建一键打开按钮
-    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1, telescoopic_Controls_event_cb);         // 创建急停按钮
-    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2, telescoopic_Controls_event_cb);               // 创建一键收合按钮
-
-    // CreateControlsButton(bg, data->StandOpenBtnText, -350, 188, index3, telescoopic_Controls_event_cb);     //看台展开
-    // CreateControlsButton(bg, data->StandClosureBtnText, -250, 188, index4, telescoopic_Controls_event_cb);  //看台收合
-    // CreateControlsButton(bg, data->SeatRiseBtnText, -150, 188, index5, telescoopic_Controls_event_cb);      //座椅展开
-    // CreateControlsButton(bg, data->SeatTipBtnText, -50, 188, index6, telescoopic_Controls_event_cb);        //座椅收合;
-   
-    CreateFeatureButton(bg, "reporting", 245, ReportCreateButton);  
-    CreateFeatureButton(bg, "rename", 50, RenameCreateButton);            
-    CreateFeatureButton(bg, "Maintenance", 145, MaintenanceCreateButton); 
-    CreateFeatureButton(bg, "Back", 340, lv_back_Mask);                  
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 0); // 创建故障申报按钮  
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);            // 创建改名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL); // 创建检修正常按钮 
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                   // 创建返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
@@ -768,17 +713,17 @@ lv_obj_t *CreatebasketballPageBg(const DevicePageData *data, uint8_t device_num)
     CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
     //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
-    index_t *index0 = add_index_t(device_num, 0);
-    index_t *index1 = add_index_t(device_num, 1);
-    index_t *index2 = add_index_t(device_num, 2);
-    CreateControlsButton(bg, data->expandBtnText, -320, 142, index0, basketball_Controls_event_cb);                // 创建一键打开按钮
-    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index1, basketball_Controls_event_cb);         // 创建急停按钮
-    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2, basketball_Controls_event_cb);               // 创建一键收合按钮
+    index_t *index1 = add_index_t(device_num, 0);   //传进来的device_num是设备号
+    index_t *index2 = add_index_t(device_num, 1);
+    index_t *index3 = add_index_t(device_num, 2);
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, basketball_Controls_event_cb);                // 创建一键打开按钮
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2, basketball_Controls_event_cb);         // 创建急停按钮
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, basketball_Controls_event_cb);               // 创建一键收合按钮
 
-    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);            // 创建改名按钮
-    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton); // 创建检修正常按钮 
-    CreateFeatureButton(bg, "故障申报", 245, BsReportCreateButton); // 创建故障申报按钮  
-    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                   // 创建返回按钮
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 1); // 创建故障申报按钮  
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);            // 创建改名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL); // 创建检修正常按钮 
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                   // 创建返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
@@ -821,10 +766,10 @@ lv_obj_t *CreatePartitionPageBg(const DevicePageData *data, uint8_t device_num)
     CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, partition_Controls_event_cb);       // 一键收合按钮
    
     
-    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
-    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
-    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
-    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 2);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
@@ -860,10 +805,10 @@ lv_obj_t *CreateWallhangingPageBg(const DevicePageData *data, uint8_t device_num
     CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, wallhanging_Controls_event_cb);       // 一键收合按钮
    
     
-    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
-    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
-    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
-    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 3);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
@@ -899,10 +844,10 @@ lv_obj_t *CreateFoldingPageBg(const DevicePageData *data, uint8_t device_num)
     CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, folding_Controls_event_cb);       // 一键收合按钮
    
     
-    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
-    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
-    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
-    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 4);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
@@ -941,10 +886,10 @@ lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num
     CreateControlsButton(bg, data->StandOpenBtnText, -320, 188, index4, telescopic_Controls_event_cb);
     CreateControlsButton(bg, data->StandClosureBtnText, -80, 188, index5, telescopic_Controls_event_cb);
     
-    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
-    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
-    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
-    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 5);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
@@ -983,10 +928,10 @@ lv_obj_t *CreateRevolvingPageBg(const DevicePageData *data, uint8_t device_num)
     CreateControlsButton(bg, data->StandOpenBtnText, -320, 188, index4, stage_Controls_event_cb);
     CreateControlsButton(bg, data->StandClosureBtnText, -80, 188, index5, stage_Controls_event_cb);
     
-    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
-    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
-    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
-    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 6);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
@@ -1021,10 +966,10 @@ lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
 
    
 
-    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton);       // 故障申报按钮
-    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton);          // 重命名按钮
-    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton);  // 检修正常按钮   
-    CreateFeatureButton(bg, "返回", 340, lv_back_Mask);                 // 返回按钮
+    CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 7);       // 故障申报按钮
+    CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);          // 重命名按钮
+    CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
+    CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
     CreateLoge(bg); // 制造商Logo
 
