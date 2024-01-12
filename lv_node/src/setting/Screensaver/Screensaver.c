@@ -77,7 +77,7 @@ static lv_obj_t *Screen_Background_Create(lv_obj_t *parent)
 static void *CreateScreenSaveStlye(lv_obj_t *parent)
 {
     lv_obj_t *scr = lv_c_create_mask_box(parent); // 创建遮罩
-    lv_obj_t *popup_page = create_popup_page(scr, "屏保设置", 0, 0);
+    lv_obj_t *popup_page = create_popup_page(scr, UI_MLANG_STR(SCREENSAVER_SETTINGS), 0, 0);
     Screen_Background_Create(popup_page);
     return scr;
 }
@@ -100,8 +100,8 @@ void CreateScreensave(lv_obj_t *parent)
 {
     lv_obj_t *ImageObj = CreateOBJclick(parent);
     image_create(parent, &Screensave, -100, -30);
-    card_create_24_text(parent, "屏保设置", 2, -30);                        // 创建标题
-    card_create_16_text(parent, "全新升级屏保", -16, 35);  // 创建标题
+    card_create_24_text(parent, UI_MLANG_STR(SCREENSAVER_SETTINGS), 2, -30);                        // 创建标题
+    card_create_16_text(parent, UI_MLANG_STR(NEW_UPGRADED_SCREENSAVER), -16, 35);  // 创建标题
     lv_obj_add_event_cb(ImageObj, add_Screensave_event_cb, LV_EVENT_ALL, NULL);
 
 }

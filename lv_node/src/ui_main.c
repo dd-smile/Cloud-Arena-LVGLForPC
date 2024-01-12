@@ -1,4 +1,19 @@
+/*
+ * @Description:  主页面ＵＩ
+ * @Author: mai
+ * @LastEditors: da
+ * @Date: 2023-04-25 16:02:39
+ * @LastEditTime: 2024-01-31 17:26:07
+ * @FilePath: /SmartBox_Power/lv_node/src/setting/time_setting/time_setting.c
+ */
 #include "ui_app.h"
+
+//要切换导航页按钮的名字
+static const enum Chinese_English_shift language_obj_buttons_id[] = {
+    facility,
+    MODE,
+    SETTING,
+};
 
 //左边导航页按钮结构体 (结构体数组)    
 struct
@@ -7,11 +22,10 @@ struct
   const void *img_on;
   int x;
   int y;
-  const char *label;
 } obj_buttons[] = {
-    {&home_off, &home_on, 10, -5, "facility"},
-    {&mode_off, &mode_on, 10, -15, "mode"},    //-2
-    {&setting_off, &setting_on, 10, -15, "setting"},    //-2
+    {&home_off, &home_on, 10, -5},
+    {&mode_off, &mode_on, 10, -15},    //-2
+    {&setting_off, &setting_on, 10, -15},    //-2
 };
 
 static bool enteredScreenMode = false; // 屏保标志位
@@ -145,7 +159,7 @@ static void ui_navigation_main_menu(lv_obj_t *obj)
   for (int i = 0; i < 3; i++)
   {
     //创建三个按钮@param  obj        指向一个对象的指针，它将是新图像的父对象
-    home_data.home_button[i] = lv_imgbtn_create_with_label(obj, obj_buttons[i].img_off, obj_buttons[i].img_on, obj_buttons[i].x, obj_buttons[i].y, 70 + i * 160, obj_buttons[i].label);
+    home_data.home_button[i] = lv_imgbtn_create_with_label(obj, obj_buttons[i].img_off, obj_buttons[i].img_on, obj_buttons[i].x, obj_buttons[i].y, 70 + i * 160, UI_MLANG_STR(language_obj_buttons_id[i]));
   }
   lv_imgbtn_set_state(home_data.home_button[0], LV_IMGBTN_STATE_PRESSED);   //初始化默认选中第一个图标按钮，让第一个按钮的样式处于高亮状态。
 }
@@ -339,15 +353,15 @@ void create_lv_layout(lv_obj_t *scr)
   // pthread_t tid_mu;
   // pthread_create(&tid_mu, NULL, create_client_mu, NULL);
 
-  // 读取屏幕配置文件
-  updateSettingData(&setting, SCREEN_SETTING_JSON);
+  // // 读取屏幕配置文件
+  // updateSettingData(&setting, SCREEN_SETTING_JSON);
 
   home_bg(scr);              // 设置主页背景
   home_page_box(scr);        // 框架(创建滑动页面)
   create_wifi_and_time(scr); // wifi 和 时间
 
-  // 创建屏保任务
-  lv_timer_create(UpdateTask, 500, NULL);
+  // // 创建屏保任务
+  // lv_timer_create(UpdateTask, 500, NULL);
 
   //创建更新温湿度数据任务
   // lv_timer_create(timer_data_callback, 50000, NULL);
@@ -356,7 +370,7 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_weather_callback, 60000, NULL);
 
   // 创建ＭＱＴＴ心跳任务
-  lv_timer_create(timer_mqtt_callback, 20000, NULL);
+  // lv_timer_create(timer_mqtt_callback, 20000, NULL);
 
   // 创建更新历史温湿度数据
   // lv_timer_create(timer_average_callback, 60000, NULL);
@@ -368,10 +382,10 @@ void create_lv_layout(lv_obj_t *scr)
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
 
-  lv_gui_password_keyboard_display();
-  password_flag = true;
+  // lv_gui_password_keyboard_display();
+  // password_flag = true;
 
-  connect_mqtt();   // 连接mqtt服务器
+  // connect_mqtt();   // 连接mqtt服务器
   //create_client_light();  //　连接灯光服务器
   // create_client_abesn();  //连接艾比森ｐｌｃ服务器
 

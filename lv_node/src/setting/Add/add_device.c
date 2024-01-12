@@ -1,5 +1,5 @@
 /*
- * @Description:
+ * @Description:添加设备
  * @Author: mai
  * @LastEditors: da
  * @Date: 2023-04-25 15:58:59
@@ -21,7 +21,7 @@ static lv_obj_t *CreateDevicePopupBox(lv_obj_t *parent)
     lv_obj_t *mask = lv_c_create_mask_box(parent);               // 创建遮罩
     lv_obj_t *iamge = image_create(mask, &DevicePopupbox, 0, 0); // 创建图标
     lv_obj_t *label = lv_label_create(iamge);                    // 创建标题
-    lv_label_set_text(label, "Add Device");
+    lv_label_set_text(label, UI_MLANG_STR(ADD_DEVICE));
     lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(label, &fout_24_text, LV_STATE_DEFAULT);
     lv_obj_align(label, LV_ALIGN_TOP_LEFT, 250, 20);
@@ -57,7 +57,7 @@ void CreateAddDevice(lv_obj_t *parent)
 {
     lv_obj_t *ImageObj = CreateOBJclick(parent);
     image_create(parent, &Add, -100, -30);
-    card_create_24_text(parent, "Add Device", 2, -30);               // 创建标题
-    card_create_16_text(parent, "Please add a new device", -16, 35); // 创建标题
+    card_create_24_text(parent, UI_MLANG_STR(ADD_DEVICE), 2, -30);               // 创建标题
+    card_create_16_text(parent, UI_MLANG_STR(PLEASE_ADD_A_NEW_DEVICE), -16, 35); // 创建标题
     lv_obj_add_event_cb(ImageObj, add_device_event_cb, LV_EVENT_ALL, NULL);
 }

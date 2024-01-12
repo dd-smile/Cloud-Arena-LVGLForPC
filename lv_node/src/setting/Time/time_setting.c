@@ -1,5 +1,5 @@
 /*
- * @Description:
+ * @Description:  时间设置
  * @Author: mai
  * @LastEditors: da
  * @Date: 2023-04-25 16:02:39
@@ -261,9 +261,9 @@ static void add_time_event_cb(lv_event_t *e)
     {
         lv_obj_t *SetMask = lv_c_create_mask_box(lv_scr_act());  // 创建遮罩层
         lv_obj_t *iamge = image_create(SetMask, &popover, 0, 0); // 创建图标
-        card_create_24_text(iamge, "Time Settings", 10, -150);
+        card_create_24_text(iamge, UI_MLANG_STR(TIME_SETTINGS), 10, -150);
 
-        lv_obj_t *SaveButton = btn_create_text(iamge, false, "Save", 255, 300);   //保存按钮
+        lv_obj_t *SaveButton = btn_create_text(iamge, false, UI_MLANG_STR(SAVE), 255, 300);   //保存按钮
         lv_obj_add_event_cb(SaveButton, add_SaveButton_event_cb, LV_EVENT_ALL, NULL);
         time_roller(iamge);
     }
@@ -277,7 +277,7 @@ void CreateTime(lv_obj_t *parent)
 {
     lv_obj_t *ImageObj = CreateOBJclick(parent);
     image_create(parent, &Timming, -100, -30);
-    card_create_24_text(parent, "Time settings", 10, -30); // 创建标题
+    card_create_24_text(parent, UI_MLANG_STR(TIME_SETTINGS), 10, -30); // 创建标题
     lv_obj_add_event_cb(ImageObj, add_time_event_cb, LV_EVENT_ALL, NULL);
     create_recv_time(parent, &fout_16_text, 6, 34);
 }

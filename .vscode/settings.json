@@ -137,7 +137,10 @@
     "sstream": "c",
     "language.h": "c",
     "ui_mlang.h": "c",
-    "display.h": "c"
+    "display.h": "c",
+    "sound_ezpro.h": "c",
+    "mqtt_common.h": "c",
+    "mqttkit.h": "c"
   },
   "C_Cpp.errorSquiggles": "Disabled",
   "C_Cpp_Runner.cCompilerPath": "gcc",

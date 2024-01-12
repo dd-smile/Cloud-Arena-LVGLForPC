@@ -311,19 +311,19 @@ static void lv_create_device(lv_event_t *e)
 void CreateDevicePage(lv_obj_t *parent)
 {
 
-    card_class(parent, 0, 0,"movable stand", 0, 1);      //创建活动看台卡片   倒数第二个参数是设备类型，倒数第一个是设备号
-    card_class(parent, 1, 0, "Hanging ball rack 1", 1, 1);
-    card_class(parent, 2, 0, "Hanging ball rack 2", 1, 2);
-    card_class(parent, 3, 0, "Hanging ball rack 3", 1, 3);
-    card_class(parent, 0, 1, "Hanging ball rack 4", 1, 4);
-    card_class(parent, 1, 1, "Automatic divider 1", 2, 1);
-    card_class(parent, 2, 1, "Automatic divider 2", 2, 2);
-    card_class(parent, 3, 1, "Wall hanging ball rack 1", 3, 1);
-    card_class(parent, 0, 2, "Wall hanging ball rack 2", 3, 2);
-    card_class(parent, 1, 2, "Buried flip seat 1", 4, 1);
-    card_class(parent, 2, 2, "Buried flip seat 2", 4, 2);
-    card_class(parent, 3, 2, "Telescopic stage", 5, 1);
-    card_class(parent, 0, 3, "Elevating rotary stage", 6, 1);
-    card_class(parent, 1, 3, "Venue lighting", 7, 1);
-    card_class(parent, 2, 3, "manual mode", 8, 1);
+    card_class(parent, 0, 0, UI_MLANG_STR(MOVABLE_STAND), 0, 1);      //创建活动看台卡片   倒数第二个参数是设备类型，倒数第一个是设备号
+    card_class(parent, 1, 0, UI_MLANG_STR(HANGING_BALL_RACK_1), 1, 1);
+    card_class(parent, 2, 0, UI_MLANG_STR(HANGING_BALL_RACK_2), 1, 2);
+    card_class(parent, 3, 0, UI_MLANG_STR(HANGING_BALL_RACK_3), 1, 3);
+    card_class(parent, 0, 1, UI_MLANG_STR(HANGING_BALL_RACK_4), 1, 4);
+    card_class(parent, 1, 1, UI_MLANG_STR(AUTOMATIC_DIVIDER_1), 2, 1);
+    card_class(parent, 2, 1, UI_MLANG_STR(AUTOMATIC_DIVIDER_2), 2, 2);
+    card_class(parent, 3, 1, UI_MLANG_STR(WALL_HANGING_BALL_RACK_1), 3, 1);
+    card_class(parent, 0, 2, UI_MLANG_STR(WALL_HANGING_BALL_RACK_2), 3, 2);
+    card_class(parent, 1, 2, UI_MLANG_STR(BURIED_FLIP_SEAT_1), 4, 1);
+    card_class(parent, 2, 2, UI_MLANG_STR(BURIED_FLIP_SEAT_2), 4, 2);
+    card_class(parent, 3, 2, UI_MLANG_STR(TELESCOPIC_STAGE), 5, 1);
+    card_class(parent, 0, 3, UI_MLANG_STR(ELEVATING_ROTARY_STAGE), 6, 1);
+    card_class(parent, 1, 3, UI_MLANG_STR(VENUE_LIGHTING), 7, 1);
+    card_class(parent, 2, 3, UI_MLANG_STR(MANUAL_MODE), 8, 1);
 }

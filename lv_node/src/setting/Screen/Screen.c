@@ -1,5 +1,12 @@
+/*
+ * @Description:屏幕设置
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2023-03-09 11:28:42
+ * @LastEditTime: 2023-12-25 10:34:31
+ * @FilePath: lv_node/src/setting/Screen/Screen.c
+ */
 #include "ui_app.h"
-
 
 lv_setting_data_t setting; //屏幕设置结构体   用于退出页面时候的保存
 lv_setting_data_t setting_buf; //屏幕设置结构体   用于处于页面详情时候的保存
@@ -49,7 +56,7 @@ static void screen_back_event(lv_event_t *e)
     {
         if(setting_buf.Btnmid != setting.Btnmid || setting_buf.ScreenSaveid != setting.ScreenSaveid)
         {
-            create_popup(lv_scr_act(), "", "确定", "取消", "是否保存设置", save_setting_event, NULL);
+            create_popup(lv_scr_act(), "", UI_MLANG_STR(CONFIRM), UI_MLANG_STR(CANCEL), UI_MLANG_STR(WHETHER_TO_SAVE_SETTINGS), save_setting_event, NULL);
         }
         lv_obj_del(obj->parent->parent);
     }
@@ -161,7 +168,7 @@ lv_obj_t *create_screen_btn(lv_obj_t *parent)
     static lv_style_t style_btn;
     lv_style_init(&style_btn);
     lv_style_set_radius(&style_btn, 50);
-    static const char *map[] = {"1分钟", "10分钟", "20分钟", "30分钟", "1小时", ""};
+    static const char *map[] = {"1minute", "10minute", "20minute", "30minute", "1hour", ""};
     lv_obj_t *btnm = lv_btnmatrix_create(parent);
     lv_btnmatrix_set_map(btnm, map);
     lv_obj_add_style(btnm, &style_btn, LV_PART_ITEMS);
@@ -185,15 +192,15 @@ lv_obj_t *create_screen_btn(lv_obj_t *parent)
 void *create_allset_stlye(lv_obj_t *parent)
 {
     lv_obj_t *scr = lv_c_create_mask_box(parent); // 创建遮罩
-    lv_obj_t *popup_page = create_popup_page(scr, "屏幕设置", 0, 0);
+    lv_obj_t *popup_page = create_popup_page(scr, UI_MLANG_STR(SCREEN_SETUP), 0, 0);
 
-    card_create_20_text(popup_page, "屏幕亮度设置", -410, -180);
+    card_create_20_text(popup_page, UI_MLANG_STR(BRIGHTNESS_SETTINGS), -410, -180);
     image_create(popup_page, &light, -450, -120);                                                                       // 创建图标
     In_slider = CreateSlider(popup_page, 50, -120, 5, 100, lv_color_hex(0x00d1fe), setting.brightness, 814, 44, false); // 创建进度条
     InSliderLabel = card_create_20_text(popup_page, setting.On_screen, -400, -120);
     lv_obj_add_event_cb(In_slider, Inslider_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 
-    card_create_20_text(popup_page, "自动进入屏幕保护", -395, -15);
+    card_create_20_text(popup_page, UI_MLANG_STR(ENTER_SCREENSAVER), -395, -15);
     lv_obj_t *lv_screen = create_screen_btn(popup_page); // 屏保按钮
     lv_obj_align(lv_screen, LV_ALIGN_CENTER, -5, 65);
     lv_btnmatrix_set_btn_ctrl(lv_screen, setting.Btnmid, LV_BTNMATRIX_CTRL_CHECKED);
@@ -231,7 +238,7 @@ void CreateScreen(lv_obj_t *parent)
 {
     lv_obj_t *ImageObj = CreateOBJclick(parent);
     image_create(parent, &Screen, -100, -30);
-    card_create_24_text(parent, "屏幕设置", 20, -30); // 创建标题
+    card_create_24_text(parent, UI_MLANG_STR(SCREEN_SETUP), 20, -30); // 创建标题
     lv_obj_add_event_cb(ImageObj, add_Screen_event_cb, LV_EVENT_ALL, NULL);
 
     if(setting.brightness == 0)

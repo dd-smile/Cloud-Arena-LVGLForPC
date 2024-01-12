@@ -1,5 +1,12 @@
+/*
+ * @Description:语言切换
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2023-03-09 11:28:42
+ * @LastEditTime: 2023-12-25 10:34:31
+ * @FilePath: lv_node/src/setting/Language/Language.c
+ */
 #include "ui_app.h"
-
 
 static lv_obj_t *lastClickedObj = NULL;
 
@@ -58,11 +65,17 @@ static lv_obj_t *CreateLanguageBox(lv_obj_t *parent)
   lv_obj_set_style_radius(LanguageBox, 0, LV_PART_MAIN);
   lv_obj_clear_flag(LanguageBox, LV_OBJ_FLAG_SCROLLABLE); // 禁用滚动条
 
+  //要切换模式的名字
+    static const enum Chinese_English_shift language_id[] = {
+        CHINESE,
+        ENGLISH,
+    };
+
   const char *options[] = {"Chinese(CN)", "English(US)"}; // 选项文本列表
   int16_t y = -18;
   for (uint8_t i = 0; i < sizeof(options) / sizeof(options[0]); i++)
   {
-    lv_obj_t *option = CreateOptionContent(LanguageBox, options[i], y, i);
+    lv_obj_t *option = CreateOptionContent(LanguageBox, UI_MLANG_STR(language_id[i]), y, i);
     if (i == 0)
     {
       lv_obj_set_style_bg_color(option, lv_color_hex(0x232d3b), 0); // 设置第一个选项的背景颜色
@@ -91,14 +104,14 @@ static lv_obj_t *CreatePopupBox(lv_obj_t *parent)
   lv_obj_t *mask = lv_c_create_mask_box(parent);         // 创建遮罩
   lv_obj_t *iamge = image_create(mask, &PopupBox, 0, 0); // 创建图标
   lv_obj_t *label = lv_label_create(iamge);              // 创建标题
-  lv_label_set_text(label, "Select Language");
+  lv_label_set_text(label, UI_MLANG_STR(SELECT_LANGUAGE));
   lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(label, &PuHuiTi_Regular_20, LV_STATE_DEFAULT);
   lv_obj_align(label, LV_ALIGN_TOP_LEFT, 173, 12);
 
-  lv_obj_t *confirm_btn = btn_create_text(iamge, false, "OK", 135, 260);  // 创建按钮
+  lv_obj_t *confirm_btn = btn_create_text(iamge, false, UI_MLANG_STR(CONFIRM), 135, 260);  // 创建按钮
   lv_obj_add_event_cb(confirm_btn, confirm_btn_handler, LV_EVENT_CLICKED, NULL); // 添加确认事件
-  lv_obj_t *Back_btn = btn_create_text(iamge, false, "Cancel", 280, 260); // 创建按钮
+  lv_obj_t *Back_btn = btn_create_text(iamge, false, UI_MLANG_STR(CANCEL), 280, 260); // 创建按钮
   lv_obj_add_event_cb(Back_btn, lv_back_Mask, LV_EVENT_CLICKED, NULL);    // 添加返回事件
 
   CreateLanguageBox(iamge);
@@ -121,7 +134,7 @@ void CreateLanguage(lv_obj_t *parent)
 {
   lv_obj_t *ImageObj = CreateOBJclick(parent);
   image_create(parent, &Language, -100, -30);
-  card_create_24_text(parent, "Language\n  settings", 10, -15); // 创建标题
-  card_create_16_text(parent, "Select language", -40, 35);      // 创建标题
+  card_create_24_text(parent, UI_MLANG_STR(LANGUAGE_SETTING), 10, -15); // 创建标题
+  card_create_16_text(parent, UI_MLANG_STR(SELECT_LANGUAGE), -40, 35);      // 创建标题
   lv_obj_add_event_cb(ImageObj, add_Language_event_cb, LV_EVENT_ALL, NULL);
 }

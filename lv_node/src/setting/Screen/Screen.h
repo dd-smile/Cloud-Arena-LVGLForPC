@@ -1,4 +1,11 @@
-
+/*
+ * @Description:屏幕设置
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2023-03-09 11:28:42
+ * @LastEditTime: 2023-12-25 10:34:31
+ * @FilePath: lv_node/src/setting/Screen/Screen.h
+ */
 #ifndef _LV_SCREEN_SETTING_H
 #define _LV_SCREEN_SETTING_H
 

@@ -281,6 +281,50 @@ enum Sports_equipment{
     TOTAL_REDUCTION_FUNCTION_UNENABLED
 };
 
+enum Chinese_English_shift{
+    DATA_BOARD,
+    FACILITY,
+    AUDIO_CONTROL,
+    facility,
+    MODE,
+    SETTING,
+    TRAINING_PATTERN,
+    GAME_MODE,
+    PERFORMANCE_MODE,
+    VS_MODE,
+    MOVABLE_STAND,
+    HANGING_BALL_RACK_1,
+    HANGING_BALL_RACK_2,
+    HANGING_BALL_RACK_3,
+    HANGING_BALL_RACK_4,
+    AUTOMATIC_DIVIDER_1,
+    AUTOMATIC_DIVIDER_2,
+    WALL_HANGING_BALL_RACK_1,
+    WALL_HANGING_BALL_RACK_2,
+    BURIED_FLIP_SEAT_1,
+    BURIED_FLIP_SEAT_2,
+    TELESCOPIC_STAGE,
+    ELEVATING_ROTARY_STAGE,
+    VENUE_LIGHTING,
+    MANUAL_MODE,
+    ADD_DEVICE,
+    PLEASE_ADD_A_NEW_DEVICE,
+    SCREEN_SETUP,
+    BRIGHTNESS_SETTINGS,
+    ENTER_SCREENSAVER,
+    CONFIRM,
+    CANCEL,
+    WHETHER_TO_SAVE_SETTINGS,
+    TIME_SETTINGS,
+    SAVE,
+    SCREENSAVER_SETTINGS,
+    NEW_UPGRADED_SCREENSAVER,
+    LANGUAGE_SETTING,
+    SELECT_LANGUAGE,
+    CHINESE,
+    ENGLISH
+};
+
 #include "stdio.h"
 #include "lvgl/lvgl.h"
 #include <unistd.h>
@@ -347,6 +391,7 @@ enum Sports_equipment{
 #include "lv_node/src/mqtt/mqtt_common.h"
 #include "lv_node/src/mqtt/MqttKit.h"
 #include "lv_node/src/mqtt/onenet.h"
+
 
 extern lv_obj_t * pcr_obj;
 

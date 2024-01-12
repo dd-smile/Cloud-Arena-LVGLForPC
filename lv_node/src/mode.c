@@ -6,7 +6,6 @@
  * @LastEditTime: 2023-12-25 10:34:31
  * @FilePath: /new_home_smart/lv_node/src/mode.c
  */
-
 #include "ui_app.h"
 int g_mode_num = -1; 
 static lv_obj_t *mode_labels[4];   //模式卡片模板
@@ -19,7 +18,8 @@ char *performance_msh[] = {
     "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable1\",\"v\":\"1\"}]}"
 };
 
-// 事件   
+
+// 事件(暂时没有用到)   
 static void toggle_label(lv_obj_t *label, bool state)
 {
     const char *text = state ? "已开启" : "未开启";
@@ -302,14 +302,21 @@ void mode_halfcourt_Controls(void)
     }
 }
 
-
 /**
  * 创建模式页面
  * @param obj         指向父对象的指针
  * */
 void CreateModePage(lv_obj_t *obj)
 {
-    static const char *mode_names[] = {"训练模式", "比赛模式", "演出模式", "3vs3模式"};   //要切换模式的名字
+
+    //要切换模式的名字
+    static const enum Chinese_English_shift language_mode_id[] = {
+        TRAINING_PATTERN,
+        GAME_MODE,
+        PERFORMANCE_MODE,
+        VS_MODE,
+    };
+
     static lv_obj_t *mode_cards[4];   //模式卡片
     static lv_obj_t *mode_images[4];  //模式卡片图片
 
@@ -324,7 +331,7 @@ void CreateModePage(lv_obj_t *obj)
                                                         :  i == 2 ? &test_off
                                                         :  &test_off
                                                                    );
-        lv_c_label_create(mode_cards[i], mode_names[i]);          //设置卡片名字
+        lv_c_label_create(mode_cards[i], UI_MLANG_STR(language_mode_id[i]));          //设置卡片名字
         mode_labels[i] = lv_d_label_caeate(mode_images[i]);       //初始化生成模式卡片模板
         lv_obj_add_event_cb(mode_images[i], lv_event_handler, LV_EVENT_ALL, (void*)i);
     }
