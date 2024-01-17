@@ -9,6 +9,7 @@
 #ifndef _AUDIO_COMMON_H_
 #define _AUDIO_COMMON_H_
 
+uint16_t calculate_crc16(uint8_t *data, size_t length);
 void CreateAudioPage(lv_obj_t *parent);
 
 #endif
