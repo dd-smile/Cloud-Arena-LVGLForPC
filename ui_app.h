@@ -205,6 +205,7 @@
 
 #define DEVICE_NAME "Please enter the device name\n"
 
+//MQTT相关
 #define MQTT_MSG_128MT_TEMPLATE(pid, v) "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"" pid "\",\"v\":\"" v "\"}]}"
 
 #define MQTT_MSG_48MT_TEMPLATE(pid, v) "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_sports\",\"pid\":\"" pid "\",\"v\":\"" v "\"}]}"
@@ -212,6 +213,17 @@
 #define MQTT_PUBLIC_SPORTS_DEVICE_THEME "/mytest/ycg"
 
 ////       /mytest/ycg        /usr/plcnet/Cloud_Arena_sports/edge/d
+
+//易科音响控制
+#define EZPRO_VOLUME_UP(aisle, v) "CC "aisle" 1 "v" \r"
+
+#define EZPRO_VOLUME_DOWN(aisle, v) "CC "aisle" 0 "v" \r"
+
+#define EZPRO_VOLUME_MUTE(aisle) "CS "aisle" 65535 \r"
+
+#define EZPRO_VOLUME_UNMUTE(aisle) "CS "aisle" 0 \r"
+
+
 
 enum Sports_equipment{
     ACTIVE_STAND_OPEN_FUNCTION_ENABLED,
