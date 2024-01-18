@@ -6,8 +6,8 @@
  * @LastEditTime: 2023-01-12 15:59:05
  * @FilePath: lv_node/src/audio_control/audio_common.h
  */
-#ifndef _AUDIO_COMMON_H_
-#define _AUDIO_COMMON_H_
+#ifndef __AUDIO_COMMON_H__
+#define __AUDIO_COMMON_H__
 
 uint16_t calculate_crc16(uint8_t *data, size_t length);
 void CreateAudioPage(lv_obj_t *parent);

@@ -224,6 +224,42 @@
 #define EZPRO_VOLUME_UNMUTE(aisle) "CS "aisle" 0 \r"
 
 
+//KLS中控指令
+#define KLS_PLAY_INSTRUCTION_MOVIE(v) "video:"v".mp4"
+
+#define KLS_LOOP_PLAYBACK "endbehavior:play"
+
+#define KLS_START_PLAYING "play:"
+
+#define KLS_PAUSE_AND_PLAYING "pause:"
+
+#define KLS_STOP_PLAYING "stop:"
+
+#define KLS_REPLAY_PLAYING "replay:"
+
+#define KLS_VOLUME_UP "volup:"
+
+#define KLS_VOLUME_DOWN "voldown:"
+
+#define KLS_VOLUME_MUTE_AND_UNMUTE "mute:"
+
+#define KLS_PPT_PLAYING(v) "ppt:"v".pptx"
+
+#define KLS_PPT_PLAYING_NEXT "ppt:next"
+
+#define KLS_PPT_PLAYING_PREVIOUS "ppt:prev"
+
+#define KLS_GO_TO_HOME_PAGE "ppt:home"
+
+#define KLS_GO_TO_END_PAGE "ppt:end"
+
+#define KLS_PPT_AUTOPLAY(s, v) "ppt:auto-"s"-"v".pptx"
+
+#define KLS_OPEN_A_WEBSITE_URL(v) "web:"v""
+
+#define KLS_RESTART_FLASH "restart:"
+
+
 
 enum Sports_equipment{
     ACTIVE_STAND_OPEN_FUNCTION_ENABLED,

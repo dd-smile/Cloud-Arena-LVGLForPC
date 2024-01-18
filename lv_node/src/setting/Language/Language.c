@@ -93,8 +93,8 @@ static void confirm_btn_handler(lv_event_t *e)
     lv_obj_t *obj = lv_event_get_target(e);
     if (code == LV_EVENT_CLICKED)
     {
-      lv_obj_invalidate(lv_disp_get_scr_act(NULL));
-      create_lv_layout(lv_disp_get_scr_act(NULL));
+      // lv_obj_invalidate(lv_disp_get_scr_act(NULL));
+      // create_lv_layout(lv_disp_get_scr_act(NULL));
     }
 }
 

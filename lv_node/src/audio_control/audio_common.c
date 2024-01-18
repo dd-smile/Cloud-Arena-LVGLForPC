@@ -270,6 +270,6 @@ static void *card_audio(lv_obj_t *parent, int x, int y, const char *name, uint8_
  * */
 void CreateAudioPage(lv_obj_t *parent)
 {
-    card_audio(parent, 30, 50, "LED切屏", 0);
-    card_audio(parent, 400, 50, "多轨控制", 1);
+    card_audio(parent, 30, 50, "LED大屏控制", 0);
+    card_audio(parent, 400, 50, "多轨音乐控制", 1);
 }
