@@ -9,6 +9,7 @@
 #ifndef __KLS_H__
 #define __KLS_H__
 
-
+void set_Central_control_system_command(const char *command);
+void *create_client_kls(void);
 
 #endif

@@ -140,7 +140,8 @@
     "display.h": "c",
     "sound_ezpro.h": "c",
     "mqtt_common.h": "c",
-    "mqttkit.h": "c"
+    "mqttkit.h": "c",
+    "light_vsu.h": "c"
   },
   "C_Cpp.errorSquiggles": "Disabled",
   "C_Cpp_Runner.cCompilerPath": "gcc",

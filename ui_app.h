@@ -205,6 +205,11 @@
 
 #define DEVICE_NAME "Please enter the device name\n"
 
+//服务器ＩＰ
+#define KLS_SERVER_IP 	    "192.168.1.224"
+#define KLS_SERVER_PORT 	"6600"
+
+
 //MQTT相关
 #define MQTT_MSG_128MT_TEMPLATE(pid, v) "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"" pid "\",\"v\":\"" v "\"}]}"
 
@@ -439,6 +444,8 @@ enum Chinese_English_shift{
 #include "lv_node/src/mqtt/mqtt_common.h"
 #include "lv_node/src/mqtt/MqttKit.h"
 #include "lv_node/src/mqtt/onenet.h"
+
+#include "lv_node/src/multimedia/kls.h"
 
 
 extern lv_obj_t * pcr_obj;

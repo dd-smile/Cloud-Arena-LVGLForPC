@@ -105,7 +105,7 @@ static void led_Controls_event_cb(lv_event_t *e)
 }
 
 /**
- * 创建矩形对象，作为按钮的模板
+ * 创建矩形对象
  * @param obj           指向父对象的指针    
  * @return              返回一个矩形新对象
  * */
@@ -167,22 +167,90 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_
 }
 
 /**
+ * 创建大按钮
+ * @param obj          指向父对象的指针    
+ * @param text         按钮的名称
+ * @param x_ofs        水平偏移 x_ofs
+ * @param y_ofs        水平偏移 y_ofs
+ * @param type         判断是什么控制类型
+ * @param index        按到第几个按钮
+ * */
+static void create_big_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, uint8_t type, lv_event_cb_t event_cb, uint8_t index)
+{
+    lv_obj_t *btn = lv_obj_create(obj);
+    lv_obj_set_size(btn, 170, 40);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_radius(btn, 15, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
+    lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
+
+    
+    //判断是什么设备按钮，从而添加控制事件
+    switch (type)
+    {
+        case 0:     //LED大屏控制
+            lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
+            lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
+            break;
+        case 1:     //多轨控制
+            lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
+            lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
+            break;
+
+        default:
+            break;
+    }
+    
+    lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
+
+    lv_obj_t *label = lv_label_create(btn);
+    lv_label_set_text(label, text);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_PART_MAIN);
+    lv_obj_center(label);
+}
+
+/**
  * 创建LED大屏控制界面
  * @param parent            指向父对象的指针     
  * */
 static void *LedControl(lv_obj_t *parent)
 {
     lv_obj_t *scr = lv_c_create_mask_box(parent); // 创建遮罩
-    lv_obj_t *popup_page = create_popup_page(scr, "LED切屏", 0, 0);
+    lv_obj_t *popup_page = create_popup_page(scr, "LED大屏控制", 0, 0);
 
 
     //连接服务器
-    create_client_led();
+    // create_client_led();
+    // create_client_kls();
 
-    lv_obj_t *btn_synchronous = swich_btn_card(popup_page);
-    create_button(btn_synchronous, "HDMI1", -90, 0, 0, led_Controls_event_cb, 0);
-    create_button(btn_synchronous, "HDMI2", 0, 0, 0, led_Controls_event_cb, 1);
-    create_button(btn_synchronous, "HDMI3", 90, 0, 0, led_Controls_event_cb, 2);
+    create_big_button(popup_page, "播放云场馆宣传片", -400, -150, 0, led_Controls_event_cb, 0);
+    create_big_button(popup_page, "播放演唱会demo", -200, -150, 0, led_Controls_event_cb, 1);
+    create_big_button(popup_page, "播放云场馆PPT", 200, -150, 0, led_Controls_event_cb, 2);
+    create_button(popup_page, "下一页", 360, -150, 0, led_Controls_event_cb, 3);
+    create_button(popup_page, "上一页", 450, -150, 0, led_Controls_event_cb, 4);
+
+    create_button(popup_page, "循环", -300, -90, 0, led_Controls_event_cb, 5);
+    create_big_button(popup_page, "跳到PPT尾页", 200, -90, 0, led_Controls_event_cb, 6);
+    create_big_button(popup_page, "跳到PPT首页", 400, -90, 0, led_Controls_event_cb, 7);
+
+    create_button(popup_page, "HDMI1", -440, -30, 0, led_Controls_event_cb, 8);
+    create_button(popup_page, "HDMI2", -350, -30, 0, led_Controls_event_cb, 9);
+    create_button(popup_page, "HDMI3", -260, -30, 0, led_Controls_event_cb, 10);
+    create_button(popup_page, "HDMI4", -170, -30, 0, led_Controls_event_cb, 11);
+    create_big_button(popup_page, "PPT自动播放", 300, -30, 0, led_Controls_event_cb, 12);
+
+    create_button(popup_page, "播放", -160, 30, 0, led_Controls_event_cb, 13);
+    create_big_button(popup_page, "暂停/播放", 0, 30, 0, led_Controls_event_cb, 14);
+    create_button(popup_page, "停止", 180, 30, 0, led_Controls_event_cb, 15);
+
+    create_button(popup_page, "音量增", -160, 90, 0, led_Controls_event_cb, 16);
+    create_big_button(popup_page, "静音/取消静音", 0, 90, 0, led_Controls_event_cb, 17);
+    create_button(popup_page, "音量减", 180, 90, 0, led_Controls_event_cb, 18);
+    
+    create_big_button(popup_page, "领先体育官网", 0, 150, 0, led_Controls_event_cb, 19);
+
 }
 
 /**
@@ -192,12 +260,12 @@ static void *LedControl(lv_obj_t *parent)
 static void *MultitrackControl(lv_obj_t *parent)
 {
     lv_obj_t *scr = lv_c_create_mask_box(parent); // 创建遮罩
-    lv_obj_t *popup_page = create_popup_page(scr, "多轨控制", 0, 0);
+    lv_obj_t *popup_page = create_popup_page(scr, "多轨音乐控制", 0, 0);
 
     lv_obj_t *btn_multitrack = swich_btn_card(popup_page);
     create_button(btn_multitrack, "音乐1", -90, -100, 1, multitrack_Controls_event_cb, 0);
     create_button(btn_multitrack, "音乐2", 0, -100, 1, multitrack_Controls_event_cb, 1);
-    create_button(btn_multitrack, "音乐3", 90, -100, 1 , multitrack_Controls_event_cb, 2);
+    create_button(btn_multitrack, "爵士乐", 90, -100, 1 , multitrack_Controls_event_cb, 2);
     create_button(btn_multitrack, "音乐4", -90, -40, 1 , multitrack_Controls_event_cb, 3);
     create_button(btn_multitrack, "大自然", 0, -40, 1 , multitrack_Controls_event_cb, 4);
     create_button(btn_multitrack, "下一首", 90, -40, 1 , multitrack_Controls_event_cb, 8);
