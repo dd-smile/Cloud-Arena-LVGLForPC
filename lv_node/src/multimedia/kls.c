@@ -11,6 +11,11 @@
 int kls_fd = 0;
 struct sockaddr_in kls_seraddr;
 
+
+/*
+关于PPT播放，电脑上必须安装了Microsoft Office 2016及以上的版本
+*/
+
 /**
  * 发送KLS中控指令
  * @param command            要发送的指令

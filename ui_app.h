@@ -206,8 +206,13 @@
 #define DEVICE_NAME "Please enter the device name\n"
 
 //服务器ＩＰ
-#define KLS_SERVER_IP 	    "192.168.1.224"
-#define KLS_SERVER_PORT 	"6600"
+#define KLS_SERVER_IP 	        "192.168.17.20"
+#define KLS_SERVER_PORT 	    6600
+
+#define ABESN_PLC_SERVER_IP 	"192.168.17.20"
+#define ABESN_PLC_SERVER_PORT 	8888
+
+
 
 
 //MQTT相关
@@ -260,7 +265,7 @@
 
 #define KLS_PPT_AUTOPLAY(s, v) "ppt:auto-"s"-"v".pptx"
 
-#define KLS_OPEN_A_WEBSITE_URL(v) "web:"v""
+#define KLS_OPEN_A_WEBSITE_URL "web:https://avantsports.cn"
 
 #define KLS_RESTART_FLASH "restart:"
 

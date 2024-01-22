@@ -290,7 +290,7 @@ void *abesnConnection(void *parg)
     if (socketconnected(plc_fd) == 0)
     {
       plc_fd = createSocket();  //创建套接字
-      connectToHost(plc_fd, "192.168.0.15", 5000);  //连接服务器
+      connectToHost(plc_fd, ABESN_PLC_SERVER_IP, ABESN_PLC_SERVER_PORT);  //连接服务器
     }
     usleep(100 * 1000);
   }
@@ -341,7 +341,7 @@ static void *create_client_light()
 static void *create_client_abesn()
 {
   plc_fd = createSocket();  //创建套接字
-  connectToHost(plc_fd, "192.168.0.15", 5000);  
+  connectToHost(plc_fd, ABESN_PLC_SERVER_IP, ABESN_PLC_SERVER_PORT);  
 
   pthread_t tid;
   pthread_create(&tid, NULL, abesnConnection, NULL);
@@ -387,7 +387,7 @@ void create_lv_layout(lv_obj_t *scr)
 
   // connect_mqtt();   // 连接mqtt服务器
   //create_client_light();  //　连接灯光服务器
-  // create_client_abesn();  //连接艾比森ｐｌｃ服务器
+  create_client_abesn();  //连接艾比森ｐｌｃ服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
   // thp = threadpool_create(3, 10, 10);

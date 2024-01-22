@@ -77,25 +77,85 @@ static void led_Controls_event_cb(lv_event_t *e)
         switch ((int)obj->user_data)
         {
             case 0: 
-                SetLedinputsource_aoto(0x01, 0x01, 0x00);   //图层２，卡槽２，第１路输入
+                set_Central_control_system_command(KLS_PLAY_INSTRUCTION_MOVIE("1"));
                 break;
 
             case 1:  
-                SetLedinputsource_aoto(0x01, 0x01, 0x01);
+                set_Central_control_system_command(KLS_PLAY_INSTRUCTION_MOVIE("2"));
                 break;
         
             case 2:
-                SetLedinputsource_aoto(0x01, 0x01, 0x02);
+                set_Central_control_system_command(KLS_PPT_PLAYING("1"));
                 break;
+
             case 3:
-                SetLedinputsource_aoto(0x01, 0x01, 0x03);
+                set_Central_control_system_command(KLS_PPT_PLAYING_NEXT);
                 break;
+
             case 4:
-                synchronous_mutework();
+                set_Central_control_system_command(KLS_PPT_PLAYING_PREVIOUS);
                 break;
+
             case 5:
-                synchronous_unmutework();
+                set_Central_control_system_command(KLS_LOOP_PLAYBACK);
                 break;
+
+            case 6:
+                set_Central_control_system_command(KLS_GO_TO_END_PAGE);
+                break;
+
+            case 7:
+                set_Central_control_system_command(KLS_GO_TO_HOME_PAGE);
+                break;
+
+            case 8:
+                SetLedinputsource_aoto(0x01, 0x01, 0x00);   //图层２，卡槽２，第１路输入   HDMI1
+                break;
+
+            case 9:
+                SetLedinputsource_aoto(0x01, 0x01, 0x01);   //HDMI2
+                break;
+
+            case 10:
+                SetLedinputsource_aoto(0x01, 0x01, 0x02);   //HDMI3
+                break;
+
+            case 11:
+                SetLedinputsource_aoto(0x01, 0x01, 0x03);   //HDMI4
+                break;
+
+            case 12:
+                set_Central_control_system_command(KLS_PPT_AUTOPLAY("3", "1"));
+                break;
+
+            case 13:
+                set_Central_control_system_command(KLS_START_PLAYING);
+                break;
+
+            case 14:
+                set_Central_control_system_command(KLS_PAUSE_AND_PLAYING);
+                break;
+
+            case 15:
+                set_Central_control_system_command(KLS_STOP_PLAYING);
+                break;
+
+            case 16:
+                set_Central_control_system_command(KLS_VOLUME_UP);
+                break;
+
+            case 17:
+                set_Central_control_system_command(KLS_VOLUME_MUTE_AND_UNMUTE);
+                break;
+
+            case 18:
+                set_Central_control_system_command(KLS_VOLUME_DOWN);
+                break;
+
+            case 19:
+                set_Central_control_system_command(KLS_OPEN_A_WEBSITE_URL);
+                break;
+
 
             default:
                 break;
@@ -223,7 +283,7 @@ static void *LedControl(lv_obj_t *parent)
 
     //连接服务器
     // create_client_led();
-    // create_client_kls();
+    create_client_kls();
 
     create_big_button(popup_page, "播放云场馆宣传片", -400, -150, 0, led_Controls_event_cb, 0);
     create_big_button(popup_page, "播放演唱会demo", -200, -150, 0, led_Controls_event_cb, 1);
