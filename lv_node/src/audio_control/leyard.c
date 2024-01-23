@@ -35,20 +35,20 @@ void *create_client_mu(void * parg)
 {   
     multitrack_fd = createSocket();  //创建套接字
     synchronous_fd = createSocket();  //创建套接字
-    multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
-    synchronous_red = connectToHost(synchronous_fd, "192.168.17.20", 11011);  //连接服务器
+    multitrack_red = connectToHost(multitrack_fd, LEYARD_SERVER_MIXCRAFT_IP, LEYARD_SERVER_MIXCRAFT_PORT);  //连接服务器
+    synchronous_red = connectToHost(synchronous_fd, LEYARD_SERVER_SYNCHRONOUS_IP, LEYARD_SERVER_SYNCHRONOUS_PORT);  //连接服务器
     while (1)
     {
       if(socketconnected(multitrack_fd) == 0)
       {
         closeSocket(multitrack_fd);
         multitrack_fd = createSocket();  //创建套接字
-        multitrack_red = connectToHost(multitrack_fd, "192.168.17.20", 50000);  //连接服务器
+        multitrack_red = connectToHost(multitrack_fd, LEYARD_SERVER_MIXCRAFT_IP, LEYARD_SERVER_MIXCRAFT_PORT);  //连接服务器
       }else if (socketconnected(synchronous_fd) == 0)
       {
         closeSocket(synchronous_fd);
         synchronous_fd = createSocket();
-        synchronous_red = connectToHost(synchronous_fd, "192.168.17.20", 11011);
+        synchronous_red = connectToHost(synchronous_fd, LEYARD_SERVER_SYNCHRONOUS_IP, LEYARD_SERVER_SYNCHRONOUS_PORT);
       }
       sleep(3);
     }

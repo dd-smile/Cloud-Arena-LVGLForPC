@@ -206,11 +206,20 @@
 #define DEVICE_NAME "Please enter the device name\n"
 
 //服务器ＩＰ
-#define KLS_SERVER_IP 	        "192.168.17.20"
-#define KLS_SERVER_PORT 	    6600
+#define KLS_SERVER_IP 	                        "192.168.17.20"
+#define KLS_SERVER_PORT 	                    6600
 
-#define ABESN_PLC_SERVER_IP 	"192.168.17.20"
-#define ABESN_PLC_SERVER_PORT 	8888
+#define ABESN_PLC_SERVER_IP 	                "192.168.17.20"
+#define ABESN_PLC_SERVER_PORT 	                8888
+
+#define VSU_SERVER_IP 	                        "192.168.17.20"
+#define VSU_SERVER_PORT 	                    502
+
+#define LEYARD_SERVER_MIXCRAFT_IP 	            "192.168.17.20"
+#define LEYARD_SERVER_MIXCRAFT_PORT 	        50000
+
+#define LEYARD_SERVER_SYNCHRONOUS_IP 	        "192.168.17.20"
+#define LEYARD_SERVER_SYNCHRONOUS_PORT 	        11011
 
 
 

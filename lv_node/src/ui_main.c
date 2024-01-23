@@ -273,7 +273,7 @@ void *JudgmentConnection(void *parg)
     if (socketconnected(light_fd) == 0)
     {
       light_fd = createSocket();  //创建套接字
-      connectToHost(light_fd, "192.168.1.230", 502);  //连接服务器
+      connectToHost(light_fd, VSU_SERVER_IP, VSU_SERVER_PORT);  //连接服务器
     }
     usleep(50 * 1000);
   }
@@ -328,8 +328,7 @@ void Judgmentmode(void)
 static void *create_client_light()
 {   
     light_fd = createSocket();  //创建套接字
-    // connectToHost(light_fd, "192.168.1.230", 502);  //连接服务器
-    connectToHost(light_fd, "192.168.17.20", 502);  //连接服务器
+    connectToHost(light_fd, VSU_SERVER_IP, VSU_SERVER_PORT);  //连接服务器
 
     pthread_t tid;
     pthread_create(&tid, NULL, JudgmentConnection, NULL);
