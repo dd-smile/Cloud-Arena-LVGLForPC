@@ -454,6 +454,7 @@ enum Chinese_English_shift{
 #include "lv_node/src/audio_control/led_nova.h"
 #include "lv_node/src/audio_control/led_unilumin.h"
 #include "lv_node/src/audio_control/sound_ezpro.h"
+#include "lv_node/src/audio_control/light_runshen.h"
 
 #include "lv_node/src/mqtt/mqtt_common.h"
 #include "lv_node/src/mqtt/MqttKit.h"
