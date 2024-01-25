@@ -25,11 +25,11 @@ void Setdimming_runshen(uint8_t addr, uint8_t port_number, uint8_t status)
     packet[2] = 0x00;
     packet[3] = 0x00;
     packet[4] = 0x00;
-    packet[5] = 0x06
+    packet[5] = 0x06;
     packet[6] = addr;
     packet[7] = 0x06;
     packet[8] = 0x00;
-    packet[9] = port_number
+    packet[9] = port_number;
     packet[10] = 0x00;
     packet[11] = status;
     // packet[12] = calculate_crc16(packet, sizeof(packet) - 2) & 0xFF;

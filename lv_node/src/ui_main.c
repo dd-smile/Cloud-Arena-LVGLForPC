@@ -266,7 +266,7 @@ void timer_push_callback(lv_timer_t *timer)
  * 检测与灯光服务器的TCP连接是否断开，断开的话进行重新连接
  * @param parg         线程传入的参数
  * */
-void *JudgmentConnection(void *parg)
+static void *JudgmentConnection(void *parg)
 {
   while (1)
   {
@@ -283,7 +283,7 @@ void *JudgmentConnection(void *parg)
  * 检测与艾比森ｐｌｃ服务器的TCP连接是否断开，断开的话进行重新连接
  * @param parg         线程传入的参数
  * */
-void *abesnConnection(void *parg)
+static void *abesnConnection(void *parg)
 {
   while (1)
   {

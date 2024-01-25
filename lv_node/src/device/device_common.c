@@ -65,7 +65,8 @@ static void CreateLoge(lv_obj_t *parent)
  * @param obj             指向父对象的指针
  * @param text            文本，以'\0'结尾的字符串
  * @param x_ofs           x坐标偏移量
- * @param event_cb        要注册的事件           
+ * @param event_cb        要注册的事件       
+ * @param device_type     设备类型    
  * @return                返回指向按钮的指针
  * */
 static lv_obj_t *CreateFeatureButton(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_event_cb_t event_cb, u_int8_t device_type)
@@ -416,6 +417,30 @@ lv_obj_t *CreateInspectTable(lv_obj_t *parent)
     return Tablebg;
 }
 
+/**
+ * 设备详情页的基础ＵＩ
+ * @param parent         指向一个对象的指针，它将是新对象的父类
+ * @param data           要创建设备的基本数据
+*/
+static void Device_details_page_basicUi(lv_obj_t *parent, const DevicePageData *data)
+{
+    CreatrLine(parent);                                      // 创建分割线
+    card_create_16_text(parent, "设备名称: ", -320, 30);  // 创建设备名称
+    card_create_16_text(parent, data->deviceName, -240, 30); // 创建设备名称
+    card_create_16_text(parent, "制造商简介: ", 100, -195);
+    card_create_12_text(parent, "采购时间: ", 75, -5);
+    card_create_12_text(parent, data->date, 140, -5);
+    card_create_12_text(parent, "检修周期: ", 260, -5);
+    card_create_12_text(parent, data->period, 330, -5);
+    card_create_12_text(parent, "供应商服务电话: ", 95, 25);
+    card_create_12_text(parent, data->phoneNumber, 200, 25);
+    image_create(parent, data->image, -200, -100);                        // 创建图片
+    CreateWinPage(parent, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+
+    CreateLoge(parent); // 制造商Logo
+    CreateBiaoge(parent); // 表格
+} 
+
 /*------------------------------------------创建按钮点击事件-----------------------------------------*/
 
 /**
@@ -645,18 +670,7 @@ lv_obj_t *CreateDevicePageBg(const DevicePageData *data, uint8_t device_num)
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 75, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 200, 25);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    Device_details_page_basicUi(bg, data);
 
     //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
     index_t *index1 = add_index_t(device_num, 0);
@@ -681,10 +695,6 @@ lv_obj_t *CreateDevicePageBg(const DevicePageData *data, uint8_t device_num)
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL); // 创建检修正常按钮 
     CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                   // 创建返回按钮
 
-    CreateLoge(bg); // 制造商Logo
-
-    CreateBiaoge(bg); // 表格
-
     return bg;
 }
 
@@ -699,18 +709,7 @@ lv_obj_t *CreatebasketballPageBg(const DevicePageData *data, uint8_t device_num)
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 75, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 200, 25);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    Device_details_page_basicUi(bg, data);
 
     //在确定设备类型和设备号后，设置按钮号（活动看台，拥有７个按钮）
     index_t *index1 = add_index_t(device_num, 0);   //传进来的device_num是设备号
@@ -724,10 +723,6 @@ lv_obj_t *CreatebasketballPageBg(const DevicePageData *data, uint8_t device_num)
     CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);            // 创建改名按钮
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL); // 创建检修正常按钮 
     CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                   // 创建返回按钮
-
-    CreateLoge(bg); // 制造商Logo
-
-    CreateBiaoge(bg); // 表格
 
     return bg;
 
@@ -745,18 +740,7 @@ lv_obj_t *CreatePartitionPageBg(const DevicePageData *data, uint8_t device_num)
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 80, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 225, 25);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    Device_details_page_basicUi(bg, data);
 
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
@@ -771,10 +755,6 @@ lv_obj_t *CreatePartitionPageBg(const DevicePageData *data, uint8_t device_num)
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
     CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
-    CreateLoge(bg); // 制造商Logo
-
-    CreateBiaoge(bg); // 表格
-
     return bg;
 }
 
@@ -784,18 +764,7 @@ lv_obj_t *CreateWallhangingPageBg(const DevicePageData *data, uint8_t device_num
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 80, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 225, 25);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    Device_details_page_basicUi(bg, data);
 
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
@@ -810,10 +779,6 @@ lv_obj_t *CreateWallhangingPageBg(const DevicePageData *data, uint8_t device_num
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
     CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
-    CreateLoge(bg); // 制造商Logo
-
-    CreateBiaoge(bg); // 表格
-
     return bg;
 }
 
@@ -823,18 +788,7 @@ lv_obj_t *CreateFoldingPageBg(const DevicePageData *data, uint8_t device_num)
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 80, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 225, 25);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    Device_details_page_basicUi(bg, data);
 
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
@@ -849,10 +803,6 @@ lv_obj_t *CreateFoldingPageBg(const DevicePageData *data, uint8_t device_num)
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
     CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
-    CreateLoge(bg); // 制造商Logo
-
-    CreateBiaoge(bg); // 表格
-
     return bg;
 }
 
@@ -862,18 +812,7 @@ lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 80, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 225, 25);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    Device_details_page_basicUi(bg, data);
 
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
@@ -891,10 +830,6 @@ lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
     CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
-    CreateLoge(bg); // 制造商Logo
-
-    CreateBiaoge(bg); // 表格
-
     return bg;
 }
 
@@ -904,18 +839,7 @@ lv_obj_t *CreateRevolvingPageBg(const DevicePageData *data, uint8_t device_num)
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 80, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 225, 25);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    Device_details_page_basicUi(bg, data);
 
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
@@ -933,10 +857,6 @@ lv_obj_t *CreateRevolvingPageBg(const DevicePageData *data, uint8_t device_num)
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
     CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
 
-    CreateLoge(bg); // 制造商Logo
-
-    CreateBiaoge(bg); // 表格
-
     return bg;
 }
 
@@ -946,18 +866,19 @@ lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
-    CreatrLine(bg);                                      // 创建分割线
-    card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    card_create_16_text(bg, "制造商简介: ", 100, -195);
-    card_create_12_text(bg, "采购时间: ", 80, -5);
-    card_create_12_text(bg, data->date, 140, -5);
-    card_create_12_text(bg, "检修周期: ", 260, -5);
-    card_create_12_text(bg, data->period, 330, -5);
-    card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    card_create_12_text(bg, data->phoneNumber, 225, 25);
-    image_create(bg, data->image, -200, -100);                        // 创建图片
-    CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
+    Device_details_page_basicUi(bg, data);
+    // CreatrLine(bg);                                      // 创建分割线
+    // card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
+    // card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
+    // card_create_16_text(bg, "制造商简介: ", 100, -195);
+    // card_create_12_text(bg, "采购时间: ", 80, -5);
+    // card_create_12_text(bg, data->date, 140, -5);
+    // card_create_12_text(bg, "检修周期: ", 260, -5);
+    // card_create_12_text(bg, data->period, 330, -5);
+    // card_create_12_text(bg, "供应商服务电话: ", 95, 25);
+    // card_create_12_text(bg, data->phoneNumber, 225, 25);
+    // image_create(bg, data->image, -200, -100);                        // 创建图片
+    // CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);
@@ -965,15 +886,10 @@ lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
     CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2, lights_Controls_event_cb); // 一键收合按钮
 
    
-
     CreateFeatureButton(bg, "故障申报", 245, ReportCreateButton, 7);       // 故障申报按钮
     CreateFeatureButton(bg, "重命名", 50, RenameCreateButton, NULL);          // 重命名按钮
     CreateFeatureButton(bg, "检修正常", 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
     CreateFeatureButton(bg, "返回", 340, lv_back_Mask, NULL);                 // 返回按钮
-
-    CreateLoge(bg); // 制造商Logo
-
-    CreateBiaoge(bg); // 表格
 
     return bg;
 }
