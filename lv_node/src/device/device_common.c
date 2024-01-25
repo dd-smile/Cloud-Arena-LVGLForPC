@@ -867,18 +867,6 @@ lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
     Device_details_page_basicUi(bg, data);
-    // CreatrLine(bg);                                      // 创建分割线
-    // card_create_16_text(bg, "设备名称: ", -320, 30);  // 创建设备名称
-    // card_create_16_text(bg, data->deviceName, -240, 30); // 创建设备名称
-    // card_create_16_text(bg, "制造商简介: ", 100, -195);
-    // card_create_12_text(bg, "采购时间: ", 80, -5);
-    // card_create_12_text(bg, data->date, 140, -5);
-    // card_create_12_text(bg, "检修周期: ", 260, -5);
-    // card_create_12_text(bg, data->period, 330, -5);
-    // card_create_12_text(bg, "供应商服务电话: ", 95, 25);
-    // card_create_12_text(bg, data->phoneNumber, 225, 25);
-    // image_create(bg, data->image, -200, -100);                        // 创建图片
-    // CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
     index_t *index1 = add_index_t(device_num, 0);
     index_t *index2 = add_index_t(device_num, 1);

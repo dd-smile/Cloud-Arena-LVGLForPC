@@ -32,19 +32,19 @@ static void toggle_label(lv_obj_t *label, bool state)
 /**
  * 演出模式结束后自动切屏和关闭音乐
 */
-static void sy_timer_handler(lv_timer_t * timer)
-{   
-    if ((performance_timer++) == 10)
-    {
-        performance_timer = 0;
-        SetLedinputsource_aoto(0x01, 0x01, 0x01);
-        synchronous_mutework();
-        if (timer)
-        {
-            lv_timer_del(timer);
-        }
-    }
-}
+// static void sy_timer_handler(lv_timer_t * timer)
+// {   
+//     if ((performance_timer++) == 10)
+//     {
+//         performance_timer = 0;
+//         SetLedinputsource_aoto(0x01, 0x01, 0x01);
+//         synchronous_mutework();
+//         if (timer)
+//         {
+//             lv_timer_del(timer);
+//         }
+//     }
+// }
 
 void manual_Controls_event_cb(lv_event_t *e)
 {
@@ -262,10 +262,10 @@ void mode_performance_Controls(void)
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
     }
 
-    SetLedinputsource_aoto(0x01, 0x01, 0x03);
-    synchronous_unmutework();
+    set_Central_control_system_command(KLS_PLAY_INSTRUCTION_MOVIE("1"));
+    set_Central_control_system_command(KLS_LOOP_PLAYBACK);
 
-    lv_timer_t *sy_timer = lv_timer_create(sy_timer_handler, 60000, NULL);
+    // lv_timer_t *sy_timer = lv_timer_create(sy_timer_handler, 60000, NULL);
 }
 
 /*比赛模式*/

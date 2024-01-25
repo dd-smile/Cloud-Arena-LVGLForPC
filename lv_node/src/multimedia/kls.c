@@ -23,6 +23,7 @@ struct sockaddr_in kls_seraddr;
 void set_Central_control_system_command(const char *command)
 {
     sendto(kls_fd, command, strlen(command), 0, (struct sockaddr *)&kls_seraddr, sizeof(kls_seraddr));
+    usleep(50 * 1000);
 }
 
 /**
