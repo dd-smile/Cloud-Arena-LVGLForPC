@@ -366,7 +366,7 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_data_callback, 50000, NULL);
 
   //创建更新天气数据任务
-  // lv_timer_create(timer_weather_callback, 60000, NULL);
+  lv_timer_create(timer_weather_callback, 60000, NULL);
 
   // 创建ＭＱＴＴ心跳任务
   // lv_timer_create(timer_mqtt_callback, 20000, NULL);

@@ -14,7 +14,7 @@ lv_timer_t *timer = NULL;
 Sensor_Data sensor_data;
 uint16_t hour;   //当前时间
 uint16_t last_hour;  //上一次时间
-weather_t weather = {0};
+weather_t weatherinfo;
 lv_obj_t * chart;
 lv_chart_series_t * ser1; //温度数据系列
 lv_chart_series_t * ser2; //湿度数据系列
@@ -26,90 +26,38 @@ static lv_coord_t temp_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 static lv_coord_t hum_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 //解析json
-void aita_ParseJsonNow(char *msg, weather_t *w) 
+static void aita_ParseJsonNow(char *msg, weather_t *w) 
 {
-    cJSON *json, *ja, *jo, *josub, *item;
-    json = cJSON_Parse(msg); //parse string to cJSON type
-    if (json == NULL) 
-    {
-        printf("json type cast error: %s", cJSON_GetErrorPtr());
-        return;
-    } 
-    else 
-    {
-        printf("parse now pack\n");
-        if ((ja=cJSON_GetObjectItem(json, "results")) != NULL) { //get results array
-            if ((jo=cJSON_GetArrayItem(ja, 0)) != NULL) {        //get array[0](the only item)
-                //get location object
-                if ((josub=cJSON_GetObjectItem(jo, "location")) != NULL) 
-                {
-                    if ((item=cJSON_GetObjectItem(josub, "id")) != NULL) 
-                    {
-                        memcpy(w->id, item->valuestring, strlen(item->valuestring));
-                    }
-                    if ((item=cJSON_GetObjectItem(josub, "name")) != NULL) 
-                    {
-                        memcpy(w->name, item->valuestring, strlen(item->valuestring));
-                    }
-                    if ((item=cJSON_GetObjectItem(josub, "country")) != NULL) 
-                    {
-                        memcpy(w->country, item->valuestring, strlen(item->valuestring));
-                    }
-                    if ((item=cJSON_GetObjectItem(josub, "path")) != NULL) 
-                    {
-                        memcpy(w->path, item->valuestring, strlen(item->valuestring));
-                    }
-                    if ((item=cJSON_GetObjectItem(josub, "timezone")) != NULL) 
-                    {
-                        memcpy(w->timezone, item->valuestring, strlen(item->valuestring));
-                    }
-                    if ((item=cJSON_GetObjectItem(josub, "timezone_offset")) != NULL) 
-                    {
-                        memcpy(w->tz_offset, item->valuestring, strlen(item->valuestring));
-                    }
-                }
-                //get now object
-                if ((josub=cJSON_GetObjectItem(jo, "now")) != NULL) 
-                {
-                    if ((item=cJSON_GetObjectItem(josub, "text")) != NULL) 
-                    {
-                        memcpy(w->text, item->valuestring, strlen(item->valuestring));
-                    }
-                    if ((item=cJSON_GetObjectItem(josub, "code")) != NULL) 
-                    {
-                        memcpy(w->code, item->valuestring, strlen(item->valuestring));
-                    }
-                    if ((item=cJSON_GetObjectItem(josub, "temperature")) != NULL) 
-                    {
-                        memcpy(w->temp, item->valuestring, strlen(item->valuestring));
-                    }
-                }
-                //get last_update object
-                if ((josub=cJSON_GetObjectItem(jo, "last_update")) != NULL) 
-                {
-                    memcpy(w->last_update, josub->valuestring, strlen(josub->valuestring));                 
-                }
-            }
-        }
-    }
-    //delete original json pack free memory
-    cJSON_Delete(json);
-    return;
-}
+    JSON_Value  *root_value;
+    JSON_Array  *results;
+    JSON_Object *first_result, *location, *now;
 
-void aita_PrintWeather(weather_t *w) 
-{
-    printf("id: %s\n", w->id);
-    printf("name: %s\n", w->name);
+    root_value = json_parse_string(msg);
+    results = json_object_get_array(json_object(root_value), "results");
+    first_result = json_array_get_object(results, 0);
+    location = json_object_get_object(first_result, "location");
+    now = json_object_get_object(first_result, "now");
+
+    strncpy(w->location_id, json_object_get_string(location, "id"), sizeof(w->location_id) - 1);
+    strncpy(w->city, json_object_get_string(location, "name"), sizeof(w->city) - 1);
+    strncpy(w->country, json_object_get_string(location, "country"), sizeof(w->country) - 1);
+    strncpy(w->weather, json_object_get_string(now, "text"), sizeof(w->weather) - 1);
+    strncpy(w->temp, json_object_get_string(now, "temperature"), sizeof(w->temp) - 1);
+    strncpy(w->last_update, json_object_get_string(first_result, "last_update"), sizeof(w->last_update) - 1);
+
+    printf("id: %s\n", w->location_id);
+    printf("name: %s\n", w->city);
     printf("country: %s\n", w->country);
-    printf("path: %s\n", w->path);
-    printf("timezone: %s\n", w->timezone);
-    printf("timezone_offset: %s\n", w->tz_offset);
-    printf("text: %s\n", w->text);
-    printf("code: %s\n", w->code);
+    printf("text: %s\n", w->weather);
     printf("temperature: %s\n", w->temp);
     printf("last_update: %s\n", w->last_update);
+
+    json_value_free(root_value);
+
+    return;
+
 }
+
 
 /**
  * 创建温湿度历史图表的点击事件
@@ -322,12 +270,11 @@ void timer_weather_callback(lv_timer_t * timer)
 
         printf("收到消息: %s\n", buffer);
 
-        aita_ParseJsonNow(buffer, &weather);
+        aita_ParseJsonNow(buffer, &weatherinfo);
 
-        snprintf(buffer_weather, sizeof(buffer_weather), "今天天气:%s,外温:%s摄氏度", weather.text, weather.temp);
+        snprintf(buffer_weather, sizeof(buffer_weather), "今天天气:%s,外温:%s摄氏度", weatherinfo.weather, weatherinfo.temp);
         lv_label_set_text(sensor_data.label_weather, buffer_weather);  //调用心知天气ａｐｉ
 
-        aita_PrintWeather(&weather);
 
         close(fd);
     }   

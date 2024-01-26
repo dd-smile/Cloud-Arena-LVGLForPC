@@ -16,16 +16,12 @@ typedef struct{
 } Sensor_Data;
 
 typedef struct {
-    char id[16];
-    char name[32];
-    char country[16];
-    char path[64];
-    char timezone[32];
-    char tz_offset[16];
-    char text[16];
-    char code[4];
-    char temp[8];
-    char last_update[32];
+    char location_id[50];
+    char city[50];
+    char country[5];
+    char weather[50];
+    char temp[32];
+    char last_update[50];
 } weather_t;
 
 extern char temp_data[1024];
