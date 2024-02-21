@@ -11,11 +11,12 @@
 
 //结构体数组，存放设置页面中的卡片
 static const card_info_t CARD_INFO[] = {
-    {20, 65, CreateAddDevice,NULL},                 // 20, 65,  增加设备卡片
-    {310, 65, CreateScreen,add_Screen_event_cb},    // 310, 65,　屏幕设置卡片
-    {600, 65, CreateTime,NULL},                     // 600，65,  设置时间卡片　　
-    {20, 290, CreateScreensave,NULL},               // 20, 290,  屏保图片选择卡片
-    {310, 290, CreateLanguage,NULL}                 // 310, 290,  语言设置卡片
+    {20, 65, CreateAddDevice, NULL},                 // 20, 65,  增加设备卡片
+    {310, 65, CreateScreen, add_Screen_event_cb},    // 310, 65,　屏幕设置卡片
+    {600, 65, CreateTime, NULL},                     // 600，65,  设置时间卡片　　
+    {20, 290, CreateScreensave, NULL},               // 20, 290,  屏保图片选择卡片
+    {310, 290, CreateLanguage, NULL},                 // 310, 290,  语言设置卡片
+    {600, 290, WifiCard, NULL}
 };
 
 

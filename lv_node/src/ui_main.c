@@ -349,15 +349,13 @@ static void *create_client_abesn()
 void create_lv_layout(lv_obj_t *scr)
 {
 
+/******************************定时器任务*****************************/
+
   // pthread_t tid_mu;
   // pthread_create(&tid_mu, NULL, create_client_mu, NULL);
 
   // // 读取屏幕配置文件
   // updateSettingData(&setting, SCREEN_SETTING_JSON);
-
-  home_bg(scr);              // 设置主页背景
-  home_page_box(scr);        // 框架(创建滑动页面)
-  create_wifi_and_time(scr); // wifi 和 时间
 
   // // 创建屏保任务
   // lv_timer_create(UpdateTask, 500, NULL);
@@ -366,7 +364,7 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_data_callback, 50000, NULL);
 
   //创建更新天气数据任务
-  lv_timer_create(timer_weather_callback, 60000, NULL);
+  // lv_timer_create(timer_weather_callback, 60000, NULL);
 
   // 创建ＭＱＴＴ心跳任务
   // lv_timer_create(timer_mqtt_callback, 20000, NULL);
@@ -377,6 +375,12 @@ void create_lv_layout(lv_obj_t *scr)
   // 创建推送数据到慧馆家平台
   // lv_timer_create(timer_push_callback, 60000, NULL);
 
+/******************************界面UI*****************************/
+
+  home_bg(scr);              // 设置主页背景
+  home_page_box(scr);        // 框架(创建滑动页面)
+  create_wifi_and_time(scr); // wifi 和 时间
+
   CreateHomePage(home_data.home_page);       // 主页
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
@@ -384,9 +388,11 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_gui_password_keyboard_display();
   // password_flag = true;
 
+/******************************连接服务器*****************************/
+
   // connect_mqtt();   // 连接mqtt服务器
   //create_client_light();  //　连接灯光服务器
-  create_client_abesn();  //连接艾比森ｐｌｃ服务器
+  // create_client_abesn();  //连接艾比森ｐｌｃ服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
   // thp = threadpool_create(3, 10, 10);

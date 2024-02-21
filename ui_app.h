@@ -443,6 +443,11 @@ enum Chinese_English_shift{
 #include "lv_node/src/setting/Add/add_event.h"
 #include "lv_node/src/setting/Add/add_device.h"
 #include "lv_node/src/setting/disposition.h"
+#include "lv_node/src/setting/Wifi/WifiCard.h"
+#include "lv_node/src/setting/Wifi/WifiKeyboard.h"
+#include "lv_node/src/Hardware/Wifi.h"
+#include "lv_node/src/Hardware/wifi_recv.h"
+
 
 #include "lv_node/src/display/display.h"
 #include "lv_node/src/display/connect_common.h"
@@ -460,6 +465,11 @@ enum Chinese_English_shift{
 #include "lv_node/src/mqtt/onenet.h"
 
 #include "lv_node/src/multimedia/kls.h"
+
+#include <regex.h>
+// #include "inc/mi_common.h"
+// #include "inc/mi_wlan.h"
+// #include "inc/mi_wlan_datatype.h"
 
 
 extern lv_obj_t * pcr_obj;

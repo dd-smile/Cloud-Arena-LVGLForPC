@@ -71,7 +71,7 @@ void telescoopic_Controls_event_cb(lv_event_t *e)
 
 
 /**
- * 创建设备详情页面文字说明
+ * 创建活动看台设备详情页面文字说明
  * @param device_num        
  * */
 void CreateTelescopicStandPage(uint8_t device_num)
