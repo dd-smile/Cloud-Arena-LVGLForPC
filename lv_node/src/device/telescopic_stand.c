@@ -78,16 +78,15 @@ void CreateTelescopicStandPage(uint8_t device_num)
 {
 
     //基本说明初始化
-    pPageData->deviceName = "伸缩活动看台";
-    pPageData->intro = "设备简介: 解决高规格场馆对于高排数、\n"
-                       "静音稳定的看台需求。\n";
+    pPageData->deviceName = UI_MLANG_STR(RETRACTABLE_SEATING_SYSTEM);
+    pPageData->intro = UI_MLANG_STR(INTRODUCTION_TO_THE_EQUIPMENT_OF_THE_EVENT_STAND);
     pPageData->date = "2023-7-4";
     pPageData->period = "6 months";
     pPageData->phoneNumber = "+86 755 26490688";
     pPageData->image = &telescopic_stand_big;  
-    pPageData->expandBtnText = "一键打开";
-    pPageData->emergencyStopBtnText = "急停";
-    pPageData->collapseBtnText = "一键收合";
+    pPageData->expandBtnText = UI_MLANG_STR(OPEN);
+    pPageData->emergencyStopBtnText = UI_MLANG_STR(SCRAM);
+    pPageData->collapseBtnText = UI_MLANG_STR(CLOSE);
 
     pPageData->StandOpenBtnText = "看台展开";
     pPageData->StandClosureBtnText = "看台收缩";
@@ -96,37 +95,16 @@ void CreateTelescopicStandPage(uint8_t device_num)
 
     pPageData->ManufacturingTel = "12345678";
     pPageData->SalehAfterotline = "12345679";
-    pPageData->SolveProblem = "解决方案" ;
-    pPageData->Description = "Condition";
-    pPageData->PopupTitlie = "检验人员必须及时进行检验\n"
-                             "            根据检查时间和内容";
-    pPageData->PopupContent = "维护\n"
-                              "正常报告";
-    // pPageData->deviceName = "Retractable Seating System";
-    // pPageData->intro = "Brief Introduction: Comply requirement\n"
-    //                    "of high-standard venues for high-row, \n"
-    //                    "quiet and stableseating system\n";
-    // pPageData->date = "2023-7-4";
-    // pPageData->period = "6 months";
-    // pPageData->phoneNumber = "+86 755 26490688";
-    // pPageData->image = &telescopic_stand_big;
-    // pPageData->expandBtnText = "Open";
-    // pPageData->emergencyStopBtnText = "Stop";
-    // pPageData->collapseBtnText = "Close";
+    pPageData->SolveProblem = UI_MLANG_STR(SOLUTION);
+    pPageData->Description = UI_MLANG_STR(CONDITION);
+    pPageData->PopupTitlie = UI_MLANG_STR(MAINTENANCE_NORMAL_HEADING);
+    pPageData->PopupContent = UI_MLANG_STR(MAINTENANCE_NORMAL_CONTENT);
 
     // pPageData->StandOpenBtnText = "StandOpen";
     // pPageData->StandClosureBtnText = "StandClose";
     // pPageData->SeatRiseBtnText = "SeatRise";
     // pPageData->SeatTipBtnText = "SeatTip";
 
-    // pPageData->ManufacturingTel = "12345678";
-    // pPageData->SalehAfterotline = "12345679";
-    // pPageData->SolveProblem = "Solution" ;
-    // pPageData->Description = "Condition";
-    // pPageData->PopupTitlie = "Inspection personnel must perform the inspection in a timely manner\n"
-    //                          "            according to the inspection time and contents";
-    // pPageData->PopupContent = " Maintenance\n"
-    //                           "normal report";
 
     CreateDevicePageBg(pPageData, device_num);
 }

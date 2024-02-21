@@ -47,50 +47,114 @@ const char const* g_mlang_str_zhc[] = {
     "选择语言", //38
     "中文", //39
     "英文", //40
+    "展开", //41
+    "收合", //42
+    "急停", //43
+    "放下", //44
+    "打开", //45
+    "关闭", //46
+    "表演", //47
+    "合唱", //48
+    "上升", //49
+    "下降", //50
+    "总急停", //51
+    "总复位", //52
+    "伸缩活动看台", //53
+    "设备简介: 解决高规格场馆对于高排数、\n静音稳定的看台需求。\n", //54
+    "解决方案", //55
+    "状况", //56
+    "维护正常报告", //57
+    "检验人员已进行例行检查\n"
+     "       无任何异常情况",  //58
+    "设备名称: ",  //59
+    "制造商简介: ", //60
+    "采购时间: ", //61
+    "检修周期: ", //62
+    "供应商服务电话: ", //63
+    "故障申报", //64
+    "重命名", //65
+    "检修正常", //66
+    "返回", //67
+    "制造商售后电话: ", //68
+
+
 };
 
 const char const * g_mlang_str_eng[] = {
-    "Data Board",
-    "Facility",
-    "Audio Control",
-    "facility",
-    "mode",
-    "setting",
-    "training pattern",
-    "game mode",
-    "performance mode",
-    "3vs3 mode",
-    "movable stand",
-    "Hanging ball rack 1",
-    "Hanging ball rack 2",
-    "Hanging ball rack 3",
-    "Hanging ball rack 4",
-    "Automatic divider 1",
-    "Automatic divider 2",
-    "Wall hanging ball rack 1",
-    "Wall hanging ball rack 2",
-    "Buried flip seat 1",
-    "Buried flip seat 2",
-    "Telescopic stage",
-    "Elevating rotary stage",
-    "Venue lighting",
-    "manual mode",
-    "Add Device",
-    "Please add a new device",
-    "Screen setup",
-    "Screen brightness Settings",
-    "Automatically enter the screen saver",
-    "Confirm",
-    "Cancel",
-    "Whether to save Settings",
-    "Time settings",
-    "Save",
-    "Screensaver Settings",
-    "New upgraded screensaver",
-    "Language\n  settings",
-    "Select language",
-    "Chinese(CN)",
-    "English(US)"
+    "Data Board",  //0
+    "Facility",   //1
+    "Audio Control",  //2
+    "facility",  //3
+    "mode",  //4
+    "setting",  //5
+    "training pattern",  //6
+    "game mode",  //7
+    "performance mode",  //8
+    "3vs3 mode",  //9
+    "movable stand",  //10
+    "Hanging ball rack 1",  //11
+    "Hanging ball rack 2",  //12
+    "Hanging ball rack 3",  //13
+    "Hanging ball rack 4",  //14
+    "Automatic divider 1",  //15
+    "Automatic divider 2",  //16
+    "Wall hanging ball rack 1",  //17
+    "Wall hanging ball rack 2",  //18
+    "Buried flip seat 1",  //19
+    "Buried flip seat 2",  //20
+    "Telescopic stage",    //21
+    "Elevating rotary stage",  //22
+    "Venue lighting",  //23
+    "manual mode",   //24
+    "Add Device",   //25
+    "Please add a new device",   //26
+    "Screen setup",   //27
+    "Screen brightness Settings",   //28
+    "Automatically enter the screen saver",   //29
+    "Confirm",   //30
+    "Cancel",   //31
+    "Whether to save Settings",   //32
+    "Time settings",   //33
+    "Save",   //34
+    "Screensaver Settings",  //35
+    "New upgraded screensaver",  //36
+    "Language\n  settings",  //37
+    "Select language",   //38
+    "Chinese(CN)",   //39 
+    "English(US)",   //40
+    "Spread",   //41
+    "Closure",  //42
+    "Scram",    //43
+    "Vail",   //44
+    "Open",   //45
+    "Close",    //46
+    "Perform",  //47
+    "Tutti",   //48
+    "Rise",    //49
+    "Drop",    //50
+    "E-STOP",   //51
+    "RST",    //52
+    "Retractable Seating System",   //53
+    "Brief Introduction: Comply requirement\n"
+                       "of high-standard venues for high-row, \n"
+                       "quiet and stableseating system\n",   //54
+    "Solution",  //55
+    "Condition",  //56
+    "Maintenance normal report",   //57
+    "Routine checks have\n" 
+        "been carried out",   //58
+    "Devicename: ", //59
+    "Manufacturer profile: ", //60
+    "Purchasing period: ", //61
+    "Repair cycle: ", //62
+    "Supplier service TEL: ", //63
+    "report",   //64
+    "rename",   //65
+    "normal",   //66
+    "Back",   //67
+    "After-sales hotline: ", //68
+
+
 };
 
 const char * const *sg_language_str_list[LANGUAGE_MAX] = {//这个指针数组能就是用来获取字符串的

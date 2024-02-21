@@ -187,39 +187,39 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
     lv_obj_t *dev_card;
     if (image == 0)  //如果设备是活动看台
     {
-        dev_card = lv_box_create(parent, x, y, "展开", "急停", "收合", index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(SPREAD), UI_MLANG_STR(SCRAM), UI_MLANG_STR(PUT_AWAY), index);
     }
     else if (image == 1)  //如果设备是悬空球架
     {
-        dev_card = lv_box_create(parent, x, y, "放下", "急停", "收起", index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(PUT_DOWN), UI_MLANG_STR(SCRAM), UI_MLANG_STR(PUT_AWAY), index);
     }
     else if (image == 2)  //如果设备是分隔幕
     {
-        dev_card = lv_box_create(parent, x, y, "放下", "急停", "收起", index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(PUT_DOWN), UI_MLANG_STR(SCRAM), UI_MLANG_STR(PUT_AWAY), index);
     }
     else if (image == 3)  //壁挂球架
     {
-        dev_card = lv_box_create(parent, x, y, "展开", "急停", "收合", index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(SPREAD), UI_MLANG_STR(SCRAM), UI_MLANG_STR(PUT_AWAY), index);
     }
     else if (image == 4)  //地面翻折座椅
     {
-        dev_card = lv_box_create(parent, x, y, "打开", "急停", "关闭", index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(OPEN), UI_MLANG_STR(SCRAM), UI_MLANG_STR(CLOSE), index);
     }
     else if (image == 5)  //舞台
     {
-        dev_card = lv_box_create(parent, x, y, "表演", "合唱", "收合", index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(PERFORM), UI_MLANG_STR(TUTTI), UI_MLANG_STR(PUT_AWAY), index);
     }
     else if (image == 6)  //升降旋转舞台
     {
-        dev_card = lv_box_create(parent, x, y, "上升", "急停", "下降", index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(RISE), UI_MLANG_STR(SCRAM), UI_MLANG_STR(DROP), index);
     }
     else if (image == 7)  //灯光
     {
-        dev_card = lv_box_create(parent, x, y, "打开", "关闭", NULL, index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(OPEN), UI_MLANG_STR(CLOSE), NULL, index);
     }
     else if (image == 8)  //手动模式
     {
-        dev_card = lv_box_create(parent, x, y, "总急停", "打开", "总复位", index);
+        dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(E_STOP), UI_MLANG_STR(OPEN), UI_MLANG_STR(RST), index);
     }
 
     //printf("index:%d %d\n", index->num, index->ind);
