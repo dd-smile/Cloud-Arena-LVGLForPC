@@ -272,6 +272,7 @@ static void *JudgmentConnection(void *parg)
   {
     if (socketconnected(light_fd) == 0)
     {
+      closeSocket(light_fd);
       light_fd = createSocket();  //创建套接字
       connectToHost(light_fd, VSU_SERVER_IP, VSU_SERVER_PORT);  //连接服务器
     }
@@ -289,6 +290,7 @@ static void *abesnConnection(void *parg)
   {
     if (socketconnected(plc_fd) == 0)
     {
+      closeSocket(plc_fd);
       plc_fd = createSocket();  //创建套接字
       connectToHost(plc_fd, ABESN_PLC_SERVER_IP, ABESN_PLC_SERVER_PORT);  //连接服务器
     }
