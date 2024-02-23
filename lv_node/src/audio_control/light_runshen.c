@@ -35,8 +35,8 @@ void Setdimming_runshen(uint8_t addr, uint8_t port_number, uint8_t status)
     // packet[12] = calculate_crc16(packet, sizeof(packet) - 2) & 0xFF;
     // packet[13] = calculate_crc16(packet, sizeof(packet) - 2) >> 8;
 
-    if(socketconnected(light_fd) != 0)
-        write(light_fd, packet, sizeof(packet));
+    if(socketconnected(g_light_fd) != 0)
+        write(g_light_fd, packet, sizeof(packet));
 
     usleep(50 * 1000);
 }

@@ -48,9 +48,9 @@ void SetLightSwitch_ulaide(uint8_t addr, uint8_t register_h, uint8_t register_l,
     packet[10] = status_h;
     packet[11] = status_l;
 
-    if (socketconnected(light_fd) != 0) 
+    if (socketconnected(g_light_fd) != 0) 
     {
-        write(light_fd, packet, sizeof(packet));
+        write(g_light_fd, packet, sizeof(packet));
     }
     
     usleep(50 * 1000);

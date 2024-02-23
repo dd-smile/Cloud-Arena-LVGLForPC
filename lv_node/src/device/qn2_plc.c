@@ -8,7 +8,7 @@
  */
 #include "ui_app.h"
 
-int plc_fd = 0;
+int g_plc_fd = 0;
 
 
 /**
@@ -33,9 +33,9 @@ void SetLedpower_abesn(uint8_t status)
     packet[11] = 0x00;
 
     //modbus TCP自己新建客户端  网口 IP：192.168.0.15 端口号为 5000
-    if (socketconnected(plc_fd) != 0) 
+    if (socketconnected(g_plc_fd) != 0) 
     {
-        write(plc_fd, packet, sizeof(packet));
+        write(g_plc_fd, packet, sizeof(packet));
     }
 
     usleep(50 * 1000);

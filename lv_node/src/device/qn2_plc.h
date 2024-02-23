@@ -9,7 +9,7 @@
 #ifndef __QN2_PLC_H__
 #define __QN2_PLC_H__
 
-extern int plc_fd;
+extern int g_plc_fd;
 
 void SetLedpower_abesn(uint8_t status);
 

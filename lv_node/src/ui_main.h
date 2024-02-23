@@ -34,8 +34,8 @@ typedef struct
 } lv_setting_data_t;
 
 extern All_Data home_data;
-extern  lv_setting_data_t setting;
-extern int light_fd;
+extern lv_setting_data_t setting;
+extern int g_light_fd;
 extern char PUB_BUF[256];
 
 void create_lv_layout(lv_obj_t *scr);

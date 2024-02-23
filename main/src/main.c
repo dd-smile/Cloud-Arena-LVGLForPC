@@ -235,6 +235,7 @@ int main(int argc, char **argv)
   // close(lfd);
   // closeSocket(multitrack_fd);
   // closeSocket(mqtt_fd);
+  // closeSocket(g_light_fd);
 
   // threadpool_distory(thp);
 

@@ -30,7 +30,7 @@ struct
 
 static bool enteredScreenMode = false; // 屏保标志位
 static bool password_flag = false;  //给第一次弹出密码框
-int light_fd;   //连接灯光套接字
+int g_light_fd;   //连接灯光套接字
 char PUB_BUF[256];      //上传给ＭＱＴＴ服务器数据的buf
 All_Data home_data;
 
@@ -268,13 +268,15 @@ void timer_push_callback(lv_timer_t *timer)
  * */
 static void *JudgmentConnection(void *parg)
 {
+  g_light_fd = createSocket();  //创建套接字
+  connectToHost(g_light_fd, VSU_SERVER_IP, VSU_SERVER_PORT);  //连接服务器
   while (1)
   {
-    if (socketconnected(light_fd) == 0)
+    if (socketconnected(g_light_fd) == 0)
     {
-      closeSocket(light_fd);
-      light_fd = createSocket();  //创建套接字
-      connectToHost(light_fd, VSU_SERVER_IP, VSU_SERVER_PORT);  //连接服务器
+      closeSocket(g_light_fd);
+      g_light_fd = createSocket();  //创建套接字
+      connectToHost(g_light_fd, VSU_SERVER_IP, VSU_SERVER_PORT);  //连接服务器
     }
     usleep(50 * 1000);
   }
@@ -286,13 +288,15 @@ static void *JudgmentConnection(void *parg)
  * */
 static void *abesnConnection(void *parg)
 {
+  g_plc_fd = createSocket();  //创建套接字
+  connectToHost(g_plc_fd, ABESN_PLC_SERVER_IP, ABESN_PLC_SERVER_PORT);
   while (1)
   {
-    if (socketconnected(plc_fd) == 0)
+    if (socketconnected(g_plc_fd) == 0)
     {
-      closeSocket(plc_fd);
-      plc_fd = createSocket();  //创建套接字
-      connectToHost(plc_fd, ABESN_PLC_SERVER_IP, ABESN_PLC_SERVER_PORT);  //连接服务器
+      closeSocket(g_plc_fd);
+      g_plc_fd = createSocket();  //创建套接字
+      connectToHost(g_plc_fd, ABESN_PLC_SERVER_IP, ABESN_PLC_SERVER_PORT);  //连接服务器
     }
     usleep(100 * 1000);
   }
@@ -329,8 +333,6 @@ void Judgmentmode(void)
  * */
 static void *create_client_light()
 {   
-    light_fd = createSocket();  //创建套接字
-    connectToHost(light_fd, VSU_SERVER_IP, VSU_SERVER_PORT);  //连接服务器
 
     pthread_t tid;
     pthread_create(&tid, NULL, JudgmentConnection, NULL);
@@ -340,9 +342,7 @@ static void *create_client_light()
  * 创建modbus TCP 艾比森的ｌｅｄ电源控制
 */
 static void *create_client_abesn()
-{
-  plc_fd = createSocket();  //创建套接字
-  connectToHost(plc_fd, ABESN_PLC_SERVER_IP, ABESN_PLC_SERVER_PORT);  
+{  
 
   pthread_t tid;
   pthread_create(&tid, NULL, abesnConnection, NULL);

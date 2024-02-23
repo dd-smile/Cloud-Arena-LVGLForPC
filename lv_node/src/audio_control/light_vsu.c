@@ -38,9 +38,9 @@ void SetLightingscene_vsu(uint8_t addr)
     packet[10] = 0xFF;
     packet[11] = 0x00;
 
-    if (socketconnected(light_fd) != 0) 
+    if (socketconnected(g_light_fd) != 0) 
     {
-        write(light_fd, packet, sizeof(packet));
+        write(g_light_fd, packet, sizeof(packet));
     }
     
     usleep(50 * 1000);
@@ -73,9 +73,9 @@ void SetLightSwitch_vsu(uint8_t addr, uint8_t port_number, uint8_t status)
     packet[11] = 0x00;
 
 
-    if (socketconnected(light_fd) != 0) 
+    if (socketconnected(g_light_fd) != 0) 
     {
-        write(light_fd, packet, sizeof(packet));
+        write(g_light_fd, packet, sizeof(packet));
     }
 
     usleep(50 * 1000);
@@ -104,9 +104,9 @@ void Setdimming_vsu(uint8_t addr, uint8_t port_number, uint8_t status)
     packet[10] = 0x00;
     packet[11] = status;
 
-    if (socketconnected(light_fd) != 0) 
+    if (socketconnected(g_light_fd) != 0) 
     {
-        write(light_fd, packet, sizeof(packet));
+        write(g_light_fd, packet, sizeof(packet));
     }
 
     usleep(50 * 1000);

@@ -47,7 +47,11 @@ void connect_mqtt()
       exit(0);
   }
 
-  OneNet_DevLink();   //连接ＭＱＴＴ服务器
+  if(socketconnected(mqtt_fd) != 0)
+  {
+  	OneNet_DevLink();   //连接ＭＱＴＴ服务器
+  }
+
 
 }
 
@@ -100,6 +104,7 @@ void OneNet_HeartBeat(void)
 	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};
 
 	unsigned char sCount = 3;
+	int mqtt_red = -1;
 	
 //---------------------------------------------步骤一：组包---------------------------------------------
 	if(MQTT_PacketPing(&mqttPacket))
@@ -112,11 +117,15 @@ void OneNet_HeartBeat(void)
 		{
 			closeSocket(mqtt_fd);
 			mqtt_fd = createSocket();
-			connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
+			mqtt_red = connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
+			if(mqtt_red != -1)
+			{
+				OneNet_DevLink();
+				write(mqtt_fd, mqttPacket._data, mqttPacket._len);
+				break;
+			}
 
-			OneNet_DevLink();
 		}
-		write(mqtt_fd, mqttPacket._data, mqttPacket._len);
 
 	}
 	
