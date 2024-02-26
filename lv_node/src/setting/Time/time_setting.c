@@ -86,6 +86,27 @@ static void add_SaveButton_event_cb(lv_event_t *e)
         printf("日：%s\n", day_buf);
         printf("时：%s\n", hour_buf);
         printf("分：%s\n", min_buf);
+
+        // char command[100];
+
+        // char year[10];
+        // char month[10];
+        // char day[10];
+        // char hour[10];
+        // char min[10];
+
+        // sscanf(year_buf, "%[^年]年", year);
+        // sscanf(month_buf, "%[^ ]", month);
+        // sscanf(day_buf, "%[^ ]", day);
+        // sscanf(hour_buf, "%[^ ]", hour);
+        // sscanf(min_buf, "%[^ ]", min);
+
+        // //合并指令
+        // sprintf(command, "date -s \"%s-%s-%s-%s-%s:00\"", year, month, day, hour, min);
+        // system(command);
+        // system("hwclock -w");
+
+        // lv_disp_trig_activity(lv_disp_get_default());
     }
 }
 

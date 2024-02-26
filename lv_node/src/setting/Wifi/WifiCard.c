@@ -301,6 +301,10 @@ static lv_obj_t *create_wifi_popup(lv_obj_t *parent, bool card_back, const char 
     return popup;
 }
 
+/**
+ * 断开wifi连接事件
+ * @param e        指向事件描述符的指针
+*/
 static void wifi_disconnect_event(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -326,7 +330,10 @@ void CreatrWifiConnectButton(lv_obj_t *parent, char *text)
     memcpy(wifi_has_been_connnected, node, sizeof(WifiNode));
 }
 
-// WiFi列表界面背景
+/**
+ * 创建WiFi列表界面背景
+ * @param parent        指向一个对象的指针，它将是新图像的父对象
+*/
 lv_obj_t *create_wifi_page(lv_obj_t *parent)
 {
     lv_obj_t *scr = lv_c_create_mask_box(parent); // 创建遮罩
@@ -402,6 +409,9 @@ lv_timer_t *lv_create_time(lv_obj_t *parent, const lv_font_t *value, lv_coord_t 
     return timer;
 }
 
+/**
+ * 创建WIFI页面(包括已连接wifi，其他wifi)
+*/
 void CreateWifiPage(void)
 {
 
@@ -421,6 +431,10 @@ void CreateWifiPage(void)
     lv_timer_create(search_wifi, 500, NULL);
 }
 
+/**
+ * 查询当前连接状态与可供连接wifi的信息
+ * @param e             指向事件描述符的指针
+*/
 void add_Wifi_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
