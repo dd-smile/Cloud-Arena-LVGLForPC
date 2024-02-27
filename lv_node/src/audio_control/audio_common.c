@@ -283,7 +283,7 @@ static void *LedControl(lv_obj_t *parent)
 
     //连接服务器
     // create_client_led();
-    create_client_kls();
+    // create_client_kls();
 
     create_big_button(popup_page, "播放云场馆宣传片", -400, -150, 0, led_Controls_event_cb, 0);
     create_big_button(popup_page, "播放演唱会demo", -200, -150, 0, led_Controls_event_cb, 1);

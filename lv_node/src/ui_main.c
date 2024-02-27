@@ -232,13 +232,14 @@ void UpdateTask(lv_timer_t *timer)
     }  
 
     uint32_t screenModeTime = setting.screen_save_time;
-    uint32_t idle_time = lv_disp_get_inactive_time(lv_disp_get_default());
-
-    if (idle_time < 7200*1000 && idle_time >= screenModeTime && !enteredScreenMode)
+    if (lv_disp_get_inactive_time(lv_disp_get_default()) >= screenModeTime)
     {
-      printf("进入屏保模式%ld\n",idle_time);
-      SettingScreenBox(lv_scr_act());
-      enteredScreenMode = true;
+      if (!enteredScreenMode)
+      {
+        printf("进入屏保模式%ld\n",lv_disp_get_inactive_time(lv_disp_get_default()));
+        SettingScreenBox(lv_scr_act());
+        enteredScreenMode = true;
+      }
     }
   
 }

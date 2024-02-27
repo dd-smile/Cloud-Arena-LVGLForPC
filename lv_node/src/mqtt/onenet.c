@@ -121,10 +121,13 @@ void OneNet_HeartBeat(void)
 			if(mqtt_red != -1)
 			{
 				OneNet_DevLink();
-				write(mqtt_fd, mqttPacket._data, mqttPacket._len);
 				break;
 			}
-
+		}
+		else
+		{
+			write(mqtt_fd, mqttPacket._data, mqttPacket._len);
+			break;
 		}
 
 	}

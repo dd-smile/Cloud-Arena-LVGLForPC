@@ -13,6 +13,8 @@ char day_buf[32];   //存储 天数 字符串数组
 char hour_buf[32];  //存储 小时 字符串数组
 char min_buf[32];   //存储 分钟 字符串数组
 
+lv_obj_t *SetMask;
+
 /**
  * 事件
  * @param e              指向事件描述符的指针
@@ -106,7 +108,15 @@ static void add_SaveButton_event_cb(lv_event_t *e)
         // system(command);
         // system("hwclock -w");
 
+        // //lv_disp_trig_activity这个是在告诉底层你设置的某个屏幕现在开始动了，,lv_disp_get_inactive_time这个函数是用来监测屏幕没动的时间的
+        // //平常都是通过触摸来告诉低层，屏幕在动。但是设置时间的时候我主动去告诉屏幕我在动，你别乱动.
+        
+        // // printf("1: %d\r\n", lv_disp_get_inactive_time(lv_disp_get_default()));
         // lv_disp_trig_activity(lv_disp_get_default());
+        // // printf("2: %d\r\n", lv_disp_get_inactive_time(lv_disp_get_default()));
+
+
+        // lv_obj_del(SetMask);
     }
 }
 
@@ -280,7 +290,7 @@ static void add_time_event_cb(lv_event_t *e)
 
     if (code == LV_EVENT_CLICKED)
     {
-        lv_obj_t *SetMask = lv_c_create_mask_box(lv_scr_act());  // 创建遮罩层
+        SetMask = lv_c_create_mask_box(lv_scr_act());  // 创建遮罩层
         lv_obj_t *iamge = image_create(SetMask, &popover, 0, 0); // 创建图标
         card_create_24_text(iamge, UI_MLANG_STR(TIME_SETTINGS), 10, -150);
 
