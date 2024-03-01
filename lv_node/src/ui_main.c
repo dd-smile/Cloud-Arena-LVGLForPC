@@ -357,11 +357,11 @@ void create_lv_layout(lv_obj_t *scr)
   // pthread_t tid_mu;
   // pthread_create(&tid_mu, NULL, create_client_mu, NULL);
 
-  // // 读取屏幕配置文件
-  // updateSettingData(&setting, SCREEN_SETTING_JSON);
+  // 读取屏幕配置文件
+  updateSettingData(&setting, SCREEN_SETTING_JSON);
 
-  // // 创建屏保任务
-  // lv_timer_create(UpdateTask, 500, NULL);
+  // 创建屏保任务
+  lv_timer_create(UpdateTask, 500, NULL);
 
   //创建更新温湿度数据任务
   // lv_timer_create(timer_data_callback, 50000, NULL);
@@ -388,8 +388,8 @@ void create_lv_layout(lv_obj_t *scr)
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
 
-  // lv_gui_password_keyboard_display();
-  // password_flag = true;
+  lv_gui_password_keyboard_display();
+  password_flag = true;
 
 /******************************连接服务器*****************************/
 

@@ -187,10 +187,9 @@ static lv_obj_t *swich_btn_card(lv_obj_t *obj)
  * @param text         按钮的名称
  * @param x_ofs        水平偏移 x_ofs
  * @param y_ofs        水平偏移 y_ofs
- * @param type         判断是什么控制类型
  * @param index        按到第几个按钮
  * */
-static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, uint8_t type, lv_event_cb_t event_cb, uint8_t index)
+static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, lv_event_cb_t event_cb, uint8_t index)
 {
     lv_obj_t *btn = lv_obj_create(obj);
     lv_obj_set_size(btn, 70, 40);
@@ -200,22 +199,8 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_
     lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
     lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
 
-    
-    //判断是什么设备按钮，从而添加控制事件
-    switch (type)
-    {
-        case 0:     //LED大屏控制
-            lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
-            lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
-            break;
-        case 1:     //多轨控制
-            lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
-            lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
-            break;
-
-        default:
-            break;
-    }
+    lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
+    lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);
     
     lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
 
@@ -232,10 +217,9 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_
  * @param text         按钮的名称
  * @param x_ofs        水平偏移 x_ofs
  * @param y_ofs        水平偏移 y_ofs
- * @param type         判断是什么控制类型
  * @param index        按到第几个按钮
  * */
-static void create_big_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, uint8_t type, lv_event_cb_t event_cb, uint8_t index)
+static void create_big_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, lv_coord_t y_ofs, lv_event_cb_t event_cb, uint8_t index)
 {
     lv_obj_t *btn = lv_obj_create(obj);
     lv_obj_set_size(btn, 170, 40);
@@ -245,22 +229,24 @@ static void create_big_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs,
     lv_obj_set_style_bg_color(btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);
     lv_obj_set_style_border_opa(btn, 80, LV_PART_MAIN);
 
+    lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
+    lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);
     
-    //判断是什么设备按钮，从而添加控制事件
-    switch (type)
-    {
-        case 0:     //LED大屏控制
-            lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
-            lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
-            break;
-        case 1:     //多轨控制
-            lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
-            lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
-            break;
+    // //判断是什么设备按钮，从而添加控制事件
+    // switch (type)
+    // {
+    //     case 0:     //LED大屏控制
+    //         lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
+    //         lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
+    //         break;
+    //     case 1:     //多轨控制
+    //         lv_obj_set_user_data(btn, index);   //设置用户数据，表示哪个按钮
+    //         lv_obj_add_event_cb(btn, event_cb, LV_EVENT_ALL, NULL);  
+    //         break;
 
-        default:
-            break;
-    }
+    //     default:
+    //         break;
+    // }
     
     lv_obj_align(btn, LV_ALIGN_CENTER, x_ofs, y_ofs);
 
@@ -285,31 +271,31 @@ static void *LedControl(lv_obj_t *parent)
     // create_client_led();
     // create_client_kls();
 
-    create_big_button(popup_page, "播放云场馆宣传片", -400, -150, 0, led_Controls_event_cb, 0);
-    create_big_button(popup_page, "播放演唱会demo", -200, -150, 0, led_Controls_event_cb, 1);
-    create_big_button(popup_page, "播放云场馆PPT", 200, -150, 0, led_Controls_event_cb, 2);
-    create_button(popup_page, "下一页", 360, -150, 0, led_Controls_event_cb, 3);
-    create_button(popup_page, "上一页", 450, -150, 0, led_Controls_event_cb, 4);
+    create_big_button(popup_page, "播放云场馆宣传片", -400, -150, led_Controls_event_cb, 0);
+    create_big_button(popup_page, "播放演唱会demo", -200, -150, led_Controls_event_cb, 1);
+    create_big_button(popup_page, "播放云场馆PPT", 200, -150, led_Controls_event_cb, 2);
+    create_button(popup_page, "下一页", 360, -150, led_Controls_event_cb, 3);
+    create_button(popup_page, "上一页", 450, -150, led_Controls_event_cb, 4);
 
-    create_button(popup_page, "循环", -300, -90, 0, led_Controls_event_cb, 5);
-    create_big_button(popup_page, "跳到PPT尾页", 200, -90, 0, led_Controls_event_cb, 6);
-    create_big_button(popup_page, "跳到PPT首页", 400, -90, 0, led_Controls_event_cb, 7);
+    create_button(popup_page, "循环", -300, -90, led_Controls_event_cb, 5);
+    create_big_button(popup_page, "跳到PPT尾页", 200, -90, led_Controls_event_cb, 6);
+    create_big_button(popup_page, "跳到PPT首页", 400, -90, led_Controls_event_cb, 7);
 
-    create_button(popup_page, "HDMI1", -440, -30, 0, led_Controls_event_cb, 8);
-    create_button(popup_page, "HDMI2", -350, -30, 0, led_Controls_event_cb, 9);
-    create_button(popup_page, "HDMI3", -260, -30, 0, led_Controls_event_cb, 10);
-    create_button(popup_page, "HDMI4", -170, -30, 0, led_Controls_event_cb, 11);
-    create_big_button(popup_page, "PPT自动播放", 300, -30, 0, led_Controls_event_cb, 12);
+    create_button(popup_page, "HDMI1", -440, -30, led_Controls_event_cb, 8);
+    create_button(popup_page, "HDMI2", -350, -30, led_Controls_event_cb, 9);
+    create_button(popup_page, "HDMI3", -260, -30, led_Controls_event_cb, 10);
+    create_button(popup_page, "HDMI4", -170, -30, led_Controls_event_cb, 11);
+    create_big_button(popup_page, "PPT自动播放", 300, -30, led_Controls_event_cb, 12);
 
-    create_button(popup_page, "播放", -160, 30, 0, led_Controls_event_cb, 13);
-    create_big_button(popup_page, "暂停/播放", 0, 30, 0, led_Controls_event_cb, 14);
-    create_button(popup_page, "停止", 180, 30, 0, led_Controls_event_cb, 15);
+    create_button(popup_page, "播放", -160, 30, led_Controls_event_cb, 13);
+    create_big_button(popup_page, "暂停/播放", 0, 30, led_Controls_event_cb, 14);
+    create_button(popup_page, "停止", 180, 30, led_Controls_event_cb, 15);
 
-    create_button(popup_page, "音量增", -160, 90, 0, led_Controls_event_cb, 16);
-    create_big_button(popup_page, "静音/取消静音", 0, 90, 0, led_Controls_event_cb, 17);
-    create_button(popup_page, "音量减", 180, 90, 0, led_Controls_event_cb, 18);
+    create_button(popup_page, "音量增", -160, 90, led_Controls_event_cb, 16);
+    create_big_button(popup_page, "静音/取消静音", 0, 90, led_Controls_event_cb, 17);
+    create_button(popup_page, "音量减", 180, 90, led_Controls_event_cb, 18);
     
-    create_big_button(popup_page, "领先体育官网", 0, 150, 0, led_Controls_event_cb, 19);
+    create_big_button(popup_page, "领先体育官网", 0, 150, led_Controls_event_cb, 19);
 
 }
 
@@ -323,15 +309,15 @@ static void *MultitrackControl(lv_obj_t *parent)
     lv_obj_t *popup_page = create_popup_page(scr, "多轨音乐控制", 0, 0);
 
     lv_obj_t *btn_multitrack = swich_btn_card(popup_page);
-    create_button(btn_multitrack, "音乐1", -90, -100, 1, multitrack_Controls_event_cb, 0);
-    create_button(btn_multitrack, "音乐2", 0, -100, 1, multitrack_Controls_event_cb, 1);
-    create_button(btn_multitrack, "爵士乐", 90, -100, 1 , multitrack_Controls_event_cb, 2);
-    create_button(btn_multitrack, "音乐4", -90, -40, 1 , multitrack_Controls_event_cb, 3);
-    create_button(btn_multitrack, "大自然", 0, -40, 1 , multitrack_Controls_event_cb, 4);
-    create_button(btn_multitrack, "下一首", 90, -40, 1 , multitrack_Controls_event_cb, 8);
-    create_button(btn_multitrack, "停止", 0, 10, 1 , multitrack_Controls_event_cb, 9);
-    create_button(btn_multitrack, "音量增", -90, 40, 1 , multitrack_Controls_event_cb, 5);
-    create_button(btn_multitrack, "音量减", 90, 40, 1 , multitrack_Controls_event_cb, 6);
+    create_button(btn_multitrack, "音乐1", -90, -100, multitrack_Controls_event_cb, 0);
+    create_button(btn_multitrack, "音乐2", 0, -100, multitrack_Controls_event_cb, 1);
+    create_button(btn_multitrack, "爵士乐", 90, -100, multitrack_Controls_event_cb, 2);
+    create_button(btn_multitrack, "音乐4", -90, -40, multitrack_Controls_event_cb, 3);
+    create_button(btn_multitrack, "大自然", 0, -40, multitrack_Controls_event_cb, 4);
+    create_button(btn_multitrack, "下一首", 90, -40, multitrack_Controls_event_cb, 8);
+    create_button(btn_multitrack, "停止", 0, 10, multitrack_Controls_event_cb, 9);
+    create_button(btn_multitrack, "音量增", -90, 40, multitrack_Controls_event_cb, 5);
+    create_button(btn_multitrack, "音量减", 90, 40, multitrack_Controls_event_cb, 6);
     // create_button(btn_multitrack, "初始音量", 0, 100, 1 ,7);
     connect_label = lv_label_create(btn_multitrack);
     static lv_style_t connect_label_style;

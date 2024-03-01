@@ -30,21 +30,21 @@ static void toggle_label(lv_obj_t *label, bool state)
 }
 
 /**
- * 演出模式结束后自动切屏和关闭音乐
+ * 演出模式结束后关闭音乐防止循环
 */
-// static void sy_timer_handler(lv_timer_t * timer)
-// {   
-//     if ((performance_timer++) == 10)
-//     {
-//         performance_timer = 0;
-//         SetLedinputsource_aoto(0x01, 0x01, 0x01);
-//         synchronous_mutework();
-//         if (timer)
-//         {
-//             lv_timer_del(timer);
-//         }
-//     }
-// }
+static void sy_timer_handler(lv_timer_t * timer)
+{   
+    if ((performance_timer++) == 6)
+    {
+        performance_timer = 0;
+        sprintf(buf_audio, "stop@5F");
+        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
+        if (timer)
+        {
+            lv_timer_del(timer);
+        }
+    }
+}
 
 void manual_Controls_event_cb(lv_event_t *e)
 {
@@ -232,21 +232,20 @@ void mode_train_Controls(void)
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable2\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
-    if (multitrack_red != -1)
-    {
-        sprintf(buf_audio, "-15db@5F");
-        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
-        usleep(50 * 1000);
-        sprintf(buf_audio, "music4@5F");  //播放
-        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
-    }
+    // if (multitrack_red != -1)
+    // {
+    //     sprintf(buf_audio, "-15db@5F");
+    //     write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
+    //     usleep(50 * 1000);
+    //     sprintf(buf_audio, "music4@5F");  //播放
+    //     write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
+    // }
 }
 
 /*演出模式*/
 void mode_performance_Controls(void)
 {
     unsigned char sCount = 2;
-    create_client_led();
 
     for (uint8_t i = 0; i < 3; i++){
         OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, performance_msh[i]);
@@ -258,14 +257,17 @@ void mode_performance_Controls(void)
 
     if (multitrack_red != -1)
     {
-        sprintf(buf_audio, "stop@5F");
+        sprintf(buf_audio, "-15db@5F");
+        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
+        usleep(50 * 1000);
+        sprintf(buf_audio, "daziran@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
     }
 
     set_Central_control_system_command(KLS_PLAY_INSTRUCTION_MOVIE("1"));
-    set_Central_control_system_command(KLS_LOOP_PLAYBACK);
+    // set_Central_control_system_command(KLS_LOOP_PLAYBACK);
 
-    // lv_timer_t *sy_timer = lv_timer_create(sy_timer_handler, 60000, NULL);
+    lv_timer_t *sy_timer = lv_timer_create(sy_timer_handler, 60000, NULL);
 }
 
 /*比赛模式*/
@@ -274,32 +276,16 @@ void mode_competition_Controls(void)
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable3\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
-    if (multitrack_red != -1)
-    {
-        sprintf(buf_audio, "-15db@5F");
-        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
-        usleep(50 * 1000);
-        sprintf(buf_audio, "music3@5F");  //播放
-        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
-    }
 }
 
 /*3vs3训练模式*/
 void mode_halfcourt_Controls(void)
 {
-    printf("3vs3训练模式\n");
+    // printf("3vs3训练模式\n");
 
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable4\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
-    if (multitrack_red != -1)
-    {
-        sprintf(buf_audio, "-15db@5F");
-        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
-        usleep(50 * 1000);
-        sprintf(buf_audio, "music2@5F");  //播放
-        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
-    }
 }
 
 /**
