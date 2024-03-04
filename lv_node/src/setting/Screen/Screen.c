@@ -20,6 +20,8 @@ lv_obj_t *lv_Scrsw_obj;  // 开关对象
 lv_obj_t *slider_label;  // 滑动条的文字（外面）
 lv_obj_t *InSliderLabel; // 滑动条的文字（里面）
 
+static lv_obj_t *s_pass_setting_label;  //密码设置提示框
+
 
 /**
  * 保存设置的事件
@@ -160,6 +162,58 @@ static void scr_event_cb(lv_event_t *e)
 }
 
 /**
+ *  判断传入字符串是否全数字
+ *  @param                char *str     字符串
+ *  @retval               1: 全数字符串，0:非数全字符串     
+ */
+static int isdigitstr(char *str)
+{
+    return (strspn(str, "0123456789")==strlen(str));
+}
+
+/**
+ * 设置密码的点击事件
+ * @param e               指向事件描述符的指针
+ * */
+static void AddPassEventBtn(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_target(e);
+
+    if ( code == LV_EVENT_CLICKED)
+    {
+        char *keyUpdates = lv_textarea_get_text(Textarea_Pinyin);
+        printf("密码文本 %s\n", keyUpdates);
+        if (isdigitstr(keyUpdates) == 1 && strlen(keyUpdates) == 6)
+        {
+            printf("设置成功 %s\n", keyUpdates);
+            lv_label_set_text(s_pass_setting_label, "设置成功");
+        }
+        else
+        {
+            lv_label_set_text(s_pass_setting_label, "设置失败,请输入6位数字");
+        }
+        lv_obj_del(obj->parent);
+    }
+}
+
+/**
+ * 点击屏保密码设置事件
+ * @param e         指向事件描述符的指针
+*/
+static void lv_screen_pass_event_cb(lv_event_t *e)
+{
+    lv_event_code_t code = lv_event_get_code(e);
+
+    if (code == LV_EVENT_CLICKED)
+    {
+        lv_keypage_create(lv_scr_act(), AddPassEventBtn);
+    }
+}
+
+
+
+/**
  * 创建屏保按钮
  * @param parent         指向一个对象的指针，它将是新图像的父对象
  * */
@@ -209,6 +263,27 @@ void *create_allset_stlye(lv_obj_t *parent)
     setting_buf.Btnmid           = setting.Btnmid;
     setting_buf.screen_save_time = setting.screen_save_time;
     setting_buf.ScreenSaveid     = setting.ScreenSaveid;
+
+    card_create_20_text(popup_page, UI_MLANG_STR(SCREEN_PASSWORD_SETTINGS), -410, 130);
+    lv_obj_t *lv_screen_pass = btn_create_text(popup_page, false, UI_MLANG_STR(PASSWORD_SETTING), 450, 450); 
+    lv_obj_set_style_bg_color(lv_screen_pass, lv_color_make(0, 209, 254), LV_PART_MAIN);
+    lv_obj_set_size(lv_screen_pass, 120, 35);
+    lv_obj_add_event_cb(lv_screen_pass, lv_screen_pass_event_cb, LV_EVENT_CLICKED, NULL);
+
+    s_pass_setting_label = lv_label_create(popup_page);
+    static lv_style_t pass_setting_label_style;
+    lv_style_reset(&pass_setting_label_style);
+    lv_style_init(&pass_setting_label_style);
+    lv_style_set_radius(&pass_setting_label_style, 0); // 设置样式的圆角弧度
+	lv_style_set_border_width(&pass_setting_label_style, 0); //设置边框宽度
+    lv_style_set_text_color(&pass_setting_label_style , lv_palette_main(LV_PALETTE_RED));  // 字体颜色设置为红色
+    lv_label_set_long_mode(s_pass_setting_label, LV_LABEL_LONG_SCROLL_CIRCULAR); // 长文本循环滚动
+    lv_obj_add_style(s_pass_setting_label, &pass_setting_label_style, 0); // 给btn_label添加样式
+    lv_obj_set_style_text_font(s_pass_setting_label, &PuHuiTi_Regular_20, LV_PART_MAIN);
+    lv_obj_align(s_pass_setting_label, LV_ALIGN_CENTER, 0, 0);
+	lv_label_set_text(s_pass_setting_label, ""); // 设置文本内容
+
+
 
     return NULL;
 }

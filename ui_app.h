@@ -418,6 +418,8 @@ enum Chinese_English_shift{
     RECONDITIONED,
     BACK,
     AFTER_SALES_HOTLINE,
+    SCREEN_PASSWORD_SETTINGS,
+    PASSWORD_SETTING,
 };
 
 #include "stdio.h"

@@ -720,7 +720,7 @@ lv_obj_t *btn_create_text(lv_obj_t *parent, bool on_back, const char *confirm_te
     lv_obj_t *confirm_btn = lv_btn_create(parent);   //创建按钮
     lv_obj_set_size(confirm_btn, 85, 35);
     lv_obj_clear_flag(confirm_btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_align(confirm_btn, LV_ALIGN_TOP_LEFT, x_ofs, y_ofs);
+    lv_obj_align(confirm_btn, LV_ALIGN_CENTER, x_ofs, y_ofs);   //LV_ALIGN_TOP_LEFT
     lv_obj_set_style_radius(confirm_btn, 5, LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(confirm_btn, lv_color_make(26, 31, 46), LV_PART_MAIN);
     lv_obj_set_style_bg_color(confirm_btn, lv_color_make(33, 150, 243), LV_STATE_PRESSED);  //按下状态
