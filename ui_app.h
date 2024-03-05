@@ -420,6 +420,7 @@ enum Chinese_English_shift{
     AFTER_SALES_HOTLINE,
     SCREEN_PASSWORD_SETTINGS,
     PASSWORD_SETTING,
+    BRIGHTNESS_SETTING,
 };
 
 #include "stdio.h"

@@ -874,7 +874,9 @@ lv_obj_t *Createcard(lv_obj_t *parent)
     return card;
 }
 
-// 创建一个类似进度条的东西
+/**
+ * 创建一个类似进度条的东西
+*/
 lv_obj_t *CreateSlider(lv_obj_t *parent, lv_coord_t x, lv_coord_t y, int32_t min, int32_t max, lv_color_t value, int32_t num_value, lv_coord_t w, lv_coord_t h, bool status)
 {
     //

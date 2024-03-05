@@ -78,6 +78,7 @@ const char const* g_mlang_str_zhc[] = {
     "制造商售后电话: ", //68
     "屏保密码设置", //69
     "密码设置", //70
+    "亮度设置", //71
 
 
 };
@@ -157,6 +158,7 @@ const char const * g_mlang_str_eng[] = {
     "After-sales hotline: ", //68
     "Screen password Settings",//69
     "password setting",  //70
+    "Brightness setting",  //71
 
 
 };

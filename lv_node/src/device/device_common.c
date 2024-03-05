@@ -18,6 +18,9 @@ const char *RadioText;
 lv_obj_t *Input_label;
 static lv_obj_t *WinpageLabel;
 
+lv_obj_t *light_slider;  
+lv_obj_t *lightSliderLabel; // 滑动条的文字
+
 /**
  * 创建设备详情页中的巡检表
  * @param parent         指向父对象的指针
@@ -517,6 +520,23 @@ static void MaintenanceCreateButton(lv_event_t *e)
 }
 
 /**
+ * 灯光亮度设置进度条事件
+ * @param e               指向事件描述符的指针
+*/
+static void lightslider_event_cb(lv_event_t *e)
+{
+    lv_obj_t *slider = lv_event_get_target(e);
+
+    char buf[8];
+    char buf_light[8];
+    lv_snprintf(buf, sizeof(buf), "%d", (int)lv_slider_get_value(slider));
+    lv_label_set_text(lightSliderLabel, buf);
+    sprintf(buf_light, "%s", buf);
+    printf("灯光的亮度 = %s\n", buf_light);
+
+}
+
+/**
  * 创建故障申报按钮的点击事件
  * @param e               指向事件描述符的指针
  * */
@@ -877,10 +897,16 @@ lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
     lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
     Device_details_page_basicUi(bg, data);
 
-    index_t *index1 = add_index_t(device_num, 0);
-    index_t *index2 = add_index_t(device_num, 1);
-    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, lights_Controls_event_cb);  // 一键打开按钮
-    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2, lights_Controls_event_cb); // 一键收合按钮
+    // index_t *index1 = add_index_t(device_num, 0);
+    // index_t *index2 = add_index_t(device_num, 1);
+    // CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, lights_Controls_event_cb);  // 一键打开按钮
+    // CreateControlsButton(bg, data->collapseBtnText, -80, 142, index2, lights_Controls_event_cb); // 一键收合按钮
+
+    card_create_20_text(bg, UI_MLANG_STR(BRIGHTNESS_SETTING), -330, 112);
+    image_create(bg, &light, -370, 162);                                                                       // 创建图标
+    light_slider = CreateSlider(bg, -200, 162, 5, 100, lv_color_hex(0x00d1fe), 50, 300, 22, false); // 创建进度条
+    lightSliderLabel = card_create_20_text(bg, "50", -330, 162);
+    lv_obj_add_event_cb(light_slider, lightslider_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 
    
     CreateFeatureButton(bg, UI_MLANG_STR(REPORT), 245, ReportCreateButton, 7);       // 故障申报按钮

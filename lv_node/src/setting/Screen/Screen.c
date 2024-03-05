@@ -10,7 +10,7 @@
 
 lv_setting_data_t setting; //屏幕设置结构体   用于退出页面时候的保存
 lv_setting_data_t setting_buf; //屏幕设置结构体   用于处于页面详情时候的保存
-lv_obj_t *In_slider;   
+// lv_obj_t *In_slider;   
 lv_obj_t *On_slider;   
 lv_obj_t *In_slider;   
 
