@@ -394,7 +394,7 @@ void create_lv_layout(lv_obj_t *scr)
 /******************************连接服务器*****************************/
 
   // connect_mqtt();   // 连接mqtt服务器
-  //create_client_light();  //　连接灯光服务器
+  // create_client_light();  //　连接灯光服务器
   // create_client_abesn();  //连接艾比森ｐｌｃ服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
