@@ -526,10 +526,35 @@ static void MaintenanceCreateButton(lv_event_t *e)
 static void lightslider_event_cb(lv_event_t *e)
 {
     lv_obj_t *slider = lv_event_get_target(e);
+    // uint8_t num = lv_event_get_user_data(e);
 
     lv_label_set_text_fmt(lightSliderLabel, "%d", (int)lv_slider_get_value(slider));
     printf("灯光的亮度 = %x\n", (int)lv_slider_get_value(slider));
-    SetLightingscene_vsu((uint8_t)lv_slider_get_value(slider));   //发送调光指令
+    // switch (num)
+    // {
+    //     case 1:
+    //         Setdimming_vsu(0x01, 0x01, (uint8_t)lv_slider_get_value(slider));   //发送调光指令
+    //         break;
+
+    //     case 2: 
+    //         Setdimming_vsu(0x01, 0x02, (uint8_t)lv_slider_get_value(slider));
+    //         break;
+
+    //     case 3:
+    //         Setdimming_vsu(0x01, 0x03, (uint8_t)lv_slider_get_value(slider));
+    //         break;
+
+    //     case 4:
+    //         Setdimming_vsu(0x01, 0x04, (uint8_t)lv_slider_get_value(slider));
+    //         break;
+        
+    //     default:
+    //         break;
+    // }
+    Setdimming_vsu(0x01, 0x01, (uint8_t)lv_slider_get_value(slider));   //发送调光指令
+    Setdimming_vsu(0x01, 0x02, (uint8_t)lv_slider_get_value(slider));
+    Setdimming_vsu(0x01, 0x03, (uint8_t)lv_slider_get_value(slider));
+    Setdimming_vsu(0x01, 0x04, (uint8_t)lv_slider_get_value(slider));
 
 }
 
@@ -901,8 +926,9 @@ lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
 
     card_create_20_text(bg, UI_MLANG_STR(BRIGHTNESS_SETTING), -330, 112);
     image_create(bg, &light, -370, 162);                                                                       // 创建图标
-    light_slider = CreateSlider(bg, -190, 162, 5, 100, lv_color_hex(0x00d1fe), 50, 300, 22, false); // 创建进度条
-    lightSliderLabel = card_create_20_text(bg, "50", -320, 162);
+    light_slider = CreateSlider(bg, -190, 162, 5, 100, lv_color_hex(0x00d1fe), 100, 300, 22, false); // 创建进度条
+    lightSliderLabel = card_create_20_text(bg, "100", -320, 162);
+    // lv_obj_add_event_cb(light_slider, lightslider_event_cb, LV_EVENT_VALUE_CHANGED, device_num);
     lv_obj_add_event_cb(light_slider, lightslider_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 
    

@@ -110,33 +110,34 @@ void multitrack_Controls_event_cb(lv_event_t *e)
         switch ((int)obj->user_data)
         {
         case 0:  //音乐1
-                sprintf(buf_audio, "music1@5F");  //播放
+                // sprintf(buf_audio, "music1@5F");  //播放
+                snprintf(buf_audio, sizeof(buf_audio), "music1@5F");  //播放
                 /* 向线程池中添加任务 */
                 //threadpool_add(thp, (void *)&multitrack_working, 0);
                 audio_working();
             break;
         case 1:   //音乐2
-                sprintf(buf_audio, "music2@5F");  //播放
+                snprintf(buf_audio, sizeof(buf_audio), "music2@5F");  //播放
                 audio_working();
             break;
         case 2:   //音乐3
-                sprintf(buf_audio, "music3@5F");  //播放
+                snprintf(buf_audio, sizeof(buf_audio), "music3@5F");  //播放
                 audio_working();
             break;
         case 3:   //音乐4
-                sprintf(buf_audio, "music4@5F");  //播放
+                snprintf(buf_audio, sizeof(buf_audio), "music4@5F");
                 audio_working();
             break;
         case 4:   //大自然音乐
-                sprintf(buf_audio, "daziran@5F");  //播放
+                snprintf(buf_audio, sizeof(buf_audio), "daziran@5F");  //播放
                 audio_working();
             break;
         case 5:   //音量增加5db
-                sprintf(buf_audio, "V+@5F");  
+                snprintf(buf_audio, sizeof(buf_audio), "V+@5F");
                 audio_working();
             break;
         case 6:   //音量减少5db
-                sprintf(buf_audio, "V-@5F");
+                snprintf(buf_audio, sizeof(buf_audio), "V-@5F");
                 audio_working();
             break;
         // case 7:   //初始音量-15db
@@ -144,11 +145,11 @@ void multitrack_Controls_event_cb(lv_event_t *e)
         //     write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
         //     break;
         case 8:   //切换下一首
-                sprintf(buf_audio, "nest@5F");
+                snprintf(buf_audio, sizeof(buf_audio), "nest@5F");
                 audio_working();
             break;
         case 9:   //暂停播放
-                sprintf(buf_audio, "stop@5F");
+                snprintf(buf_audio, sizeof(buf_audio), "stop@5F");
                 audio_working();
             break;
 

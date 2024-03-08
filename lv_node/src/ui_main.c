@@ -259,7 +259,8 @@ void timer_mqtt_callback(lv_timer_t *timer)
 */
 void timer_push_callback(lv_timer_t *timer)
 {
-  sprintf(PUB_BUF,"{\"Temp\":%s,\"Hum\":%s}",temp_data, hum_data);
+  // sprintf(PUB_BUF,"{\"Temp\":%s,\"Hum\":%s}",temp_data, hum_data);
+  snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",temp_data, hum_data);
   OneNet_Publish("/avant/Cloud_Arena_sports/u", PUB_BUF); 
 }
 

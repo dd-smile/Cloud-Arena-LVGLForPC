@@ -37,7 +37,7 @@ static void sy_timer_handler(lv_timer_t * timer)
     if ((performance_timer++) == 6)
     {
         performance_timer = 0;
-        sprintf(buf_audio, "stop@5F");
+        snprintf(buf_audio, sizeof(buf_audio), "stop@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
         if (timer)
         {
@@ -257,10 +257,10 @@ void mode_performance_Controls(void)
 
     if (multitrack_red != -1)
     {
-        sprintf(buf_audio, "-15db@5F");
+        snprintf(buf_audio, sizeof(buf_audio), "-15db@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
         usleep(50 * 1000);
-        sprintf(buf_audio, "daziran@5F");
+        snprintf(buf_audio, sizeof(buf_audio), "daziran@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
     }
 

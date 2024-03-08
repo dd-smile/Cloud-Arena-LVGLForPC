@@ -259,7 +259,8 @@ void timer_weather_callback(lv_timer_t * timer)
 
         // 3. 和服务器端通信
         // 发送数据
-        sprintf(buf, "GET https://api.seniverse.com/v3/weather/now.json?key=SCYXqGB7ZPUSvlsZy&location=shenzhen&language=zh-Hans&unit=c\r\n\r\n");  
+        // sprintf(buf, "GET https://api.seniverse.com/v3/weather/now.json?key=SCYXqGB7ZPUSvlsZy&location=shenzhen&language=zh-Hans&unit=c\r\n\r\n");  
+        snprintf(buf, sizeof(buf), "GET https://api.seniverse.com/v3/weather/now.json?key=SCYXqGB7ZPUSvlsZy&location=shenzhen&language=zh-Hans&unit=c\r\n\r\n");
         write(fd, buf, strlen(buf)+1);
 
         buffer[0] = '\0';
