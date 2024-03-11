@@ -183,10 +183,11 @@ static void AddPassEventBtn(lv_event_t *e)
     if ( code == LV_EVENT_CLICKED)
     {
         char *keyUpdates = lv_textarea_get_text(Textarea_Pinyin);
-        printf("密码文本 %s\n", keyUpdates);
+        printf("修改密码文本 %s\n", keyUpdates);
         if (isdigitstr(keyUpdates) == 1 && strlen(keyUpdates) == 6)
         {
-            printf("设置成功 %s\n", keyUpdates);
+            int len = password_write(keyUpdates);
+            printf("设置成功 %s,长度为 %d\n", keyUpdates, len);
             lv_label_set_text(s_pass_setting_label, "设置成功");
         }
         else

@@ -15,5 +15,7 @@ extern bool password_mode_lock;
 
 void lv_gui_password_keyboard_display(void);
 void lv_mode_password_keyboard_display(void);
+void password_read();
+int password_write(char *password_input);
 
 #endif

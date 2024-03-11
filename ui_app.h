@@ -444,6 +444,8 @@ enum Chinese_English_shift{
 #include <sys/socket.h>
 #include <libgen.h>
 #include <linux/tcp.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 #include "lv_node/material/image/image.h"
 #include "lv_node/material/lv_100ask_pinyin_ime/lv_100ask_pinyin_ime.h"

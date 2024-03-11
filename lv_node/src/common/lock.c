@@ -17,6 +17,8 @@ static lv_obj_t *pwd_text_area = NULL; // 密码输入框
 lv_style_t style_indic;
 lv_obj_t * mask; 
 lv_obj_t * anaim_label;
+
+char password_input[6] = "123456";
  
 static const char * keyboard_map[] =
 {
@@ -49,6 +51,44 @@ static void cancel_btn_event_callback(lv_event_t* event);
 
 // 
 static void lv_bar_change(void);
+
+
+void password_read()
+{
+    int len = -1;
+
+    int fd = open("lv_node/src/common/pwd_txt.txt", O_RDONLY);
+    if (fd < 0)
+    {
+        printf("open txt fail\n");
+    }
+
+    len = read(fd, password_input, 6);
+
+    printf("密码文本 %s\n", password_input);
+
+    close(fd);
+    
+}
+
+int password_write(char *password_upd)
+{
+
+    int len = -1;
+
+    int fd = open("lv_node/src/common/pwd_txt.txt", O_RDWR);
+    if (fd < 0)
+    {
+        printf("open txt fail\n");
+    }
+
+    len = write(fd, password_upd, strlen(password_upd)); 
+
+    close(fd);
+
+    return len;
+
+}
  
  
 // 显示键盘输入界面
@@ -507,10 +547,11 @@ static void confirm_mode_event_callback(lv_event_t* event)
 		//printf("[%s:%d] confirm button clicked\n", __FUNCTION__, __LINE__);
 		if (pwd_text_area != NULL)
         {
+            password_read();
             const char *pwd_txt = lv_textarea_get_text(pwd_text_area);
             if ((pwd_txt != NULL))
             {
-                if (strcmp(pwd_txt, "1234") == 0)
+                if (strcmp(pwd_txt, password_input) == 0)
                 {
                     if (hint_label != NULL)
                     {
@@ -555,10 +596,11 @@ static void confirm_btn_event_callback(lv_event_t* event)
 		//printf("[%s:%d] confirm button clicked\n", __FUNCTION__, __LINE__);
 		if (pwd_text_area != NULL)
         {
+            password_read();
             const char *pwd_txt = lv_textarea_get_text(pwd_text_area);
             if ((pwd_txt != NULL))
             {
-                if (strcmp(pwd_txt, "1234") == 0)
+                if (strcmp(pwd_txt, password_input) == 0)
                 {
                     if (hint_label != NULL)
                     {

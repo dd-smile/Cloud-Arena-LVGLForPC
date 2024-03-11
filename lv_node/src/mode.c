@@ -253,7 +253,9 @@ void mode_performance_Controls(void)
     }
 
     while (sCount--)
+    {
         SetLightingscene_vsu(0x02); 
+    }
 
     if (multitrack_red != -1)
     {
