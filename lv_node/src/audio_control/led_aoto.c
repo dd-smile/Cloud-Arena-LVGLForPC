@@ -10,7 +10,7 @@
 
 
 int led_fd = 0;
-struct sockaddr_in seraddr;
+static struct sockaddr_in seraddr;
 
 //从第三个开始
 static unsigned char checksum8(const unsigned char *data, size_t size)
@@ -95,7 +95,7 @@ void *create_client_led(void)
         }
         
         seraddr.sin_family = AF_INET;
-        seraddr.sin_port = htons(61214);    
-        inet_pton(AF_INET, "192.168.1.223", &seraddr.sin_addr.s_addr);
+        seraddr.sin_port = htons(AOTO_SERVER_PORT);    
+        inet_pton(AF_INET, AOTO_SERVER_IP, &seraddr.sin_addr.s_addr);
     }
 }

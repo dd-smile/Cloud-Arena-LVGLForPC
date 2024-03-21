@@ -8,6 +8,8 @@
  */
 #include "ui_app.h"
 
+lv_obj_t *g_mqtt_detection;
+
 /**
  * 读取时间
  * 
@@ -41,9 +43,9 @@ static void lv_set_time(lv_timer_t *timer)
 
 /**
  * wifi图标显示
- * 
+ * @param parent         指向一个对象的指针，它将是新标签的父对象
  * */
- lv_obj_t *create_wifi(lv_obj_t *parent)
+lv_obj_t *create_wifi(lv_obj_t *parent)
 {
   lv_obj_t *wifi = lv_obj_create(parent);
   lv_obj_set_size(wifi, 200, 75);
@@ -55,6 +57,10 @@ static void lv_set_time(lv_timer_t *timer)
   lv_obj_t *wifi_img = lv_img_create(wifi);
   lv_img_set_src(wifi_img, &Logo);
   lv_obj_align(wifi_img, LV_ALIGN_CENTER, -30, 0);
+
+
+  g_mqtt_detection = card_create_16_Red_text(parent, "MQTT连接失败", 0, 0);
+  lv_obj_align_to(g_mqtt_detection, wifi, LV_ALIGN_LEFT_MID, -120, 0);
 
   return wifi;
 }

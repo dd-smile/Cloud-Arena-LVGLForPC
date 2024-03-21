@@ -533,6 +533,17 @@ lv_obj_t *card_create_16_text(lv_obj_t *parent, const char *title, lv_coord_t x,
     lv_obj_align(label, LV_ALIGN_CENTER, x, y);
     return label;
 }
+// 红色字体
+lv_obj_t *card_create_16_Red_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y)
+{
+    lv_obj_t *label = lv_label_create(parent);
+    lv_label_set_text(label, title);
+    lv_obj_set_style_text_color(label, lv_color_hex(0xd43030), LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_16, LV_STATE_DEFAULT);
+    lv_obj_set_style_text_letter_space(label, 0, LV_STATE_DEFAULT);
+    lv_obj_align(label, LV_ALIGN_CENTER, x, y);
+    return label;
+}
 lv_obj_t *create_16_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y)
 {
     lv_obj_t *label = lv_label_create(parent);

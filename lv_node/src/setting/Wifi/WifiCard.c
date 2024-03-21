@@ -18,6 +18,7 @@ lv_obj_t *WifiList_connect = NULL;       // 已连接WIFI列表
 
 WifiNode *wifi_has_been_connnected = NULL; // 已经连上的wifi
 static bool wifi_switch = true;
+static lv_style_t style_bg_mask;
 
 
 static void CreatrWifiListButton(lv_obj_t *parent, char *text);
@@ -47,6 +48,12 @@ static void TextWIFIClick(lv_event_t *e)
     }
 }
 
+/**
+ * 创建WIFI列表
+ * @param parent       指向父对象的指针
+ * @param h            列表高度
+ * @param y            y坐标对齐后的偏移量
+*/
 lv_obj_t *CreatrWifiList(lv_obj_t *parent, int h, int y)
 {
 
@@ -60,6 +67,11 @@ lv_obj_t *CreatrWifiList(lv_obj_t *parent, int h, int y)
 }
 
 
+/**
+ * 创建wifi连接图标标签对象
+ * @param parent           指向一个对象的指针，它将是新图像的父对象
+ * @return                 创建的wifi连接图标标签对象
+*/
 static lv_obj_t *CreatrWifiJoinIcon(lv_obj_t *parent)
 {
     lv_obj_t *JoinIcon = lv_label_create(parent);
@@ -70,6 +82,11 @@ static lv_obj_t *CreatrWifiJoinIcon(lv_obj_t *parent)
     return JoinIcon;
 }
 
+/**
+ * 创建wifi连接成功文本
+ * @param parent           指向一个对象的指针，它将是新图像的父对象
+ * @return                 创建的wifi连接成功标签对象        
+*/
 static lv_obj_t *CreatrWifiJoinTxet(lv_obj_t *parent)
 {
     lv_obj_t *JoinTxet = lv_label_create(parent);
@@ -80,6 +97,12 @@ static lv_obj_t *CreatrWifiJoinTxet(lv_obj_t *parent)
     return JoinTxet;
 }
 
+/**
+ * 创建wifi名称的标签对象
+ * @param parent           指向一个对象的指针，它将是新图像的父对象
+ * @param text             wifi名称
+ * @return                 创建的wifi名称标签对象
+*/
 static lv_obj_t *CreatrWifiWifiName(lv_obj_t *parent, char *text)
 {
     lv_obj_t *WifiName = lv_label_create(parent);
@@ -94,11 +117,16 @@ static lv_obj_t *CreatrWifiWifiName(lv_obj_t *parent, char *text)
 }
 
 
-/*添加列表*/
+/**
+ * 添加列表
+ * @param parent            指向一个对象的指针，它将是新图像的父对象
+ * @param text              wifi的ssid名称
+*/
 static void addWifiInfoToList(lv_obj_t *parent, char *text)
 {
 
     WifiNode *newNode = (WifiNode *)malloc(sizeof(WifiNode));
+    //如果为空，表示创建失败
     if (newNode == NULL)
     {
         printf("Memory allocation failed\n");
@@ -113,6 +141,7 @@ static void addWifiInfoToList(lv_obj_t *parent, char *text)
     newNode->password_textarea = NULL;
     newNode->next = NULL;
 
+    //
     if (wifiListHead == NULL)
     {
         wifiListHead = newNode;
@@ -213,7 +242,11 @@ static void CreatrWifiListButton(lv_obj_t *parent, char *text)
 }
 
 
-/*获取当前列表结构体*/
+/**
+ * 获取当前列表结构体
+ * @param listButton
+ * @return 
+*/
 WifiNode *getWifiNodeFromListButton(lv_obj_t *listButton)
 {
     return (WifiNode *)lv_obj_get_user_data(listButton);
@@ -250,7 +283,6 @@ static void disconnect_confirm(lv_event_t *e)
     }
 }
 
-static lv_style_t style_bg_mask;
 
 static void lv_common_style_set_style_mask(lv_obj_t *obj)
 {
@@ -276,7 +308,7 @@ lv_obj_t *lv_common_create_mask_box(lv_obj_t *parent, bool back)
     return gray_layer;
 }
 
-//创建一个弹出框
+//创建一个wifi弹出框
 static lv_obj_t *create_wifi_popup(lv_obj_t *parent, bool card_back, const char *title, const char *confirm_text, const char *back_text, const char *text, lv_event_cb_t event_cb, void *user_data)
 {
     lv_obj_t *mask = lv_common_create_mask_box(parent, card_back); // 创建遮罩
@@ -315,18 +347,22 @@ static void wifi_disconnect_event(lv_event_t *e)
 }
 
 
-/*创建已连接的wifi按钮*/
+/**
+ * 创建已连接的wifi按钮
+ * @param parent       指向一个对象的指针，它将是新图像的父对象
+ * @param text         wifi的ssid名称    
+*/
 void CreatrWifiConnectButton(lv_obj_t *parent, char *text)
 {
     lv_obj_t *ListButton = CreatrWifiListStaticButton(parent);
     lv_obj_add_event_cb(ListButton, wifi_disconnect_event, LV_EVENT_CLICKED, NULL);
     addWifiInfoToList(ListButton, text);
 
-    WifiNode *node = getWifiNodeFromListButton(ListButton);
+    WifiNode *node = getWifiNodeFromListButton(ListButton);//获取已连上的wifi
     lv_label_set_text(node->JoinIcon, LV_SYMBOL_OK);
     lv_label_set_text(node->JoinTxet, "已连接"); 
 
-    wifi_has_been_connnected = (WifiNode *)malloc(sizeof(WifiNode));
+    wifi_has_been_connnected = (WifiNode *)malloc(sizeof(WifiNode));  //创建一块内存用于存储已连接wifi的信息
     memcpy(wifi_has_been_connnected, node, sizeof(WifiNode));
 }
 
@@ -411,6 +447,7 @@ lv_timer_t *lv_create_time(lv_obj_t *parent, const lv_font_t *value, lv_coord_t 
 
 /**
  * 创建WIFI页面(包括已连接wifi，其他wifi)
+ * 创建完页面后开启定时器扫描wifi
 */
 void CreateWifiPage(void)
 {
@@ -419,9 +456,9 @@ void CreateWifiPage(void)
 
     // 已连接wifi
     WifiList_connect = CreatrWifiList(wifi_page, 55, 35);
-    if(wifi_has_been_connnected != NULL)
+    if(wifi_has_been_connnected != NULL)    //如果已连接wifi不为空
     {
-        CreatrWifiConnectButton(WifiList_connect, wifi_has_been_connnected->ssid);         
+        CreatrWifiConnectButton(WifiList_connect, wifi_has_been_connnected->ssid);         //创建可点击的已连接wifi信息
     }
 
     // 其他wifi

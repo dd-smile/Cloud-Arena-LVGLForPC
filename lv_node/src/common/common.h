@@ -32,6 +32,7 @@ lv_obj_t *create_12_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_c
 lv_obj_t *create_12_Green_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y);
 lv_obj_t *create_12_Red_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y);
 lv_obj_t *create_12_Bule_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y);
+lv_obj_t *card_create_16_Red_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_coord_t y);
 
 lv_obj_t *lv_keypage_create(lv_obj_t *parent, lv_event_cb_t event_cb);
 lv_obj_t *btn_create_text(lv_obj_t *parent, bool on_back, const char *confirm_text, lv_coord_t x_ofs, lv_coord_t y_ofs);

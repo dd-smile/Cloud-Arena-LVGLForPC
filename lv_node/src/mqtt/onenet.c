@@ -19,40 +19,26 @@
 
 static int mqtt_fd;    //连接ｍｑｔｔ套接字
 
+static void *mqttConnection(void *parg)
+{
+	// 1. 创建通信的套接字
+  	mqtt_fd = createSocket();
+
+  	// 2. 连接服务器
+  	connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
+	if(socketconnected(mqtt_fd) != 0)
+	{
+		OneNet_DevLink();   //连接ＭＱＴＴ服务器
+	}
+}
+
 /**
  * 创建MQTT连接
  * */
 void connect_mqtt()
 {
-   // 1. 创建通信的套接字
-  mqtt_fd = socket(AF_INET, SOCK_STREAM, 0);
-
-  if (mqtt_fd == -1)
-  {
-      perror("socket");
-      exit(0);
-  }
-
-  // 2. 连接服务器
-  struct sockaddr_in addr;
-  addr.sin_family = AF_INET;
-  addr.sin_port = htons(1883);   // 大端端口
-  inet_pton(AF_INET, MQTT_SERVER_IP, &addr.sin_addr.s_addr);
-
-  int ret = connect(mqtt_fd, (struct sockaddr*)&addr, sizeof(addr));
-  
-  if (ret == -1)
-  {
-      perror("connect");
-      exit(0);
-  }
-
-  if(socketconnected(mqtt_fd) != 0)
-  {
-  	OneNet_DevLink();   //连接ＭＱＴＴ服务器
-  }
-
-
+	pthread_t mqtt_thread;
+	pthread_create(&mqtt_thread, NULL, mqttConnection, NULL);
 }
 
 //==========================================================

@@ -221,6 +221,9 @@
 #define LEYARD_SERVER_SYNCHRONOUS_IP 	        "192.168.17.20"
 #define LEYARD_SERVER_SYNCHRONOUS_PORT 	        11011
 
+#define AOTO_SERVER_IP 	                        "192.168.17.20"
+#define AOTO_SERVER_PORT 	                    50000
+
 
 
 

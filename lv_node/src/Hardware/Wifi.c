@@ -1,3 +1,14 @@
+/*
+ * @Description:wifi
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2024-01-30 11:28:06
+ * @LastEditTime: 2024-03-20 14:51:43
+ * @FilePath: lv_node/src/Hardware/Wifi.c
+ */
+
+//瑞昱RTL8723DU
+
 #include "ui_app.h"
 #include "lv_node/src/Hardware/Wifi.h"
 

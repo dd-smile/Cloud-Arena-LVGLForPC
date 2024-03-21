@@ -15,9 +15,9 @@ void WifiCard(lv_obj_t *parent);
 
 typedef struct wifi_node
 {
-    lv_obj_t *WifiName;
-    lv_obj_t *JoinTxet;
-    lv_obj_t *JoinIcon;
+    lv_obj_t *WifiName;     //wifi名称
+    lv_obj_t *JoinTxet;     //wifi连接文本（是否已连接)
+    lv_obj_t *JoinIcon;     //wifi连接图标（连接成功显示)
     lv_obj_t *password_textarea;
     char ssid[SSID_MAX_LENGTH];
     char password[PASSWORD_MAX_LENGTH];
