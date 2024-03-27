@@ -12,6 +12,11 @@ static WifiCredentials wifiCredentials;
 
 static lv_style_t style_bg_mask;
 
+
+/**
+ * 输入完密码的返回按钮事件
+ * @param e                     指向事件描述符的指针
+*/
 static void BackParentEvent(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -22,6 +27,11 @@ static void BackParentEvent(lv_event_t *e)
         lv_obj_del(obj->parent->parent);
     }
 }
+
+/**
+ * 输入完密码的确认按钮事件
+ * @param e                      指向事件描述符的指针
+*/
 static void on_confirm_button_click(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -40,6 +50,10 @@ static void on_confirm_button_click(lv_event_t *e)
     }
 }
 
+/**
+ * 点击遮罩层的返回事件
+ * @param e                      指向事件描述符的指针
+*/
 static void BackEvent(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -51,6 +65,10 @@ static void BackEvent(lv_event_t *e)
     }
 }
 
+/**
+ * 初始化键盘的遮蔽罩风格
+ * @param obj                     要初始化的对象
+*/
 static void SetStyleMask(lv_obj_t *obj)
 {
     lv_style_init(&style_bg_mask); // 初始化遮蔽罩风格
@@ -59,6 +77,12 @@ static void SetStyleMask(lv_obj_t *obj)
     lv_obj_add_style(obj, &style_bg_mask, LV_PART_MAIN);
 }
 
+/**
+ * 创建wifi密码键盘的遮罩层
+ * @param parent                   指向父对象的指针
+ * @param back                     点击遮罩层是否返回标志
+ * @return                         返回指向遮罩层的指针
+*/
 lv_obj_t *CreateMaskBox(lv_obj_t *parent, bool back)
 {
     lv_obj_t *gray_layer = lv_obj_create(parent); // 主页面灰色遮罩层
@@ -74,7 +98,11 @@ lv_obj_t *CreateMaskBox(lv_obj_t *parent, bool back)
     return gray_layer;
 }
 
-
+/**
+ * 创建密码文本区和键盘
+ * @param SrcParent                 指向父对象的指针
+ * @return                          返回创建的密码文本区
+*/
 lv_obj_t *CreadWifiPasswordTextarea(lv_obj_t *SrcParent)
 {
     lv_obj_t *Wifibackground = lv_obj_create(SrcParent);
@@ -83,14 +111,14 @@ lv_obj_t *CreadWifiPasswordTextarea(lv_obj_t *SrcParent)
     lv_obj_set_style_bg_color(Wifibackground, lv_color_hex(0x0b1a2e), LV_PART_MAIN);
     lv_obj_set_style_border_width(Wifibackground, 0, LV_PART_MAIN);
 
-    // // Create the password textarea
+    // 创建密码文本区
     lv_obj_t *password_textarea = lv_textarea_create(Wifibackground);
     lv_textarea_set_password_mode(password_textarea, true);
     lv_textarea_set_one_line(password_textarea, true);
     lv_obj_set_width(password_textarea, lv_pct(40));
     lv_obj_set_pos(password_textarea, 225, 100);
 
-    // Create the keyboard
+    // 创建键盘
     lv_obj_t *keyboard = lv_keyboard_create(Wifibackground);
     lv_obj_set_style_bg_color(keyboard, lv_color_hex(0x1b2835), LV_PART_MAIN);
     lv_obj_set_size(keyboard, LV_HOR_RES, LV_VER_RES / 2);
@@ -99,7 +127,15 @@ lv_obj_t *CreadWifiPasswordTextarea(lv_obj_t *SrcParent)
     return password_textarea;
 }
 
-
+/**
+ * 创建输入wifi密码界面的按钮
+ * @param parent                             指向父对象的指针
+ * @param confirm_text                       按钮的文本
+ * @param x_ofs                              x坐标对齐后的偏移量
+ * @param y_ofs                              y坐标对齐后的偏移量
+ * @param event_cb                           按钮要执行的事件
+ * @param user_data                          要传入的用户数据
+*/
 lv_obj_t *CreateBackButtonAndText(lv_obj_t *parent, const char *confirm_text, lv_coord_t x_ofs, lv_coord_t y_ofs, lv_event_cb_t event_cb, void *user_data)
 {
 
@@ -130,7 +166,10 @@ lv_obj_t *CreateBackButtonAndText(lv_obj_t *parent, const char *confirm_text, lv
     return confirm_btn;
 }
 
-
+/**
+ * 创建用于输入WIFI密码的键盘的页面
+ * @param parent            指向父对象的指针
+*/
 void CreateWifiKeyboard(lv_obj_t *parent)
 {
 

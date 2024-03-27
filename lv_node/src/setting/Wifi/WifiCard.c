@@ -23,10 +23,14 @@ static lv_style_t style_bg_mask;
 
 static void CreatrWifiListButton(lv_obj_t *parent, char *text);
 
-/*释放内存*/
+/**
+ * 释放内存
+*/
 static void freeWifiList()
 {
+    //创建一个临时结构体，把当前wifi列表头部赋值给它
     WifiNode *current = wifiListHead;
+    //如果赋值成功开始循环释放内存操作
     while (current != NULL)
     {
         WifiNode *next = current->next;
@@ -34,10 +38,13 @@ static void freeWifiList()
         free(current);
         current = next;
     }
-    wifiListHead = NULL;
+    wifiListHead = NULL;//初始化wifi列表头部，等待下个列表重新初始化赋值
 }
 
-/*输入密码*/
+/**
+ * 输入密码
+ * @param e            指向事件描述符的指针
+*/
 static void TextWIFIClick(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -49,10 +56,11 @@ static void TextWIFIClick(lv_event_t *e)
 }
 
 /**
- * 创建WIFI列表
+ * 创建WIFI列表UI界面
  * @param parent       指向父对象的指针
  * @param h            列表高度
  * @param y            y坐标对齐后的偏移量
+ * @return             返回列表对象
 */
 lv_obj_t *CreatrWifiList(lv_obj_t *parent, int h, int y)
 {
@@ -118,7 +126,7 @@ static lv_obj_t *CreatrWifiWifiName(lv_obj_t *parent, char *text)
 
 
 /**
- * 添加列表
+ * 添加列表(WIFI列表模板)，组建好WIFI信息结构体
  * @param parent            指向一个对象的指针，它将是新图像的父对象
  * @param text              wifi的ssid名称
 */
@@ -133,45 +141,52 @@ static void addWifiInfoToList(lv_obj_t *parent, char *text)
         return;
     }
 
-    
-    strcpy(newNode->ssid, text);
+    //进行WIFI信息结构体的组建，依次赋值
+    strcpy(newNode->ssid, text);     //复制wifi的ssid名称到结构体中
     newNode->WifiName = CreatrWifiWifiName(parent, text);
     newNode->JoinTxet = CreatrWifiJoinTxet(parent);
     newNode->JoinIcon = CreatrWifiJoinIcon(parent);
     newNode->password_textarea = NULL;
     newNode->next = NULL;
 
-    //
+    /*由wifi信息结构体组成的wifi链表，来表示wifi列表*/
+    //如果链表第一个元素为null，那么把当前wifi信息结构体赋值给他，表示初始化链表
     if (wifiListHead == NULL)
     {
         wifiListHead = newNode;
     }
-    else
+    else    //如果链表第一个元素不为null，那么把当前wifi信息结构体赋值到下一个元素
     {
         WifiNode *temp = wifiListHead;
+        //如果链表第二个元素不为null，表示现在要赋值的元素是第三个.....以此类推
         while (temp->next != NULL)
         {
             temp = temp->next;
         }
         temp->next = newNode;
     }
-    lv_obj_set_user_data(parent, newNode);
+    lv_obj_set_user_data(parent, newNode);   //设置用户数据(wifi信息)
 }
 
 
-/*扫描wifi列表*/
+/**
+ * 扫描wifi列表，
+*/
 static void ScanningWifi()
 {
     wifi_results->count = wifi_scan(wifi_results, MAX_SCAN_RESULTS); // 扫描WIFI
 
+    //进行初始化操作
     lv_obj_del(WifiList);                 // 删除WIFI列表
     freeWifiList();                       // 释放WIFI列表
     WifiList = CreatrWifiList(wifi_page, 340, 140); // 创建WIFI列表
 
+    //如果扫描到的wifi数量大于0，就进行创建对应的wifi列表按钮
     if (wifi_results->count > 0)
     {
         for (int i = 0; i < wifi_results->count; i++)
         {
+            //如果wifi的ssid名称为空
             if (strlen(wifi_results[i].SSID) == 0)
             {
                 continue; // 跳过空的SSID
@@ -189,9 +204,14 @@ static void ScanningWifi()
     
 }
 
-
+/**
+ * 创建WIFI列表对象按钮，同时绘制WIFI列表中每个对象按钮的WIFI图标
+ * @param parent          指向一个对象的指针，它将是新图像的父对象     
+ * @return                返回指向新创建WIFI列表按钮对象的指针                    
+*/
 lv_obj_t *CreatrWifiListStaticButton(lv_obj_t *parent)
 {
+    //列表对象按钮样式
     static lv_style_t style_wifi_list;
     lv_style_init(&style_wifi_list);
     lv_style_set_bg_opa(&style_wifi_list, LV_OPA_TRANSP);
@@ -212,7 +232,7 @@ lv_obj_t *CreatrWifiListStaticButton(lv_obj_t *parent)
     lv_obj_add_style(ListButton, &style_wifi_list, LV_PART_MAIN);
     lv_obj_set_style_pad_all(ListButton, 15, LV_STATE_DEFAULT);
   
-
+    //直线对象样式
     static lv_style_t style_line;
     lv_style_init(&style_line);
     lv_style_set_line_width(&style_line, 1);
@@ -225,6 +245,7 @@ lv_obj_t *CreatrWifiListStaticButton(lv_obj_t *parent)
     lv_obj_align(line, LV_ALIGN_BOTTOM_MID, 40, 0);
     lv_obj_add_style(line, &style_line, LV_PART_MAIN);
 
+    //WIFI图标
     lv_obj_t *WifiIcon = lv_label_create(ListButton);
     lv_label_set_text(WifiIcon, LV_SYMBOL_WIFI);
     lv_obj_set_style_text_font(WifiIcon, &lv_font_montserrat_16, 0);
@@ -233,7 +254,11 @@ lv_obj_t *CreatrWifiListStaticButton(lv_obj_t *parent)
     return ListButton;
 }
 
-/*创建列表按钮*/
+/**
+ * 创建其他wifi列表按钮
+ * @param parent                指向一个对象的指针，它将是新图像的父对象
+ * @param text                  wifi的ssid名称
+*/
 static void CreatrWifiListButton(lv_obj_t *parent, char *text)
 {
     lv_obj_t *ListButton = CreatrWifiListStaticButton(parent);
@@ -243,18 +268,22 @@ static void CreatrWifiListButton(lv_obj_t *parent, char *text)
 
 
 /**
- * 获取当前列表结构体
- * @param listButton
- * @return 
+ * 获取已连上的wifi列表结构体
+ * @param listButton            WIFI列表对象按钮
+ * @return                      返回已连上的wifi列表结构体
 */
 WifiNode *getWifiNodeFromListButton(lv_obj_t *listButton)
 {
     return (WifiNode *)lv_obj_get_user_data(listButton);
 }
 
-// 搜索wifi
+/**
+ * 搜索wifi的定时器
+ * @param timer                 创建的定时器
+*/
 void search_wifi(lv_timer_t *timer)
 {
+    //如果其他WIFI列表对象不为空，进行扫描附近WIFI信息
     if(WifiList != NULL)
     {
         ScanningWifi();      
@@ -263,7 +292,10 @@ void search_wifi(lv_timer_t *timer)
 }
 
 
-// 断开当前wifi
+/**
+ * 断开当前wifi确认按键
+ * @param e                      指向事件描述符的指针
+*/
 static void disconnect_confirm(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -271,11 +303,13 @@ static void disconnect_confirm(lv_event_t *e)
     if (code == LV_EVENT_CLICKED)
     {
         Disconnect_wifi();
+        //删除已连接WIFI列表对象，重新初始化WIFI列表对象，重新绘制已连接WIFI的UI界面
         lv_obj_del(WifiList_connect);
         WifiList_connect = CreatrWifiList(wifi_page, 55, 35);
         // 重新搜索wifi
         lv_timer_create(search_wifi, 500, NULL);
         
+        //释放同时初始化已连接WIFI信息结构体
         free(wifi_has_been_connnected);
         wifi_has_been_connnected = NULL;
 
@@ -283,7 +317,10 @@ static void disconnect_confirm(lv_event_t *e)
     }
 }
 
-
+/**
+ * 初始化遮蔽罩风格
+ * @param obj              要初始化的对象
+*/
 static void lv_common_style_set_style_mask(lv_obj_t *obj)
 {
     lv_style_init(&style_bg_mask); // 初始化遮蔽罩风格
@@ -292,7 +329,12 @@ static void lv_common_style_set_style_mask(lv_obj_t *obj)
     lv_obj_add_style(obj, &style_bg_mask, LV_PART_MAIN);
 }
 
-// 创建遮罩层
+/**
+ * 创建遮罩层
+ * @param parent           指向一个对象的指针，它将是新图像的父对象
+ * @param back             返回标志位,如果为true,为遮罩层添加返回事件
+ * @return                 返回指向遮罩层对象
+*/
 lv_obj_t *lv_common_create_mask_box(lv_obj_t *parent, bool back)
 {
     lv_obj_t *gray_layer = lv_obj_create(parent); // 主页面灰色遮罩层
@@ -308,7 +350,18 @@ lv_obj_t *lv_common_create_mask_box(lv_obj_t *parent, bool back)
     return gray_layer;
 }
 
-//创建一个wifi弹出框
+/**
+ * 创建一个wifi断开连接弹出框
+ * @param parent                     指向一个对象的指针，它将是新图像的父对象
+ * @param card_back                  返回标志位,如果为true,为遮罩层添加返回事件
+ * @param title                      弹出框标题
+ * @param confirm_text               确认按钮文本
+ * @param back_text                  返回按钮文本
+ * @param text                       弹出框的提示信息
+ * @param event_cb                   确认按钮的执行事件
+ * @param user_data                  要传入的用户数据
+ * @return                           返回指向弹出框的对象
+*/
 static lv_obj_t *create_wifi_popup(lv_obj_t *parent, bool card_back, const char *title, const char *confirm_text, const char *back_text, const char *text, lv_event_cb_t event_cb, void *user_data)
 {
     lv_obj_t *mask = lv_common_create_mask_box(parent, card_back); // 创建遮罩
@@ -326,7 +379,7 @@ static lv_obj_t *create_wifi_popup(lv_obj_t *parent, bool card_back, const char 
     lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
 
     lv_obj_t *confirm_btn = btn_create_text(popup, false, confirm_text, 155, 265); // 创建按钮
-    lv_obj_add_event_cb(confirm_btn, event_cb, LV_EVENT_CLICKED, user_data);       // 添加返回事件
+    lv_obj_add_event_cb(confirm_btn, event_cb, LV_EVENT_CLICKED, user_data);       // 添加确认按钮的执行事件
     btn_create_text(popup, true, back_text, 305, 265);                             // 创建按钮
     card_create_24_text(popup, text, 0, 0);
 
@@ -335,7 +388,7 @@ static lv_obj_t *create_wifi_popup(lv_obj_t *parent, bool card_back, const char 
 
 /**
  * 断开wifi连接事件
- * @param e        指向事件描述符的指针
+ * @param e           指向事件描述符的指针
 */
 static void wifi_disconnect_event(lv_event_t *e)
 {
@@ -369,6 +422,7 @@ void CreatrWifiConnectButton(lv_obj_t *parent, char *text)
 /**
  * 创建WiFi列表界面背景
  * @param parent        指向一个对象的指针，它将是新图像的父对象
+ * @return              返回指向wifi列表对象
 */
 lv_obj_t *create_wifi_page(lv_obj_t *parent)
 {
@@ -389,61 +443,7 @@ lv_obj_t *create_wifi_page(lv_obj_t *parent)
     return page;
 }
 
-static void BackTimeEvent(lv_event_t *e)
-{
-    lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t *obj = lv_event_get_target(e);
-    lv_timer_t *time = lv_event_get_user_data(e);
 
-    if (code == LV_EVENT_CLICKED)
-    {
-        lv_timer_del(time);
-        lv_obj_del(obj->parent->parent);
-    }
-}
-
-lv_obj_t *create_wifi_page_back(lv_obj_t *obj, lv_timer_t *time)
-{
-    lv_obj_t *lv_obj = lv_obj_create(obj);
-    lv_obj_set_size(lv_obj, 90, 90);
-    lv_obj_add_flag(lv_obj, LV_OBJ_FLAG_CLICKABLE);
-    lv_obj_align(lv_obj, LV_ALIGN_TOP_LEFT, 10, 5);
-    lv_obj_set_style_bg_opa(lv_obj, 0, LV_STATE_DEFAULT); 
-    lv_obj_set_style_border_width(lv_obj, 0, LV_PART_MAIN);
-    lv_obj_add_event_cb(lv_obj, BackTimeEvent, LV_EVENT_CLICKED, time); 
-    lv_obj_t *back_btn = lv_label_create(lv_obj);
-    lv_label_set_text(back_btn, LV_SYMBOL_LEFT);
-    lv_obj_align(back_btn, LV_ALIGN_CENTER, 0, -20);
-    lv_obj_set_style_text_color(back_btn, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-}
-
-static void get_time(char *buffer, size_t buffer_size)
-{
-    time_t t = time(NULL);
-    struct tm *tmp = localtime(&t);
-    snprintf(buffer, buffer_size, "%04d-%02d-%02d   %02d:%02d", tmp->tm_year + 1900, tmp->tm_mon + 1, tmp->tm_mday, tmp->tm_hour, tmp->tm_min);
-}
-
-static void lv_get_time(lv_timer_t *timer)
-{
-    lv_obj_t *obj = timer->user_data;
-    static char time_buff[100];
-    get_time(time_buff, sizeof(time_buff));
-    lv_label_set_text(obj, time_buff);
-}
-
-lv_timer_t *lv_create_time(lv_obj_t *parent, const lv_font_t *value, lv_coord_t x, lv_coord_t y)
-{
-    lv_obj_t *recv_time = lv_label_create(parent);
-    static char time_buff[100];
-    get_time(time_buff, sizeof(time_buff));
-    lv_label_set_text(recv_time, time_buff);
-    lv_obj_align(recv_time, LV_ALIGN_CENTER, x, y);
-    lv_obj_set_style_text_color(recv_time, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(recv_time, value, LV_STATE_DEFAULT);
-    lv_timer_t *timer = lv_timer_create(lv_get_time, 1000, recv_time);
-    return timer;
-}
 
 /**
  * 创建WIFI页面(包括已连接wifi，其他wifi)

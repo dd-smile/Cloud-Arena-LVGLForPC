@@ -158,7 +158,10 @@ void connect_wifi(WifiNode *node) // 连接线程
     // pthread_create(&g_ptConn, NULL, ConnectWorkThread, node);
 }
 
-void Disconnect_wifi(void) // 关闭连接
+/**
+ * 关闭连接
+*/
+void Disconnect_wifi(void) 
 {
     // g_bThreadRun = false;
     // if (g_bConnected)

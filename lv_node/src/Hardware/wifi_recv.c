@@ -44,7 +44,12 @@ char* get_connected_wifi_name() {
 }
 
 
-
+/**
+ * 扫描wifi网络
+ * @param wifi_results                  用于存放扫描结果
+ * @param max_results                   wifi网络的最大数量
+ * @return                              返回扫描到的wifi数量
+*/
 int wifi_scan(struct WifiInfo *wifi_results, int max_results)
 {
     FILE *fp = popen("iwlist wlan0 scanning", "r"); // Replace wlan0 with your Wi-Fi interface name
@@ -118,9 +123,13 @@ int wifi_scan(struct WifiInfo *wifi_results, int max_results)
 
     return wifi_count;
 }
+
+/**
+ * 
+*/
 char *convert_unicode_str(const char *str)
 {
-    int length = strlen(str);
+    int length = strlen(str);   
     char *output = (char *)malloc(length + 1); // 分配足够的内存来存储转换后的字符串
     int i = 0;                                 // 初始化循环的计数器
     int out_index = 0;                         // 输出字符串的索引

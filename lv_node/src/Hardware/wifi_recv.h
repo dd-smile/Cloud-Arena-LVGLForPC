@@ -1,16 +1,16 @@
 #ifndef __WIFI_RECV_H__
 #define __WIFI_RECV_H__
 
-#define MAX_SCAN_RESULTS 64 // Define the maximum number of Wi-Fi networks to scan
+#define MAX_SCAN_RESULTS 64 // 定义扫描Wi-Fi网络的最大数量 
 
 // Structure to hold Wi-Fi information
 typedef struct WifiInfo
 {
-    char SSID[128];
+    char SSID[128];     //wifi的ssid名称(未经转换的)
     char BSSID[64];
     char channel[64];
     char signal_strength[64];
-    int count;
+    int count;      //扫描到的wifi数量
 }WifiInfo;
 
 void *ScanningWifiThread(void *args);

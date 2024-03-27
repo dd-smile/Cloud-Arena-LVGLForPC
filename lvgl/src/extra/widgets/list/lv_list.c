@@ -73,6 +73,13 @@ lv_obj_t * lv_list_add_text(lv_obj_t * list, const char * txt)
     return obj;
 }
 
+/**
+ * 用于向列表对象中添加一个按钮
+ * @param list                 要向其添加按钮的列表对象。
+ * @param icon                 按钮上要显示的图标的名称。可以是图标字体的一个字符，例如 "LV_SYMBOL_OK"，也可以是图像资源的路径，例如 "s:/icons/ok.png"。
+ * @param txt                  按钮上要显示的文本。
+ * @return                     返回指向新创建按钮对象的指针
+*/
 lv_obj_t * lv_list_add_btn(lv_obj_t * list, const char * icon, const char * txt)
 {
     LV_LOG_INFO("begin");
