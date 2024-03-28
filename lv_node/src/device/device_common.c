@@ -809,7 +809,13 @@ lv_obj_t *CreatePartitionPageBg(const DevicePageData *data, uint8_t device_num)
     return bg;
 }
 
-/*创建壁挂球架设备详情页*/
+
+/**
+ * 创建壁挂球架设备详情页
+ * @param data           要创建设备的基本数据
+ * @param device_num     设备号
+ * @return               返回指向已创建的设备详情页面的指针
+*/
 lv_obj_t *CreateWallhangingPageBg(const DevicePageData *data, uint8_t device_num)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
@@ -833,7 +839,12 @@ lv_obj_t *CreateWallhangingPageBg(const DevicePageData *data, uint8_t device_num
     return bg;
 }
 
-/*创建地面翻折座椅设备详情页*/
+/**
+ * 创建地面翻折座椅设备详情页
+ * @param data           要创建设备的基本数据
+ * @param device_num     设备号
+ * @return               返回指向已创建的设备详情页面的指针
+*/
 lv_obj_t *CreateFoldingPageBg(const DevicePageData *data, uint8_t device_num)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
@@ -857,7 +868,12 @@ lv_obj_t *CreateFoldingPageBg(const DevicePageData *data, uint8_t device_num)
     return bg;
 }
 
-/*创建伸缩舞台设备详情页*/
+/**
+ * 创建伸缩舞台设备详情页
+ * @param data           要创建设备的基本数据
+ * @param device_num     设备号
+ * @return               返回指向已创建的设备详情页面的指针
+*/
 lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
@@ -884,7 +900,12 @@ lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num
     return bg;
 }
 
-/*创建升降旋转舞台设备详情页*/
+/**
+ * 创建升降旋转舞台设备详情页
+ * @param data           要创建设备的基本数据
+ * @param device_num     设备号
+ * @return               返回指向已创建的设备详情页面的指针
+*/
 lv_obj_t *CreateRevolvingPageBg(const DevicePageData *data, uint8_t device_num)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
@@ -911,7 +932,12 @@ lv_obj_t *CreateRevolvingPageBg(const DevicePageData *data, uint8_t device_num)
     return bg;
 }
 
-/*创建灯光设备详情页*/
+/**
+ * 创建灯光设备详情页
+ * @param data           要创建设备的基本数据
+ * @param device_num     设备号
+ * @return               返回指向已创建的设备详情页面的指针
+*/
 lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
 {
     lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层

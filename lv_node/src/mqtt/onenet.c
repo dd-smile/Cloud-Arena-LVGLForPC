@@ -26,7 +26,7 @@ static void *mqttConnection(void *parg)
 
   	// 2. 连接服务器
   	connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
-	if(socketconnected(mqtt_fd) != 0)
+	if (socketconnected(mqtt_fd) != 0)
 	{
 		OneNet_DevLink();   //连接ＭＱＴＴ服务器
 	}
@@ -60,7 +60,7 @@ _Bool OneNet_DevLink(void)
 	_Bool status = 1;
 	
 	
-	if(MQTT_PacketConnect(PROID, AUTH_INFO, DEVID, 256, 0, MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) == 0)
+	if (MQTT_PacketConnect(PROID, AUTH_INFO, DEVID, 256, 0, MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) == 0)
 	{
 		write(mqtt_fd, mqttPacket._data, mqttPacket._len);			//上传平台
 		
@@ -93,13 +93,13 @@ void OneNet_HeartBeat(void)
 	int mqtt_red = -1;
 	
 //---------------------------------------------步骤一：组包---------------------------------------------
-	if(MQTT_PacketPing(&mqttPacket))
+	if (MQTT_PacketPing(&mqttPacket))
 		return;
 	
 	while(sCount--)
 	{
 //---------------------------------------------步骤二：发送数据-----------------------------------------
-		if(socketconnected(mqtt_fd) == 0)
+		if (socketconnected(mqtt_fd) == 0)
 		{
 			closeSocket(mqtt_fd);
 			mqtt_fd = createSocket();
@@ -142,10 +142,10 @@ void OneNet_Subscribe(const char *topics[], unsigned char topic_cnt)
 	
 	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};							//协议包
 	
-	for(; i < topic_cnt; i++)
+	for (; i < topic_cnt; i++)
 		printf("Subscribe Topic: %s\r\n", topics[i]);
 	
-	if(MQTT_PacketSubscribe(MQTT_SUBSCRIBE_ID, MQTT_QOS_LEVEL0, topics, topic_cnt, &mqttPacket) == 0)
+	if (MQTT_PacketSubscribe(MQTT_SUBSCRIBE_ID, MQTT_QOS_LEVEL0, topics, topic_cnt, &mqttPacket) == 0)
 	{
 		write(mqtt_fd, mqttPacket._data, mqttPacket._len);				//向平台发送订阅请求
 		
@@ -173,11 +173,16 @@ void OneNet_Publish(const char *topic, const char *msg)
 	
 	printf("Publish Topic: %s, Msg: %s\r\n", topic, msg);
 	
-	if(MQTT_PacketPublish(MQTT_PUBLISH_ID, topic, msg, strlen(msg), MQTT_QOS_LEVEL1, 0, 1, &mqttPacket) == 0)
+	if (MQTT_PacketPublish(MQTT_PUBLISH_ID, topic, msg, strlen(msg), MQTT_QOS_LEVEL1, 0, 1, &mqttPacket) == 0  && socketconnected(mqtt_fd) != 0)
 	{
+		lv_label_set_text(g_mqtt_detection, "");
 		write(mqtt_fd, mqttPacket._data, mqttPacket._len);					//向平台发送订阅请求
 		
 		MQTT_DeleteBuffer(&mqttPacket);											//删包
+	}
+	else
+	{
+		lv_label_set_text(g_mqtt_detection, "MQTT连接失败");
 	}
 
 }

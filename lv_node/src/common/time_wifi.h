@@ -9,6 +9,8 @@
 #ifndef _LV_TIME_WIFI_H
 #define _LV_TIME_WIFI_H
 
+extern lv_obj_t *g_mqtt_detection;
+
  lv_obj_t *create_wifi(lv_obj_t *parent);
  void create_wifi_and_time(lv_obj_t *parent);
 
