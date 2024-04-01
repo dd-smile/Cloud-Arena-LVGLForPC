@@ -424,6 +424,7 @@ enum Chinese_English_shift{
     SCREEN_PASSWORD_SETTINGS,
     PASSWORD_SETTING,
     BRIGHTNESS_SETTING,
+    EXIT_MODE,
 };
 
 #include "stdio.h"

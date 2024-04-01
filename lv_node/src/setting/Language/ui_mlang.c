@@ -79,6 +79,7 @@ const char const* g_mlang_str_zhc[] = {
     "屏保密码设置", //69
     "密码设置", //70
     "亮度设置", //71
+    "退场模式", //72
 
 
 };
@@ -159,6 +160,7 @@ const char const * g_mlang_str_eng[] = {
     "Screen password Settings",//69
     "password setting",  //70
     "Brightness setting",  //71
+    "exit mode",   //72
 
 
 };

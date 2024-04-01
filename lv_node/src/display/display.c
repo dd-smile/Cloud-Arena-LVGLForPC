@@ -19,7 +19,7 @@ lv_obj_t * chart;
 lv_chart_series_t * ser1; //温度数据系列
 lv_chart_series_t * ser2; //湿度数据系列
 static char buf[1024];   //用来发送get请求
-static char buffer[1024];   //用来接收心知天气的数据
+static char s_buffer[1024];   //用来接收心知天气的数据
 static int fd;   //用于与心知天气通信
 int iDataNum;
 static lv_coord_t temp_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -157,12 +157,12 @@ void display_float_number(lv_obj_t *label, char *number, int type)
     switch (type)
     {
     case 0:  //温度
-        snprintf(buffer, sizeof(buffer), "室内温度: %s", number);
+        snprintf(buffer, sizeof(buffer), "木地板温度: %s", number);
         lv_label_set_text(label, buffer);
         break;
 
     case 1:  //湿度
-        snprintf(buffer, sizeof(buffer), "室内湿度: %s", number);
+        snprintf(buffer, sizeof(buffer), "木地板湿度: %s", number);
         lv_label_set_text(label, buffer);
         break;
 
@@ -219,6 +219,9 @@ static void display_average_data(char *temp, char *hum)
     }
 }
 
+/**
+ * 创建温湿度平均数定时器回调函数
+*/
 void timer_average_callback(lv_timer_t * timer) 
 {
     display_average_data(temp_data, hum_data);
@@ -263,15 +266,15 @@ void timer_weather_callback(lv_timer_t * timer)
         snprintf(buf, sizeof(buf), "GET https://api.seniverse.com/v3/weather/now.json?key=SCYXqGB7ZPUSvlsZy&location=shenzhen&language=zh-Hans&unit=c\r\n\r\n");
         write(fd, buf, strlen(buf)+1);
 
-        buffer[0] = '\0';
+        s_buffer[0] = '\0';
 
-		iDataNum = recv(fd, buffer, 1024, 0);
+		iDataNum = recv(fd, s_buffer, 1024, 0);
 
-        buffer[iDataNum] = '\0';
+        s_buffer[iDataNum] = '\0';
 
-        printf("收到消息: %s\n", buffer);
+        printf("收到消息: %s\n", s_buffer);
 
-        aita_ParseJsonNow(buffer, &weatherinfo);
+        aita_ParseJsonNow(s_buffer, &weatherinfo);
 
         snprintf(buffer_weather, sizeof(buffer_weather), "今天天气:%s,外温:%s摄氏度", weatherinfo.weather, weatherinfo.temp);
         lv_label_set_text(sensor_data.label_weather, buffer_weather);  //调用心知天气ａｐｉ
@@ -290,8 +293,8 @@ void timer_data_callback(lv_timer_t * timer)
 
     char buffer_temp[20];
     char buffer_hum[20];
-    snprintf(buffer_temp, sizeof(buffer_temp), "室内温度: %s", temp_data);
-    snprintf(buffer_hum, sizeof(buffer_hum), "室内湿度: %s", hum_data);
+    snprintf(buffer_temp, sizeof(buffer_temp), "木地板温度: %s", temp_data);
+    snprintf(buffer_hum, sizeof(buffer_hum), "木地板湿度: %s", hum_data);
 
     lv_label_set_text(sensor_data.label_temp, buffer_temp);
     lv_label_set_text(sensor_data.label_hum, buffer_hum);
@@ -325,6 +328,17 @@ static void Create_TempeHumData(lv_obj_t *parent)
     lv_obj_set_style_text_font(sensor_data.label_weather, &PuHuiTi_Regular_20, LV_PART_MAIN);
     lv_obj_set_style_text_color(sensor_data.label_weather, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
     lv_obj_align_to(sensor_data.label_weather, sensor_data.label_hum, LV_ALIGN_BOTTOM_MID, 50, 40);
+}
+
+/**
+ * 创建设备运行状态的实时数据
+ * @param parent          指向父对象的指针   
+ * */
+static void Create_Operating_State(lv_obj_t *parent)
+{
+    card_create_20_text(parent, "设备运行状态:", 10,-200);
+
+
 }
 
 /**
@@ -373,5 +387,6 @@ static void Create_TempeHumChart(lv_obj_t *parent)
 void CreateDisplayPage(lv_obj_t *parent)
 {
     Create_TempeHumData(parent);
-    Create_TempeHumChart(parent);
+    Create_Operating_State(parent);
+    // Create_TempeHumChart(parent);
 }

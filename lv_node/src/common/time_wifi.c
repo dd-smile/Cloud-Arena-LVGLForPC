@@ -59,7 +59,7 @@ lv_obj_t *create_wifi(lv_obj_t *parent)
   lv_obj_align(wifi_img, LV_ALIGN_CENTER, -30, 0);
 
 
-  g_mqtt_detection = card_create_16_Red_text(parent, "MQTT连接失败", 0, 0);
+  g_mqtt_detection = card_create_16_Red_text(parent, "", 0, 0);
   lv_obj_align_to(g_mqtt_detection, wifi, LV_ALIGN_LEFT_MID, -120, 0);
 
   return wifi;

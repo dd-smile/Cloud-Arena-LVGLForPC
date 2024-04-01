@@ -312,20 +312,31 @@ void Judgmentmode(void)
   switch (g_mode_num)
   {
   case 0:
-    g_mode_num = -1;
-    mode_train_Controls();
-    break;
+      g_mode_num = -1;
+      mode_train_Controls();
+      break;
+
   case 1:
-    g_mode_num = -1;
-    mode_competition_Controls();
-    break;
+      g_mode_num = -1;
+      mode_competition_Controls();
+      break;
+
   case 2:
-    g_mode_num = -1;
-    mode_performance_Controls();
-    break;
+      g_mode_num = -1;
+      mode_performance_Controls();
+      break;
+
   case 3:
-    g_mode_num = -1;
-    mode_halfcourt_Controls();
+      g_mode_num = -1;
+      mode_halfcourt_Controls();
+      break;
+
+  case 4:
+      g_mode_num = -1;
+      printf("退场模式\n");
+      break;
+
+  default:
     break;
   }
 }

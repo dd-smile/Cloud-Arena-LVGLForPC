@@ -8,10 +8,10 @@
  */
 #include "ui_app.h"
 int g_mode_num = -1; 
-static lv_obj_t *mode_labels[4];   //模式卡片模板
-static bool states[] = {false, false, false, false};
-static bool reduction_flag = false;
-static int performance_timer = 0;
+static lv_obj_t *s_mode_labels[5];   //模式卡片模板
+static bool s_states[] = {false, false, false, false, false};
+static bool s_reduction_flag = false;
+static int s_performance_timer = 0;
 char *performance_msh[] = {
     "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"1\"}]}",
     "{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_48MT_stage\",\"pid\":\"Stage_reset_opertion\",\"v\":\"0\"}]}",
@@ -30,13 +30,14 @@ static void toggle_label(lv_obj_t *label, bool state)
 }
 
 /**
- * 演出模式结束后关闭音乐防止循环
+ * 定时器回调，演出模式结束后关闭音乐防止循环
+ * @param timer             创建的定时器
 */
 static void sy_timer_handler(lv_timer_t * timer)
 {   
-    if ((performance_timer++) == 6)
+    if ((s_performance_timer++) == 6)
     {
-        performance_timer = 0;
+        s_performance_timer = 0;
         snprintf(buf_audio, sizeof(buf_audio), "stop@5F");
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
         if (timer)
@@ -46,6 +47,10 @@ static void sy_timer_handler(lv_timer_t * timer)
     }
 }
 
+/**
+ * 手动模式控制事件
+ * @param e                 指向事件描述符的指针
+*/
 void manual_Controls_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -78,15 +83,15 @@ void manual_Controls_event_cb(lv_event_t *e)
             break;
 
         case 2:   //总复位
-            if (reduction_flag == false)
+            if (s_reduction_flag == false)
             {
-                reduction_flag = true;
+                s_reduction_flag = true;
                 lv_obj_add_state(obj, LV_STATE_PRESSED);
                 OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[TOTAL_REDUCTION_FUNCTION_ENABLED]);
             }
             else
             {
-                reduction_flag = false;
+                s_reduction_flag = false;
                 lv_obj_clear_state(obj,LV_STATE_PRESSED);
                 OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[TOTAL_REDUCTION_FUNCTION_UNENABLED]);
             }
@@ -108,19 +113,17 @@ void manual_Controls_event_cb(lv_event_t *e)
 static void toggle_image(lv_obj_t *obj, uint8_t index, bool type)
 {
     static const lv_img_dsc_t *mode_images[] = {
-        &test_on, &test_on, &test_on, &test_on,
-        &test_off, &test_off, &test_off, &test_off,
-        // &mode2_on, &mode1_on, &mode3_on,
-        // &mode2_off, &mode1_off, &mode3_off
+        &mode1_on, &mode2_on, &mode3_on, &mode4_on, &mode5_on,
+        &mode1_off, &mode2_off, &mode3_off, &mode4_off, &mode5_off,
     };    //八张模式图片
 
-    uint8_t image_index = (type ? index + 4 : index);  //类型为０，返回ｏｆｆ。类型为１，返回ｏｎ
+    uint8_t image_index = (type ? index + 5 : index);  //类型为０，返回ｏｆｆ。类型为１，返回ｏｎ
     lv_img_set_src(obj, mode_images[image_index]);
 }
 
 /**
  * 点击切换模式事件
- * @param e           指向事件描述符的指针     
+ * @param e            指向事件描述符的指针     
  * */
 static void lv_event_handler(lv_event_t *e)
 {
@@ -133,18 +136,20 @@ static void lv_event_handler(lv_event_t *e)
     {   
         password_mode_lock = false;
 
-        for (int i = 0; i < 4; i++)
+        static const char * btns[] ={""};    //不启用提示框的按钮
+
+        for (int i = 0; i < 5; i++)
         {
             // 如果等于事件最初针对的对象(被点击的卡片)
-            if (obj == mode_labels[i]->parent)  // mode_labels[i]->parent  =  mode_images[i]
+            if (obj == s_mode_labels[i]->parent)  // s_mode_labels[i]->parent  =  mode_images[i]
             {
-                states[i] = !states[i];         //标志位置为true
+                s_states[i] = !s_states[i];         //标志位置为true
                 toggle_image(obj, i, 0);        //开启的图片
             }
             else
             {
-                states[i] = false;
-                toggle_image( mode_labels[i]->parent, i, 1);    //关闭的图片
+                s_states[i] = false;
+                toggle_image( s_mode_labels[i]->parent, i, 1);    //关闭的图片
             }
         }
         
@@ -166,11 +171,30 @@ static void lv_event_handler(lv_event_t *e)
             g_mode_num = 3;
             break;
 
+        case 4:
+            g_mode_num = 4;
+            break;
+
         default:
             break;
         }
         
-        lv_mode_password_keyboard_display();
+        if (g_mode_num != 4)
+        {
+            lv_mode_password_keyboard_display();
+        }
+        else
+        {
+            lv_obj_t *mbox_no_enable = lv_msgbox_create(NULL, "Hello","该模式未开放,敬请期待", btns, true);
+            lv_obj_center(mbox_no_enable);
+
+            /* 消息框主体 */
+            lv_obj_t *content = lv_msgbox_get_content(mbox_no_enable);                                       /* 获取主体部分 */
+            lv_obj_set_style_text_font(content, &PuHuiTi_Regular_20, LV_STATE_DEFAULT);                      /* 设置字体 */
+            lv_obj_set_style_text_color(content, lv_color_hex(0x6c6c6c), LV_STATE_DEFAULT);                  /* 设置文本颜色：灰色 */
+            lv_obj_set_style_pad_top(content,15,LV_STATE_DEFAULT);                                           /* 设置顶部填充 */
+        }
+        
 
     }
 }
@@ -283,8 +307,6 @@ void mode_competition_Controls(void)
 /*3vs3训练模式*/
 void mode_halfcourt_Controls(void)
 {
-    // printf("3vs3训练模式\n");
-
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable4\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
@@ -303,24 +325,27 @@ void CreateModePage(lv_obj_t *obj)
         GAME_MODE,
         PERFORMANCE_MODE,
         VS_MODE,
+        EXIT_MODE,
+
     };
 
-    static lv_obj_t *mode_cards[4];   //模式卡片
-    static lv_obj_t *mode_images[4];  //模式卡片图片
+    static lv_obj_t *mode_cards[5];   //模式卡片
+    static lv_obj_t *mode_images[5];  //模式卡片图片
 
     lv_obj_set_scrollbar_mode(obj, LV_SCROLLBAR_MODE_AUTO); 
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
     {
         mode_cards[i] = lv_home_card_create(obj, 30 + 270 * i, 150);       //创建四张模式卡片  220
         //以创建好的模式卡片作为父类，赋予模式的图片
         mode_images[i] = lv_img_create(mode_cards[i]);                     
-        lv_img_set_src(mode_images[i], i == 0 ? &test_off : i == 1 ? &test_off
-                                                        :  i == 2 ? &test_off
-                                                        :  &test_off
+        lv_img_set_src(mode_images[i], i == 0 ? &mode1_off : i == 1 ? &mode2_off
+                                                        :  i == 2 ? &mode3_off
+                                                        :  i == 3 ? &mode4_off
+                                                        :  &mode5_off
                                                                    );
         lv_c_label_create(mode_cards[i], UI_MLANG_STR(language_mode_id[i]));          //设置卡片名字
-        mode_labels[i] = lv_d_label_caeate(mode_images[i]);       //初始化生成模式卡片模板
+        s_mode_labels[i] = lv_d_label_caeate(mode_images[i]);       //初始化生成模式卡片模板
         lv_obj_add_event_cb(mode_images[i], lv_event_handler, LV_EVENT_ALL, (void*)i);
     }
 }
