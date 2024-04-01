@@ -1,10 +1,10 @@
 /*
- * @Description:
+ * @Description:主页面时间与logo标志
  * @Author: mai
  * @LastEditors: da
  * @Date: 2023-03-09 11:58:24
  * @LastEditTime: 2023-08-31 14:13:43
- * @FilePath: /new_home_smart/lv_node/src/common/time_wifi.c
+ * @FilePath: lv_node/src/common/time_wifi.c
  */
 #include "ui_app.h"
 

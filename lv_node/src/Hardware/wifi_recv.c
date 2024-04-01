@@ -1,4 +1,11 @@
-
+/*
+ * @Description:wifi底层通用代码
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2024-01-30 11:28:06
+ * @LastEditTime: 2024-03-20 14:51:43
+ * @FilePath: lv_node/src/Hardware/wifi_recv.c
+ */
 #include "ui_app.h"
 
 #define MAX_BUFFER_SIZE 512

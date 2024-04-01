@@ -1,10 +1,10 @@
 /*** 
- * @Description: 
+ * @Description: 主页面时间与logo标志
  * @Author: mai
  * @LastEditors: mai
  * @Date: 2023-03-09 11:58:32
  * @LastEditTime: 2023-03-09 12:01:49
- * @FilePath: /重构新中控/lv_node/src/time_wifi.h
+ * @FilePath: lv_node/src/common/time_wifi.h
  */
 #ifndef _LV_TIME_WIFI_H
 #define _LV_TIME_WIFI_H

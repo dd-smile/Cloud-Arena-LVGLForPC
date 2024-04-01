@@ -4,7 +4,7 @@
  * @LastEditors: da
  * @Date: 2023-03-09 11:28:42
  * @LastEditTime: 2023-12-25 10:34:31
- * @FilePath: /new_home_smart/lv_node/src/mode.c
+ * @FilePath: lv_node/src/mode.c
  */
 #include "ui_app.h"
 int g_mode_num = -1; 

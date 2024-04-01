@@ -1,10 +1,10 @@
 /***
- * @Description:添加设备
+ * @Description:添加设备页面
  * @Author: mai
  * @LastEditors: mai
  * @Date: 2023-04-25 15:59:03
  * @LastEditTime: 2023-04-27 15:55:19
- * @FilePath: /SmartBox_Power/lv_node/src/setting/add_device/add_device.h
+ * @FilePath: lv_node/src/setting/Add/add_device.h
  */
 #ifndef _LV_ADD_DEVICE_H
 #define _LV_ADD_DEVICE_H

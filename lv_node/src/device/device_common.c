@@ -1,10 +1,10 @@
 /*
- * @Description:
+ * @Description:设备控制通用代码
  * @Author: mai
  * @LastEditors: da
  * @Date: 2023-07-03 17:19:59
- * @LastEditTime: 2023-09-08 14:49:19
- * @FilePath: /lingxiantiyu/lv_node/src/device/device_common.c
+ * @LastEditTime: 2024-04-01 14:49:19
+ * @FilePath: lv_node/src/device/device_common.c
  */
 #include "ui_app.h"
 #include "device_common.h"

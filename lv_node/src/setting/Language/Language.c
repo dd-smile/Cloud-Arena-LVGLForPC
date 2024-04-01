@@ -1,5 +1,5 @@
 /*
- * @Description:语言切换
+ * @Description:语言切换页面
  * @Author: da
  * @LastEditors: da
  * @Date: 2023-03-09 11:28:42

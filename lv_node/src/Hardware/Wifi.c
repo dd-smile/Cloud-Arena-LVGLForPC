@@ -1,5 +1,5 @@
 /*
- * @Description:wifi
+ * @Description:wifi底层功能代码
  * @Author: da
  * @LastEditors: da
  * @Date: 2024-01-30 11:28:06

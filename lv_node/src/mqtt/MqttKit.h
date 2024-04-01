@@ -1,3 +1,11 @@
+/*
+ * @Description: MQTT底层MqttKit库
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2023-10-25 11:28:17
+ * @LastEditTime: 2024-04-01 15:59:05
+ * @FilePath: lv_node/src/mqtt/MqttKit.h
+ */
 #ifndef _MQTTKIT_H_
 #define _MQTTKIT_H_
 

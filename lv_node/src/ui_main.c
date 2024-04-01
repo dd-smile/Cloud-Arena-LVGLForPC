@@ -4,7 +4,7 @@
  * @LastEditors: da
  * @Date: 2023-04-25 16:02:39
  * @LastEditTime: 2024-01-31 17:26:07
- * @FilePath: /SmartBox_Power/lv_node/src/setting/time_setting/time_setting.c
+ * @FilePath: lv_node/src/ui_main.c
  */
 #include "ui_app.h"
 

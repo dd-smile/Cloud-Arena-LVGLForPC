@@ -4,7 +4,7 @@
  * @LastEditors: da
  * @Date: 2023-04-25 16:02:39
  * @LastEditTime: 2023-08-31 17:26:07
- * @FilePath: /SmartBox_Power/lv_node/src/setting/time_setting/time_setting.c
+ * @FilePath: lv_node/src/setting/Time/time_setting.c
  */
 #include "ui_app.h"
 char year_buf[32];  //存储 年份 字符串数组

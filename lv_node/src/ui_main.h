@@ -1,3 +1,11 @@
+/*
+ * @Description:  主页面ＵＩ
+ * @Author: mai
+ * @LastEditors: da
+ * @Date: 2023-04-25 16:02:39
+ * @LastEditTime: 2024-01-31 17:26:07
+ * @FilePath: lv_node/src/ui_main.h
+ */
 #ifndef _LV_NODE_HOME_H
 #define _LV_NODE_HOME_H
 

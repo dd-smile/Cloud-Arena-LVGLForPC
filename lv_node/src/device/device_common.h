@@ -1,10 +1,10 @@
 /*** 
- * @Description: 
+ * @Description: 设备控制通用代码
  * @Author: mai
- * @LastEditors: mai
+ * @LastEditors: da
  * @Date: 2023-07-03 17:20:08
- * @LastEditTime: 2023-07-04 11:15:53
- * @FilePath: /new_home_smart/lv_node/src/device/device_common.h
+ * @LastEditTime: 2024-04-01 11:15:53
+ * @FilePath: lv_node/src/device/device_common.h
  */
 #ifndef __DEVICE_COMMON_H__
 #define __DEVICE_COMMON_H__

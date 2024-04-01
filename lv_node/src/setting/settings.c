@@ -4,7 +4,7 @@
  * @LastEditors: da
  * @Date: 2023-03-09 11:28:54
  * @LastEditTime: 2023-08-31 14:21:19
- * @FilePath: /new_home_smart/lv_node/src/settings.c
+ * @FilePath: lv_node/src/setting/settings.c
  */
 
 #include "ui_app.h"

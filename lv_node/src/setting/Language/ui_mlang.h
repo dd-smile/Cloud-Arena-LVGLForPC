@@ -1,3 +1,11 @@
+/*
+ * @Description:中英文转换功能
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2024-03-09 11:28:42
+ * @LastEditTime: 2024-04-01 10:34:31
+ * @FilePath: lv_node/src/setting/Language/ui_mlang.h
+ */
 #ifndef _LV_UI_MLANG_H
 #define _LV_UI_MLANG_H
 

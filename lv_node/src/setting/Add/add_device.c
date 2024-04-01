@@ -1,10 +1,10 @@
 /*
- * @Description:添加设备
+ * @Description:添加设备页面
  * @Author: mai
  * @LastEditors: da
  * @Date: 2023-04-25 15:58:59
  * @LastEditTime: 2023-08-30 14:18:12
- * @FilePath: /SmartBox_Power/lv_node/src/setting/Add/add_device.c
+ * @FilePath: lv_node/src/setting/Add/add_device.c
  */
 #include "ui_app.h"
 add_device add_device_list[MAX_DEVICES] = {0}; // 定义一个结构体数组，用来存储添加的设备信息，把所有数组元素初始化为0  暂时没用到

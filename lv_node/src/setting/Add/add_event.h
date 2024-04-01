@@ -1,10 +1,10 @@
 /***
- * @Description:
+ * @Description:添加设备功能
  * @Author: mai
- * @LastEditors: mai
+ * @LastEditors: da
  * @Date: 2023-05-16 18:13:23
  * @LastEditTime: 2023-05-16 18:21:02
- * @FilePath: /SmartBox_Power/lv_node/src/setting/Add/add_event.h
+ * @FilePath: lv_node/src/setting/Add/add_event.h
  */
 #ifndef _LV_ADD_EVENT_H
 #define _LV_ADD_EVENT_H

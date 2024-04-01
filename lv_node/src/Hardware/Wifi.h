@@ -1,3 +1,11 @@
+/*
+ * @Description:wifi底层功能代码
+ * @Author: da
+ * @LastEditors: da
+ * @Date: 2024-01-30 11:28:06
+ * @LastEditTime: 2024-03-20 14:51:43
+ * @FilePath: lv_node/src/Hardware/Wifi.h
+ */
 
 #ifndef __WIFI_H__
 #define __WIFI_H__

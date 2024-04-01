@@ -1,10 +1,10 @@
 /*
- * @Description:
+ * @Description:屏保功能设置页面
  * @Author: mai
- * @LastEditors: mai
+ * @LastEditors: da
  * @Date: 2023-04-25 16:02:15
- * @LastEditTime: 2023-04-25 19:50:29
- * @FilePath: /SmartBox_Power/lv_node/src/setting/all_setting/all_setting.c
+ * @LastEditTime: 2023-04-01 19:50:29
+ * @FilePath: lv_node/src/setting/Screensaver/Screensaver.c
  */
 #include "ui_app.h"
 

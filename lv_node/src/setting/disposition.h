@@ -1,9 +1,9 @@
 /*** 
- * @Description: 
+ * @Description: json转换库
  * @Author: mai
- * @LastEditors: mai
+ * @LastEditors: da
  * @Date: 2023-06-16 09:55:17
- * @LastEditTime: 2023-06-16 09:58:06
+ * @LastEditTime: 2023-04-01 09:58:06
  * @FilePath: lv_node/src/setting/disposition.h
  */
 #ifndef __DISPOSITION_H__
