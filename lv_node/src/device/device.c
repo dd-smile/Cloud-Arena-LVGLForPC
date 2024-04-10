@@ -234,7 +234,7 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
     lv_obj_align(imgbutton, LV_ALIGN_CENTER, 0, 0);
     lv_obj_clear_flag(imgbutton, LV_OBJ_FLAG_SCROLLABLE);
 
-    static const lv_img_dsc_t *img_table[] = {&telescopic_stand_small, &basketball_stands_small, &partition_curtain_small, &wall_hanging_ball_small, &folding_seat_small, &telescopic_stage_small, &telescopic_stage_small,&lights,&manual_mode}; //设备图片数组
+    static const lv_img_dsc_t *img_table[] = {&telescopic_stand_small, &basketball_stands_small, &partition_curtain_small, &wall_hanging_ball_small, &folding_seat_small, &telescopic_stage_small, &elevating_stage_small,&lights,&manual_mode}; //设备图片数组
     lv_img_set_src(imgbutton, img_table[image]);
     lv_obj_add_flag(imgbutton, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_add_event_cb(imgbutton, lv_create_device, LV_EVENT_ALL, (void *)index);

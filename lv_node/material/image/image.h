@@ -20,8 +20,9 @@ LV_IMG_DECLARE(telescopic_stand_small);  //活动看台(给一级设备页使用
 LV_IMG_DECLARE(basketball_stands_small);   //悬空球架(给一级设备页使用)
 LV_IMG_DECLARE(partition_curtain_small);   //分隔幕(给一级设备页使用)
 LV_IMG_DECLARE(folding_seat_small);    //地面翻折座椅
-LV_IMG_DECLARE(telescopic_stage_small);  //舞台
-LV_IMG_DECLARE(wall_hanging_ball_small);  //璧挂球架
+LV_IMG_DECLARE(telescopic_stage_small);  //伸缩舞台
+LV_IMG_DECLARE(elevating_stage_small);  //升降旋转舞台
+LV_IMG_DECLARE(wall_hanging_ball_small);//璧挂球架
 LV_IMG_DECLARE(lights);           //场馆灯
 
 // 详情页图片
