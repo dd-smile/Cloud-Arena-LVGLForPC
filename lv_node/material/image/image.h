@@ -65,6 +65,16 @@ LV_IMG_DECLARE(manual_mode);
 
 LV_IMG_DECLARE(biaoge);
 
+/**设备数据页面图片**/
+LV_IMG_DECLARE(equipment_data_background);//设备数据卡片背景图
+LV_IMG_DECLARE(offline_progress_bar);//离线进度条
+LV_IMG_DECLARE(online_progress_bar);//在线进度条
+LV_IMG_DECLARE(offline_broken_line);//离线的折线图标
+LV_IMG_DECLARE(online_broken_line);//在线的折线图标
+LV_IMG_DECLARE(offline_text);//离线文本图标
+LV_IMG_DECLARE(online_text);//在线文本图标
+
+
 /**弹出框图片**/ 
 LV_IMG_DECLARE(Mask);
 LV_IMG_DECLARE(Language);

@@ -309,12 +309,12 @@ static void *MultitrackControl(lv_obj_t *parent)
     lv_obj_t *popup_page = create_popup_page(scr, "多轨音乐控制", 0, 0);
 
     lv_obj_t *btn_multitrack = swich_btn_card(popup_page);
-    create_button(btn_multitrack, "音乐1", -90, -100, multitrack_Controls_event_cb, 0);
-    create_button(btn_multitrack, "音乐2", 0, -100, multitrack_Controls_event_cb, 1);
-    create_button(btn_multitrack, "爵士乐", 90, -100, multitrack_Controls_event_cb, 2);
-    create_button(btn_multitrack, "音乐4", -90, -40, multitrack_Controls_event_cb, 3);
+    // create_button(btn_multitrack, "音乐1", -90, -100, multitrack_Controls_event_cb, 0);
+    // create_button(btn_multitrack, "音乐2", 0, -100, multitrack_Controls_event_cb, 1);
+    // create_button(btn_multitrack, "爵士乐", 90, -100, multitrack_Controls_event_cb, 2);
+    // create_button(btn_multitrack, "音乐4", -90, -40, multitrack_Controls_event_cb, 3);
     create_button(btn_multitrack, "大自然", 0, -40, multitrack_Controls_event_cb, 4);
-    create_button(btn_multitrack, "下一首", 90, -40, multitrack_Controls_event_cb, 8);
+    // create_button(btn_multitrack, "下一首", 90, -40, multitrack_Controls_event_cb, 8);
     create_button(btn_multitrack, "停止", 0, 10, multitrack_Controls_event_cb, 9);
     create_button(btn_multitrack, "音量增", -90, 40, multitrack_Controls_event_cb, 5);
     create_button(btn_multitrack, "音量减", 90, 40, multitrack_Controls_event_cb, 6);

@@ -488,6 +488,7 @@ enum Chinese_English_shift{
 
 #include "lv_node/src/display/display.h"
 #include "lv_node/src/display/connect_common.h"
+#include "lv_node/src/display/display_common.h"
 #include "lv_node/src/audio_control/leyard.h"
 #include "lv_node/src/audio_control/light_vsu.h"
 #include "lv_node/src/audio_control/light_ulaide.h"
