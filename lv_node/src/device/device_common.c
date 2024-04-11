@@ -965,3 +965,33 @@ lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num)
 
     return bg;
 }
+
+
+/**
+ * 创建舞台大幕设备详情页
+ * @param data           要创建设备的基本数据
+ * @param device_num     设备号
+ * @return               返回指向已创建的设备详情页面的指针
+*/
+lv_obj_t *CreatecurtainPageBg(const DevicePageData *data, uint8_t device_num)
+{
+    lv_obj_t *mask = lv_c_create_mask_box(lv_scr_act()); // 创建遮罩层
+
+    lv_obj_t *bg = CreateDeviceBgCard(mask);             // 创建背景
+    Device_details_page_basicUi(bg, data);
+
+    index_t *index1 = add_index_t(device_num, 0);
+    index_t *index2 = add_index_t(device_num, 1);
+    index_t *index3 = add_index_t(device_num, 2);
+    CreateControlsButton(bg, data->expandBtnText, -320, 142, index1, curtain_Controls_event_cb);       
+    CreateControlsButton(bg, data->emergencyStopBtnText, -200, 142, index2, curtain_Controls_event_cb); 
+    CreateControlsButton(bg, data->collapseBtnText, -80, 142, index3, curtain_Controls_event_cb);       
+
+    
+    CreateFeatureButton(bg, UI_MLANG_STR(REPORT), 245, ReportCreateButton, 6);       // 故障申报按钮
+    CreateFeatureButton(bg, UI_MLANG_STR(RENAME), 50, RenameCreateButton, NULL);          // 重命名按钮
+    CreateFeatureButton(bg, UI_MLANG_STR(RECONDITIONED), 145, MaintenanceCreateButton, NULL);  // 检修正常按钮   
+    CreateFeatureButton(bg, UI_MLANG_STR(BACK), 340, lv_back_Mask, NULL);                 // 返回按钮
+
+    return bg;
+}

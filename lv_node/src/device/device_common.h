@@ -58,5 +58,6 @@ lv_obj_t *CreateFoldingPageBg(const DevicePageData *data, uint8_t device_num);
 lv_obj_t *CreateContractionPageBg(const DevicePageData *data, uint8_t device_num);
 lv_obj_t *CreateRevolvingPageBg(const DevicePageData *data, uint8_t device_num);
 lv_obj_t *CreateLightsPageBg(const DevicePageData *data, uint8_t device_num);
+lv_obj_t *CreatecurtainPageBg(const DevicePageData *data, uint8_t device_num);
 
 #endif // __DEVICE_COMMON_H__

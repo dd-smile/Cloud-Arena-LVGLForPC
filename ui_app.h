@@ -348,7 +348,13 @@ enum Sports_equipment{
     MASTER_SCRAM_FUNCTION_ENABLED,
     MANUAL_MODE_FUNCTION_ENABLED,
     TOTAL_REDUCTION_FUNCTION_ENABLED,
-    TOTAL_REDUCTION_FUNCTION_UNENABLED
+    TOTAL_REDUCTION_FUNCTION_UNENABLED,
+    STAGE_CURTAIN_OPEN_FUNCTION_ENABLED,
+    STAGE_CURTAIN_OPEN_FUNCTION_UNENABLED,
+    STAGE_CURTAIN_STOP_FUNCTION_ENABLED,
+    STAGE_CURTAIN_STOP_FUNCTION_UNENABLED,
+    STAGE_CURTAIN_SHUT_FUNCTION_ENABLED,
+    STAGE_CURTAIN_SHUT_FUNCTION_UNENABLED
 };
 
 enum Chinese_English_shift{
@@ -425,6 +431,7 @@ enum Chinese_English_shift{
     PASSWORD_SETTING,
     BRIGHTNESS_SETTING,
     EXIT_MODE,
+    FRONT_CURTAIN,
 };
 
 #include "stdio.h"
@@ -466,6 +473,7 @@ enum Chinese_English_shift{
 #include "lv_node/src/device/device.h"
 #include "lv_node/src/device/device_common.h"
 #include "lv_node/src/device/qn2_plc.h"
+#include "lv_node/src/device/curtain.h"
 #include "lv_node/src/common/common.h"
 #include "lv_node/src/common/lock.h"
 #include "lv_node/src/common/time_wifi.h"

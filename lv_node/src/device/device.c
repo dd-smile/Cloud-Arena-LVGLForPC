@@ -95,6 +95,10 @@ static void create_button(lv_obj_t *obj, const char *text, lv_coord_t x_ofs, uin
         case 8:   //手动模式
             lv_obj_add_event_cb(btn, manual_Controls_event_cb, LV_EVENT_ALL, index);
             break;
+        
+        case 9:   //舞台大幕
+            lv_obj_add_event_cb(btn, curtain_Controls_event_cb, LV_EVENT_ALL, index);
+            break;
 
         default:
             break;
@@ -221,6 +225,10 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
     {
         dev_card = lv_box_create(parent, x, y, UI_MLANG_STR(E_STOP), UI_MLANG_STR(OPEN), UI_MLANG_STR(RST), index);
     }
+    else if (image == 9)  //舞台大幕
+    {
+        dev_card = lv_box_create(parent, x,  y, UI_MLANG_STR(SPREAD), UI_MLANG_STR(SCRAM), UI_MLANG_STR(PUT_AWAY), index);
+    }
 
     //printf("index:%d %d\n", index->num, index->ind);
 
@@ -234,7 +242,8 @@ static lv_obj_t *card_class(lv_obj_t *parent, int x, int y, const char *name, ui
     lv_obj_align(imgbutton, LV_ALIGN_CENTER, 0, 0);
     lv_obj_clear_flag(imgbutton, LV_OBJ_FLAG_SCROLLABLE);
 
-    static const lv_img_dsc_t *img_table[] = {&telescopic_stand_small, &basketball_stands_small, &partition_curtain_small, &wall_hanging_ball_small, &folding_seat_small, &telescopic_stage_small, &elevating_stage_small,&lights,&manual_mode}; //设备图片数组
+    static const lv_img_dsc_t *img_table[] = {&telescopic_stand_small, &basketball_stands_small, &partition_curtain_small, &wall_hanging_ball_small, &folding_seat_small, 
+        &telescopic_stage_small, &elevating_stage_small, &lights, &manual_mode, &front_curtain}; //设备图片数组
     lv_img_set_src(imgbutton, img_table[image]);
     lv_obj_add_flag(imgbutton, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_add_event_cb(imgbutton, lv_create_device, LV_EVENT_ALL, (void *)index);
@@ -298,6 +307,10 @@ static void lv_create_device(lv_event_t *e)
             CreateLightsPage(device_num);
             break;
 
+        case 9:   //舞台大幕
+            CreateCurtainPage(device_num);
+            break;
+
         default :
             break;
         }
@@ -326,4 +339,5 @@ void CreateDevicePage(lv_obj_t *parent)
     card_class(parent, 0, 3, UI_MLANG_STR(ELEVATING_ROTARY_STAGE), 6, 1);
     card_class(parent, 1, 3, UI_MLANG_STR(VENUE_LIGHTING), 7, 1);
     card_class(parent, 2, 3, UI_MLANG_STR(MANUAL_MODE), 8, 1);
+    card_class(parent, 3, 3, UI_MLANG_STR(FRONT_CURTAIN), 9, 1);
 }

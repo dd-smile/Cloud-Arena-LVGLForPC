@@ -486,6 +486,13 @@ char *USRNET_MQTT_MSH[] = {
     MQTT_MSG_128MT_TEMPLATE("Total_reduction", "1"),//63
     MQTT_MSG_128MT_TEMPLATE("Total_reduction", "0"),//64
 
+    MQTT_MSG_128MT_TEMPLATE("Stage_curtain_open", "1"),//65
+    MQTT_MSG_128MT_TEMPLATE("Stage_curtain_open", "0"),//66
+    MQTT_MSG_128MT_TEMPLATE("Stage_curtain_stop", "1"),//67
+    MQTT_MSG_128MT_TEMPLATE("Stage_curtain_stop", "0"),//68
+    MQTT_MSG_128MT_TEMPLATE("Stage_curtain_shut", "1"),//69
+    MQTT_MSG_128MT_TEMPLATE("Stage_curtain_shut", "0"),//70
+
 };
 
 static void lv_c_style_set_style_mask(lv_obj_t *obj)

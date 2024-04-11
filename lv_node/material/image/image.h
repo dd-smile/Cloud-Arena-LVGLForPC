@@ -24,6 +24,7 @@ LV_IMG_DECLARE(telescopic_stage_small);  //伸缩舞台
 LV_IMG_DECLARE(elevating_stage_small);  //升降旋转舞台
 LV_IMG_DECLARE(wall_hanging_ball_small);//璧挂球架
 LV_IMG_DECLARE(lights);           //场馆灯
+LV_IMG_DECLARE(front_curtain);  //舞台大幕
 
 // 详情页图片
 LV_IMG_DECLARE(telescopic_stand_big);    //活动看台(给设备详情页使用)
