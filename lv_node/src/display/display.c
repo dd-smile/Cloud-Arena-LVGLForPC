@@ -306,19 +306,10 @@ void timer_data_callback(lv_timer_t * timer)
  * */
 static void Create_TempeHumData(lv_obj_t *parent)
 {
-    lv_obj_t *card = lv_obj_create(parent);
-    lv_obj_set_size(card, 295, 235);
-    lv_obj_set_style_bg_color(card, lv_color_make(31, 38, 51), LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(card, 20, LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(card, 0, LV_STATE_DEFAULT);
-    lv_obj_set_pos(card, 5, 15);
+    lv_obj_t *card = CreateTemHumCard(parent);
+    lv_obj_set_pos(card, 5, 0);
 
-    lv_obj_t *label = lv_label_create(card);
-    lv_label_set_text(label, "实时温湿度数据:");
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_20, LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(label, 2, LV_STATE_DEFAULT);
-    lv_obj_align_to(label, card, LV_ALIGN_TOP_LEFT, 0, 5);
+    lv_obj_t *label = CreateDataBoardtitle(card, "实时温湿度数据:", LV_ALIGN_TOP_LEFT, 0, 5);
     
     sensor_data.label_temp = lv_label_create(card);
     display_float_number(sensor_data.label_temp, "26", 0);  
@@ -330,7 +321,7 @@ static void Create_TempeHumData(lv_obj_t *parent)
 
     sensor_data.label_weather = lv_label_create(card);
     lv_label_set_text(sensor_data.label_weather, "今天天气:晴朗,外温:30摄氏度");  //调用心知天气ａｐｉ
-    tempehum_label_style(sensor_data.label_weather, sensor_data.label_hum, LV_ALIGN_BOTTOM_MID, 57, 40); 
+    tempehum_label_style(sensor_data.label_weather, sensor_data.label_hum, LV_ALIGN_BOTTOM_MID, 47, 40);   ///20 ->  57
 
 }
 
@@ -342,14 +333,9 @@ static void Create_Operating_State(lv_obj_t *parent)
 {
     lv_obj_t *equipment_data_bg = lv_img_create(parent);
     lv_img_set_src(equipment_data_bg, &equipment_data_background);
-    lv_obj_set_pos(equipment_data_bg, 372, 15);
+    lv_obj_set_pos(equipment_data_bg, 372, 0);
 
-    lv_obj_t *label = lv_label_create(equipment_data_bg);
-    lv_label_set_text(label, "设备运行状态:");
-    lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_20, LV_STATE_DEFAULT);
-    lv_obj_set_style_text_letter_space(label, 2, LV_STATE_DEFAULT);
-    lv_obj_align_to(label, equipment_data_bg, LV_ALIGN_TOP_LEFT, 20, 20);
+    lv_obj_t *label = CreateDataBoardtitle(equipment_data_bg, "设备运行状态:", LV_ALIGN_TOP_LEFT, 20, 20);
 
     //离线模块
     lv_obj_t *offline_bar = equipment_data_style(equipment_data_bg, &offline_progress_bar, LV_ALIGN_TOP_MID, 0, 78);
@@ -361,6 +347,27 @@ static void Create_Operating_State(lv_obj_t *parent)
     lv_obj_t *online_bar = equipment_data_style(equipment_data_bg, &online_progress_bar, LV_ALIGN_TOP_MID, 2, 78);
     lv_obj_t *online_bk_line = equipment_data_style(equipment_data_bg, &online_broken_line, LV_ALIGN_TOP_RIGHT, -74, 108);
     lv_obj_t *online_txt = equipment_data_style(equipment_data_bg, &online_text, LV_ALIGN_TOP_RIGHT, -82, 82);
+
+}
+
+/**
+ * 创建设备用电量与开启数量
+ * @param parent          指向父对象的指针
+*/
+static void Create_Consumption_trend(lv_obj_t *parent)
+{
+    lv_obj_t *card = CreateElectricityCard(parent);
+    lv_obj_set_pos(card, 5, 250);
+
+    lv_obj_t *label = CreateDataBoardtitle(card, "用电趋势:", LV_ALIGN_TOP_LEFT, 0, 5);
+
+    //用电趋势图
+    lv_obj_t *consumption_line = equipment_data_style(card, &consumption_trend_line, LV_ALIGN_TOP_LEFT, 35, 100);
+    lv_obj_t *consumption_shadow = equipment_data_style(card, &consumption_trend_shadow, LV_ALIGN_TOP_LEFT, 35, 100);
+
+    //总设备数量与开启设备数量
+    lv_obj_t *total_number = CreateDataBoardtxt(card, "总设备数量: 17", LV_ALIGN_CENTER, 100, -20);
+    lv_obj_t *open_quantity = CreateDataBoardtxt(card, "开启设备数量: 4", LV_ALIGN_CENTER, 104, 25);
 
 }
 
@@ -412,5 +419,8 @@ void CreateDisplayPage(lv_obj_t *parent)
 {
     Create_TempeHumData(parent);
     Create_Operating_State(parent);
+    Create_Consumption_trend(parent);
+
+
     // Create_TempeHumChart(parent);
 }

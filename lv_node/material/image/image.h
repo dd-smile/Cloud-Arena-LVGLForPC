@@ -75,7 +75,8 @@ LV_IMG_DECLARE(offline_broken_line);//离线的折线图标
 LV_IMG_DECLARE(online_broken_line);//在线的折线图标
 LV_IMG_DECLARE(offline_text);//离线文本图标
 LV_IMG_DECLARE(online_text);//在线文本图标
-
+LV_IMG_DECLARE(consumption_trend_line);//用电趋势折线图
+LV_IMG_DECLARE(consumption_trend_shadow);//用电趋势阴影图
 
 /**弹出框图片**/ 
 LV_IMG_DECLARE(Mask);

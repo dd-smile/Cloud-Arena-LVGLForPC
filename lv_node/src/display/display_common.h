@@ -12,4 +12,10 @@
 lv_obj_t *equipment_data_style(lv_obj_t *parent, const void *src, lv_align_t align, lv_coord_t x_ofs, lv_coord_t y_ofs);
 void tempehum_label_style(lv_obj_t *destlabel, lv_obj_t *alignlabel, lv_align_t align, lv_coord_t x_ofs, lv_coord_t y_ofs);
 
+lv_obj_t *CreateTemHumCard(lv_obj_t *parent);
+lv_obj_t *CreateElectricityCard(lv_obj_t *parent);
+
+lv_obj_t *CreateDataBoardtitle(lv_obj_t *parent, const char *text, lv_align_t align, lv_coord_t x_ofs, lv_coord_t y_ofs);
+lv_obj_t *CreateDataBoardtxt(lv_obj_t *parent, const char *text, lv_align_t align, lv_coord_t x_ofs, lv_coord_t y_ofs);
+
 #endif // __DEVICE_H__
