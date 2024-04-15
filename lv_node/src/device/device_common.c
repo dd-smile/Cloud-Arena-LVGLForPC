@@ -515,7 +515,8 @@ static void MaintenanceCreateButton(lv_event_t *e)
 
     if (code == LV_EVENT_CLICKED)
     {
-        create_popup(lv_scr_act(), pPageData->PopupTitlie, "Ok", "Cancel", pPageData->PopupContent, lv_back_Mask, NULL);
+        //事件要进行更换,点击确认检修正常，巡检记录表自动生成一条当天的记录，巡检情况为正常
+        create_popup(lv_scr_act(), pPageData->PopupTitlie, UI_MLANG_STR(CONFIRM), UI_MLANG_STR(CANCEL), pPageData->PopupContent, lv_back_Mask, NULL);
     }
 }
 

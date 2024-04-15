@@ -116,7 +116,6 @@ lv_obj_t *device_page_box(lv_obj_t *parent, int num_pages, ...)
  * */
 void CreateHomePage(lv_obj_t *parent)
 {
-    // lv_obj_t *home_tab = device_page_box(parent, MAX_PAGE, "数据看板", "设备", "音频控制","-"); // 设备列框架
     lv_obj_t *home_tab = device_page_box(parent, MAX_PAGE, UI_MLANG_STR(DATA_BOARD), UI_MLANG_STR(FACILITY), UI_MLANG_STR(AUDIO_CONTROL),"-"); // 设备列框架
 
     device_data.display_page = lv_tileview_add_tile(lv_obj_get_child(home_tab, 0), 0, 0, LV_DIR_RIGHT); // 添加数据看板页面

@@ -117,6 +117,8 @@ void saveSettingData(const lv_setting_data_t *settingData, const char *jsonFileP
 //打印ｊｓｏｎ格式
 void print_setting(lv_setting_data_t *settingData)
 {
-    printf("setting: %u, %u, %u, %u, %u,\n", settingData->brightness, settingData->Btnmid, settingData->screen_save_time, settingData->ScreenSaveid);
+    //printf("setting: %u, %u, %u, %u, %u,\n", settingData->brightness, settingData->Btnmid, settingData->screen_save_time, settingData->ScreenSaveid);
+
+    printf("setting: %u, %u, %u, %u,\n", settingData->brightness, settingData->Btnmid, settingData->screen_save_time, settingData->ScreenSaveid);
 }
 

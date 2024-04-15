@@ -863,13 +863,13 @@ lv_obj_t *create_popup(lv_obj_t *parent, const char *title, const char *confirm_
     lv_obj_t *label = lv_label_create(iamge);          // 创建标题
     lv_label_set_text(label, title);
     lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(label, &fout_14_text, LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(label, &PuHuiTi_Regular_20, LV_STATE_DEFAULT);
     lv_obj_align(label, LV_ALIGN_TOP_LEFT, 70, 15);
 
     lv_obj_t *confirm_btn = btn_create_text(iamge, false, confirm_text, 135, 255); // 创建按钮
     lv_obj_add_event_cb(confirm_btn, event_cb, LV_EVENT_CLICKED, user_data);       // 添加返回事件
     lv_obj_t *Back_btn = btn_create_text(iamge, false, back_text, 280, 255);       // 创建按钮
-    lv_obj_add_event_cb(Back_btn, event_cb, LV_EVENT_CLICKED, user_data);          // 添加返回事件
+    lv_obj_add_event_cb(Back_btn, lv_back_Mask, LV_EVENT_CLICKED, user_data);          // 添加返回事件
     card_create_36_text(iamge, text, 0, -20);
 
     return iamge;

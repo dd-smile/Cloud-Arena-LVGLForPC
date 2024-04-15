@@ -231,7 +231,7 @@ lv_obj_t *create_screen_btn(lv_obj_t *parent)
     lv_obj_set_style_border_width(btnm, 0, 0);
     lv_obj_set_style_text_font(btnm, &PuHuiTi_Regular_20, LV_STATE_DEFAULT);
 
-    lv_obj_add_event_cb(btnm, scr_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(btnm, scr_event_cb, LV_EVENT_ALL, NULL);
     lv_obj_set_size(btnm, 980, 100);
     lv_btnmatrix_set_btn_ctrl_all(btnm, LV_BTNMATRIX_CTRL_CHECKABLE);
     lv_btnmatrix_set_one_checked(btnm, true);
