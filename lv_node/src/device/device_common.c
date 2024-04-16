@@ -51,16 +51,29 @@ static void CreateBiaoge(lv_obj_t *parent)
 static void CreateLoge(lv_obj_t *parent)
 {
 
-    lv_obj_t *obj = lv_obj_create(parent);
-    lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_size(obj, 322, 139);
-    lv_obj_set_pos(obj, 415, 40);
-    lv_obj_set_style_bg_color(obj, lv_color_make(20, 26, 35), LV_STATE_DEFAULT);
-    lv_obj_set_style_border_color(obj, lv_color_make(49, 61, 85), LV_STATE_DEFAULT);
+    // lv_obj_t *obj = lv_obj_create(parent);
+    // lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
+    // lv_obj_set_size(obj, 322, 139);
+    // lv_obj_set_pos(obj, 415, 40);
+    // lv_obj_set_style_bg_color(obj, lv_color_make(20, 26, 35), LV_STATE_DEFAULT);
+    // lv_obj_set_style_border_color(obj, lv_color_make(49, 61, 85), LV_STATE_DEFAULT);
 
-    lv_obj_t *lvLogo = lv_img_create(obj);
-    lv_img_set_src(lvLogo, &lingxianLOGo);
-    lv_obj_align(lvLogo, LV_ALIGN_CENTER, 0, 0);
+    // lv_obj_t *lvLogo = lv_img_create(obj);
+    // lv_img_set_src(lvLogo, &lingxianLOGo);
+    // lv_obj_align(lvLogo, LV_ALIGN_CENTER, 0, 0);
+
+    lv_obj_t *logo = lv_img_create(parent);
+    lv_img_set_src(logo, &logo_square);
+    lv_obj_clear_flag(logo, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_size(logo, 120, 120);
+    lv_obj_set_pos(logo, 415, 40);
+
+    lv_obj_t *text = lv_img_create(parent);
+    lv_img_set_src(text, &texts);
+    lv_obj_clear_flag(text, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_size(text, 202, 168);
+    lv_obj_set_pos(text, 565, 20);
+    
 }
 
 /**
@@ -439,7 +452,7 @@ static void Device_details_page_basicUi(lv_obj_t *parent, const DevicePageData *
         card_create_16_text(parent, data->deviceName, -160, 30); // 创建设备名称
         card_create_12_text(parent, UI_MLANG_STR(SUPPLIER_SERVICE_TELEPHONE), 74, 25);   //创建制造商服务电话
     }
-    card_create_16_text(parent, UI_MLANG_STR(MANUFACTURER_PROFILE), 100, -195);
+    card_create_16_text(parent, UI_MLANG_STR(MANUFACTURER_PROFILE), 88, -195);
     card_create_12_text(parent, UI_MLANG_STR(PURCHASING_PERIOD), 75, -5);
     card_create_12_text(parent, data->date, 130, -5);
     card_create_12_text(parent, UI_MLANG_STR(REPAIR_CYCLE), 260, -5);

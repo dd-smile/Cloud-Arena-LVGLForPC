@@ -39,6 +39,9 @@ LV_IMG_DECLARE(Logo);
 
 LV_IMG_DECLARE(lingxianLOGo);
 
+LV_IMG_DECLARE(logo_square);
+LV_IMG_DECLARE(texts);
+
 /**导航栏图标**/ 
 LV_IMG_DECLARE(home_off);
 LV_IMG_DECLARE(home_on);
