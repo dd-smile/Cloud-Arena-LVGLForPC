@@ -143,7 +143,7 @@ void CreatePartitionCurtianPage(uint8_t device_num)
                     "活、安全高效、阻隔噪音\n";
   pc_data->date = "2023-7-4";
   pc_data->period = "6 months";
-  pc_data->phoneNumber = "+86 755 26490688";
+  pc_data->phoneNumber = "0755-26490688";
   pc_data->image = &partition_curtain_big;
   pc_data->expandBtnText = "一键打开";
   pc_data->emergencyStopBtnText = "急停";
@@ -154,8 +154,8 @@ void CreatePartitionCurtianPage(uint8_t device_num)
   pc_data->SeatRiseBtnText = NULL;
   pc_data->SeatTipBtnText = NULL;
 
-  pc_data->ManufacturingTel = "12345678";
-  pc_data->SalehAfterotline = "12345679";
+  pc_data->ManufacturingTel = "400-618-1848";
+  pc_data->SalehAfterotline = "0755-26490688";
   pc_data->SolveProblem = "Solution";
   pc_data->Description = "Condition";
   pc_data->PopupTitlie = "Inspection personnel must perform the inspection in a timely manner\n"

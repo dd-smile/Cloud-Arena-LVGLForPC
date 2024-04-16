@@ -82,7 +82,7 @@ void CreateTelescopicStandPage(uint8_t device_num)
     pPageData->intro = UI_MLANG_STR(INTRODUCTION_TO_THE_EQUIPMENT_OF_THE_EVENT_STAND);
     pPageData->date = "2023-7-4";
     pPageData->period = "6 months";
-    pPageData->phoneNumber = "+86 755 26490688";
+    pPageData->phoneNumber = "0755-26490688";
     pPageData->image = &telescopic_stand_big;  
     pPageData->expandBtnText = UI_MLANG_STR(OPEN);
     pPageData->emergencyStopBtnText = UI_MLANG_STR(SCRAM);
@@ -93,8 +93,8 @@ void CreateTelescopicStandPage(uint8_t device_num)
     pPageData->SeatRiseBtnText = "座椅上升";
     pPageData->SeatTipBtnText = "座椅下降";
 
-    pPageData->ManufacturingTel = "12345678";
-    pPageData->SalehAfterotline = "12345679";
+    pPageData->ManufacturingTel = "400-618-1848";
+    pPageData->SalehAfterotline = "0755-26490688";
     pPageData->SolveProblem = UI_MLANG_STR(SOLUTION);
     pPageData->Description = UI_MLANG_STR(CONDITION);
     pPageData->PopupTitlie = UI_MLANG_STR(MAINTENANCE_NORMAL_HEADING);

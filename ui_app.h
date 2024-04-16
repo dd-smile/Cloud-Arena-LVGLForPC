@@ -517,7 +517,6 @@ enum Chinese_English_shift{
 // #include "inc/mi_wlan.h"
 // #include "inc/mi_wlan_datatype.h"
 
-
 extern lv_obj_t * pcr_obj;
 
 LV_FONT_DECLARE(PuHuiTi_Regular_16);
@@ -531,5 +530,6 @@ LV_FONT_DECLARE(fout_24_text);
 LV_FONT_DECLARE(fout_36_text);
 LV_FONT_DECLARE(fout_72_text);
 LV_FONT_DECLARE(fout_100_text);
+
 
 #endif

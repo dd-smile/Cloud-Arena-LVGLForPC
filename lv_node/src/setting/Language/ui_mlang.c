@@ -77,7 +77,7 @@ const char const* g_mlang_str_zhc[] = {
     "制造商简介: ", //60
     "采购时间: ", //61
     "检修周期: ", //62
-    "供应商服务电话: ", //63
+    "制造商服务电话: ", //63
     "故障申报", //64
     "重命名", //65
     "检修正常", //66
@@ -151,7 +151,7 @@ const char const * g_mlang_str_eng[] = {
                        "of high-standard venues for high-row, \n"
                        "quiet and stableseating system\n",   //54
     "Solution",  //55
-    "Condition",  //56
+    "Please enter the fault symptom",  //56
     "Maintenance normal report",   //57
     "Routine checks have\n" 
         "been carried out",   //58

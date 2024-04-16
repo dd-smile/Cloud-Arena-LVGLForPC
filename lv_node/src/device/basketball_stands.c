@@ -186,7 +186,7 @@ void CreateBasketballStandsPage(uint8_t device_num)
                        "控制，释放场地空间。\n";
     bs_data->date = "2023-9-21";
     bs_data->period = "6 months";
-    bs_data->phoneNumber = "+86 755 26490688";
+    bs_data->phoneNumber = "0755-26490688";
     bs_data->image = &basketball_stands_big;  
     bs_data->expandBtnText = "一键打开";
     bs_data->emergencyStopBtnText = "急停";
@@ -197,8 +197,8 @@ void CreateBasketballStandsPage(uint8_t device_num)
     bs_data->SeatRiseBtnText = NULL;
     bs_data->SeatTipBtnText = NULL;
 
-    bs_data->ManufacturingTel = "12345678";
-    bs_data->SalehAfterotline = "12345679";
+    bs_data->ManufacturingTel = "400-618-1848";
+    bs_data->SalehAfterotline = "0755-26490688";
     bs_data->SolveProblem = "解决方案" ;
     bs_data->Description = "Condition";
     bs_data->PopupTitlie = "检验人员必须及时进行检验\n"

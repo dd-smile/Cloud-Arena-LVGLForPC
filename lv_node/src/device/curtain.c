@@ -79,7 +79,7 @@ void CreateCurtainPage(uint8_t device_num)
                    "控制，体现场馆智能化\n";
   cur_data->date = "2023-7-4";
   cur_data->period = "6 months";
-  cur_data->phoneNumber = "+86 755 26490688";
+  cur_data->phoneNumber = "0755-26490688";
   cur_data->image = &partition_curtain_big;
   cur_data->expandBtnText = "一键展开";
   cur_data->emergencyStopBtnText = "急停";
@@ -90,8 +90,8 @@ void CreateCurtainPage(uint8_t device_num)
   cur_data->SeatRiseBtnText = NULL;
   cur_data->SeatTipBtnText = NULL;
 
-  cur_data->ManufacturingTel = "+86 755 26490688";
-  cur_data->SalehAfterotline = "+86 755 26490688";
+  cur_data->ManufacturingTel = "400-618-1848";
+  cur_data->SalehAfterotline = "0755-26490688";
   cur_data->SolveProblem = "Solution";
   cur_data->Description = "Condition";
   cur_data->PopupTitlie = "Inspection personnel must perform the inspection in a timely manner\n"

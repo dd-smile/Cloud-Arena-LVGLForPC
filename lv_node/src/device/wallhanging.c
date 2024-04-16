@@ -144,7 +144,7 @@ void CreateWallhangingPage(uint8_t device_num)
                    "高度可调节满足不同年龄段\n";
   wa_data->date = "2023-7-4";
   wa_data->period = "6 months";
-  wa_data->phoneNumber = "+86 755 26490688";
+  wa_data->phoneNumber = "0755-26490688";
   wa_data->image = &wall_hanging_ball_big;
   wa_data->expandBtnText = "一键打开";
   wa_data->emergencyStopBtnText = "急停";
@@ -155,8 +155,8 @@ void CreateWallhangingPage(uint8_t device_num)
   wa_data->SeatRiseBtnText = NULL;
   wa_data->SeatTipBtnText = NULL;
 
-  wa_data->ManufacturingTel = "12345678";
-  wa_data->SalehAfterotline = "12345679";
+  wa_data->ManufacturingTel = "400-618-1848";
+  wa_data->SalehAfterotline = "0755-26490688";
   wa_data->SolveProblem = "Solution";
   wa_data->Description = "Condition";
   wa_data->PopupTitlie = "Inspection personnel must perform the inspection in a timely manner\n"

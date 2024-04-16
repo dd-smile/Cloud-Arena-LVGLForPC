@@ -47,7 +47,7 @@ void CreateLightsPage(uint8_t device_num)
                     "度和色温，提高场馆舒适度。\n";
     l_data->date = "2023-7-4";
     l_data->period = "6 months";
-    l_data->phoneNumber = "+86 755 26490688";
+    l_data->phoneNumber = "0755-26490688";
     l_data->image = &lights_img;
     l_data->expandBtnText = "打开";
     l_data->emergencyStopBtnText = NULL;
@@ -58,8 +58,8 @@ void CreateLightsPage(uint8_t device_num)
     l_data->SeatRiseBtnText = NULL;
     l_data->SeatTipBtnText = NULL;
 
-    l_data->ManufacturingTel = "12345678";
-    l_data->SalehAfterotline = "12345679";
+    l_data->ManufacturingTel = "400-618-1848";
+    l_data->SalehAfterotline = "0755-26490688";
     l_data->SolveProblem = "Solution";
     l_data->Description = "Condition";
     l_data->PopupTitlie = "Inspection personnel must perform the inspection in a timely manner\n"

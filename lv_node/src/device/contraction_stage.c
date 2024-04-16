@@ -348,7 +348,7 @@ void CreateRevolvingPage(uint8_t device_num)
                    "需求，高效快捷转换\n";
   rs_data->date = "2023-7-4";
   rs_data->period = "6 months";
-  rs_data->phoneNumber = "+86 755 26490688";
+  rs_data->phoneNumber = "0755-26490688";
   rs_data->image = &telescopic_stage_big;
   rs_data->expandBtnText = "上升";
   rs_data->emergencyStopBtnText = "急停";
@@ -359,8 +359,8 @@ void CreateRevolvingPage(uint8_t device_num)
   rs_data->SeatRiseBtnText = NULL;
   rs_data->SeatTipBtnText = NULL;
 
-  rs_data->ManufacturingTel = "12345678";
-  rs_data->SalehAfterotline = "12345679";
+  rs_data->ManufacturingTel = "400-618-1848";
+  rs_data->SalehAfterotline = "0755-26490688";
   rs_data->SolveProblem = "Solution";
   rs_data->Description = "Condition";
   rs_data->PopupTitlie = "Inspection personnel must perform the inspection in a timely manner\n"

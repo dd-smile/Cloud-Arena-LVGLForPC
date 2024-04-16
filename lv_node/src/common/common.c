@@ -846,7 +846,7 @@ void lv_back_Mask(lv_event_t *e)
 }
 
 /**
- * 创建一个弹出框
+ * 创建一个确认或取消弹出框
  * @param parent                 指向父对象的指针
  * @param title                  标题文本，以'\0'结尾的字符串
  * @param confirm_text           确认按钮文本
@@ -864,7 +864,7 @@ lv_obj_t *create_popup(lv_obj_t *parent, const char *title, const char *confirm_
     lv_label_set_text(label, title);
     lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(label, &PuHuiTi_Regular_20, LV_STATE_DEFAULT);
-    lv_obj_align(label, LV_ALIGN_TOP_LEFT, 70, 15);
+    lv_obj_align(label, LV_ALIGN_CENTER, 0, -135);
 
     lv_obj_t *confirm_btn = btn_create_text(iamge, false, confirm_text, 135, 255); // 创建按钮
     lv_obj_add_event_cb(confirm_btn, event_cb, LV_EVENT_CLICKED, user_data);       // 添加返回事件

@@ -237,7 +237,7 @@ static void CreateRadioButton(lv_obj_t *parent, const char *txt)
 {
     lv_obj_t *obj = lv_checkbox_create(parent);
     lv_checkbox_set_text(obj, txt);
-    lv_obj_set_style_text_font(obj, &fout_12_text, 0); // set font
+    lv_obj_set_style_text_font(obj, &PuHuiTi_Regular_16, 0); // set font
     lv_obj_set_style_text_color(obj, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
 
     lv_obj_add_flag(obj, LV_OBJ_FLAG_EVENT_BUBBLE);
@@ -246,7 +246,7 @@ static void CreateRadioButton(lv_obj_t *parent, const char *txt)
     lv_style_set_border_color(&style_radio, lv_color_hex(0xffffff));
 
     lv_obj_add_style(obj, &style_radio_chk, LV_PART_INDICATOR | LV_STATE_CHECKED);
-    lv_style_set_bg_color(&style_radio_chk, lv_color_hex(0xffffff));
+    lv_style_set_bg_color(&style_radio_chk, lv_color_hex(0xDC143C));
 }
 
 // 创建单选框
@@ -432,20 +432,20 @@ static void Device_details_page_basicUi(lv_obj_t *parent, const DevicePageData *
     if(get_cur_language_type() == zhT)
     {
         card_create_16_text(parent, data->deviceName, -240, 30); // 创建设备名称
-        card_create_12_text(parent, UI_MLANG_STR(SUPPLIER_SERVICE_TELEPHONE), 95, 25);   //创建供应商服务电话
+        card_create_12_text(parent, UI_MLANG_STR(SUPPLIER_SERVICE_TELEPHONE), 94, 25);   //创建制造商服务电话
     }
     else
     {
         card_create_16_text(parent, data->deviceName, -160, 30); // 创建设备名称
-        card_create_12_text(parent, UI_MLANG_STR(SUPPLIER_SERVICE_TELEPHONE), 75, 25);   //创建供应商服务电话
+        card_create_12_text(parent, UI_MLANG_STR(SUPPLIER_SERVICE_TELEPHONE), 74, 25);   //创建制造商服务电话
     }
     card_create_16_text(parent, UI_MLANG_STR(MANUFACTURER_PROFILE), 100, -195);
     card_create_12_text(parent, UI_MLANG_STR(PURCHASING_PERIOD), 75, -5);
-    card_create_12_text(parent, data->date, 140, -5);
+    card_create_12_text(parent, data->date, 130, -5);
     card_create_12_text(parent, UI_MLANG_STR(REPAIR_CYCLE), 260, -5);
-    card_create_12_text(parent, data->period, 330, -5);
+    card_create_12_text(parent, data->period, 315, -5);
 
-    card_create_12_text(parent, data->phoneNumber, 200, 25);
+    card_create_12_text(parent, data->phoneNumber, 183, 25);
     image_create(parent, data->image, -200, -100);                        // 创建图片
     CreateWinPage(parent, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
@@ -672,28 +672,30 @@ lv_obj_t *CreateBreakdownPageBg(lv_obj_t *parent, const DevicePageData *data)
 
     lv_obj_t *bg = CreateDeviceBgCard(mask);                               // 创建背景
     CreatrLine(bg);                                                        // 创建分割线
-    card_create_16_text(bg, UI_MLANG_STR(DEVICENAME), -300, 30);                    // 创建设备名称
-    card_create_16_text(bg, data->deviceName, -140, 30);              // 创建设备名称
+    card_create_16_text(bg, UI_MLANG_STR(DEVICENAME), -320, 30);                    // 创建设备名称
+    card_create_16_text(bg, data->deviceName, -240, 30);              // 创建设备名称
     image_create(bg, data->image, -200, -100);                        // 创建图片
     CreateWinPage(bg, &fout_16_text, data->intro, 31, -100, 300, 59); // 创建产品简介
 
-    card_create_12_text(bg, UI_MLANG_STR(SUPPLIER_SERVICE_TELEPHONE), 88, -50); // 制造商服务电话
-    card_create_12_text(bg, data->ManufacturingTel, 180, -50);
-    card_create_12_text(bg, UI_MLANG_STR(AFTER_SALES_HOTLINE), 87, 5);
-    card_create_12_text(bg, data->SalehAfterotline, 180, 5);
+    card_create_16_text(bg, UI_MLANG_STR(SUPPLIER_SERVICE_TELEPHONE), 88, -50); // 制造商服务电话
+    card_create_16_text(bg, data->ManufacturingTel, 194, -50);
+    card_create_16_text(bg, UI_MLANG_STR(AFTER_SALES_HOTLINE), 87, 5);
+    card_create_16_text(bg, data->SalehAfterotline, 199, 5);
 
-    card_create_12_text(bg, UI_MLANG_STR(SOLUTION), 88, 50);
+    card_create_16_text(bg, UI_MLANG_STR(SOLUTION), 71, 50);
 
-    lv_obj_t *SolveInputBox = CreateInputBox(bg, -43, 244, 190, 35);
+    //创建解决措施的输入框
+    lv_obj_t *SolveInputBox = CreateInputBox(bg, -43, 244, 210, 35);
     lv_obj_set_style_text_font(SolveInputBox, &lv_font_montserrat_12, 0); // set font
     lv_obj_set_style_text_color(SolveInputBox, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
+    lv_obj_add_event_cb(SolveInputBox, DescriptionInputHandler, LV_EVENT_ALL, NULL);   //暂用描述故障输入框的点击事件
+
+    Input_label = lv_label_create(SolveInputBox); // 创建标签
+    lv_label_set_text(Input_label, "请输入解决方案");
+    lv_obj_align(Input_label, LV_ALIGN_LEFT_MID, -10, 0);
 
 
-    // Input_label = lv_label_create(SolveInputBox); // 创建标签
-    // lv_label_set_text(Input_label, "解决方案");
-    // lv_obj_align(Input_label, LV_ALIGN_LEFT_MID, -10, 0);
-
-    card_create_12_text(bg, "结果: ", 55, 105);
+    card_create_16_text(bg, "结果: ", 50, 105);
     CreateRadioBox(bg, 230, 287);  //结果选择框
 
     CreateDescriptionInput(bg);  //描述设备故障输入框

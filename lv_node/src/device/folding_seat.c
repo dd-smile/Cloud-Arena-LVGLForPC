@@ -143,7 +143,7 @@ void CreateFoldingPage(uint8_t device_num)
                    "场馆空间\n";
   fs_data->date = "2023-7-4";
   fs_data->period = "6 months";
-  fs_data->phoneNumber = "+86 755 26490688";
+  fs_data->phoneNumber = "0755-26490688";
   fs_data->image = &folding_seat_big;
   fs_data->expandBtnText = "一键打开";
   fs_data->emergencyStopBtnText = "急停";
@@ -154,8 +154,8 @@ void CreateFoldingPage(uint8_t device_num)
   fs_data->SeatRiseBtnText = NULL;
   fs_data->SeatTipBtnText = NULL;
 
-  fs_data->ManufacturingTel = "12345678";
-  fs_data->SalehAfterotline = "12345679";
+  fs_data->ManufacturingTel = "400-618-1848";
+  fs_data->SalehAfterotline = "0755-26490688";
   fs_data->SolveProblem = "Solution";
   fs_data->Description = "Condition";
   fs_data->PopupTitlie = "Inspection personnel must perform the inspection in a timely manner\n"
