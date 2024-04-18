@@ -31,17 +31,17 @@ static void CreateBiaoge(lv_obj_t *parent)
     lv_img_set_src(lvLogo, &biaoge);
     lv_obj_align(lvLogo, LV_ALIGN_CENTER, 185, 100);
 
-    card_create_12_text(lvLogo, "Inspection time", -105, -30);
-    card_create_12_text(lvLogo, "Inspection status", 0, -30);
-    card_create_12_text(lvLogo, "Result", 105, -30);
+    card_create_12_text(lvLogo, "巡检时间", -105, -30);
+    card_create_12_text(lvLogo, "巡检情况", 0, -30);
+    card_create_12_text(lvLogo, "解决措施", 105, -30);
 
     create_12_Green_text(lvLogo, "2023/06/27", -105, -7);
-    create_12_Green_text(lvLogo, "exception", 0, -7);
-    create_12_Green_text(lvLogo, "solved", 105, -7);
+    create_12_Green_text(lvLogo, "正常", 0, -7);
+    // create_12_Green_text(lvLogo, "solved", 105, -7);
 
     create_12_Red_text(lvLogo, "2023/06/26", -104, 20);
-    create_12_Red_text(lvLogo, "exception", 1, 20);
-    create_12_Red_text(lvLogo, "pending", 106, 20);
+    create_12_Red_text(lvLogo, "存在问题", 1, 20);
+    create_12_Red_text(lvLogo, "安排人员检修", 106, 20);
 }
 
 /**
@@ -363,6 +363,7 @@ static void draw_part_event_cb(lv_event_t *e)
  * */
 void lv_create_alarm(lv_obj_t *halert_table, uint8_t id, const char *InspectionTime, const char *InspectionStatus, const char *SolutionMeasure, const char *DeviceFaultSymptom, const char *Result)
 {
+    //列
     lv_table_set_cell_value(halert_table, id, 0, InspectionTime);
     lv_table_set_cell_value(halert_table, id, 1, InspectionStatus);
     lv_table_set_cell_value(halert_table, id, 2, SolutionMeasure);
@@ -398,6 +399,7 @@ static lv_obj_t *ui_alert_obj(lv_obj_t *parent)
     lv_table_set_cell_value(halert_table, 0, 3, "设备故障描述");
     lv_table_set_cell_value(halert_table, 0, 4, "结果");
 
+    //行
     lv_create_alarm(halert_table, 1, "2023/06/26", "正常", " ", " ", " ");
     lv_create_alarm(halert_table, 2, "2023/06/20", "正常", " ", " ", " ");
     lv_create_alarm(halert_table, 3, "2023/06/19", "正常", " ", " ", " ");
@@ -406,7 +408,7 @@ static lv_obj_t *ui_alert_obj(lv_obj_t *parent)
     lv_create_alarm(halert_table, 6, "2023/06/01", "正常", " ", " ", " ");
     lv_create_alarm(halert_table, 7, "2023/05/29", "正常", " ", " ", " ");
     lv_create_alarm(halert_table, 8, "2023/05/18", "正常", " ", " ", " ");
-    lv_create_alarm(halert_table, 9, "2023/05/15", "异常", "修理", "点击操作异常，无旋转，无噪音", "解决了");
+    lv_create_alarm(halert_table, 9, "2023/05/15", "异常", "修理", "点击操作异常,无旋转,无噪音", "解决了");
     lv_create_alarm(halert_table, 10, "2023/05/13", "正常", " ", " ", " ");
     lv_create_alarm(halert_table, 11, "2023/05/05", "正常", " ", " ", " ");
     lv_create_alarm(halert_table, 12, "2023/04/12", "正常", " ", " ", " ");
@@ -426,7 +428,7 @@ lv_obj_t *CreateInspectTable(lv_obj_t *parent)
     lv_obj_t *Tablebg = CreateDeviceBgCard(mask);
     lv_obj_set_size(Tablebg, 900, 500);
     card_create_16_text(Tablebg, "设备名称: ", -380, -220);       // 创建设备名称
-    card_create_16_text(Tablebg, pPageData->deviceName, -220, -220); // 创建设备名称
+    card_create_16_text(Tablebg, pPageData->deviceName, -290, -220); // 创建设备名称
 
     ui_alert_obj(Tablebg);
 

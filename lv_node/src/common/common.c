@@ -577,7 +577,7 @@ lv_obj_t *create_12_text(lv_obj_t *parent, const char *title, lv_coord_t x, lv_c
     lv_obj_t *label = lv_label_create(parent);
     lv_label_set_text(label, title);
     lv_obj_set_style_text_color(label, lv_color_hex(0xffffff), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(label, &lv_font_montserrat_12, LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(label, &fout_12_text, LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(label, 0, LV_STATE_DEFAULT);
     lv_obj_align(label, LV_ALIGN_CENTER, x, y);
     return label;
@@ -588,7 +588,7 @@ lv_obj_t *create_12_Green_text(lv_obj_t *parent, const char *title, lv_coord_t x
     lv_obj_t *label = lv_label_create(parent);
     lv_label_set_text(label, title);
     lv_obj_set_style_text_color(label, lv_color_hex(0x43cf7c), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(label, &lv_font_montserrat_12, LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(label, &fout_12_text, LV_STATE_DEFAULT);
     lv_obj_set_style_text_letter_space(label, 0, LV_STATE_DEFAULT);
     lv_obj_align(label, LV_ALIGN_CENTER, x, y);
     return label;
@@ -600,7 +600,7 @@ lv_obj_t *create_12_Red_text(lv_obj_t *parent, const char *title, lv_coord_t x, 
     lv_obj_t *label = lv_label_create(parent);
     lv_label_set_text(label, title);
     lv_obj_set_style_text_color(label, lv_color_hex(0xd43030), LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(label, &lv_font_montserrat_12, LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(label, &fout_12_text, LV_STATE_DEFAULT);    //lv_font_montserrat_12
     lv_obj_set_style_text_letter_space(label, 0, LV_STATE_DEFAULT);
     lv_obj_align(label, LV_ALIGN_CENTER, x, y);
     return label;
