@@ -474,6 +474,8 @@ enum Chinese_English_shift{
 #include "lv_node/src/device/device_common.h"
 #include "lv_node/src/device/qn2_plc.h"
 #include "lv_node/src/device/curtain.h"
+#include "lv_node/src/device/neutral_box.h"
+
 #include "lv_node/src/common/common.h"
 #include "lv_node/src/common/lock.h"
 #include "lv_node/src/common/time_wifi.h"
