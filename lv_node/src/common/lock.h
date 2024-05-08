@@ -11,7 +11,6 @@
 
 extern lv_obj_t *pwd_main_cont;
 extern bool password_lock_open;
-extern bool password_mode_lock;
 
 void lv_gui_password_keyboard_display(void);
 void lv_mode_password_keyboard_display(void);

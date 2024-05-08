@@ -212,3 +212,28 @@ void Setoutput_neutral(uint8_t motor_four, uint8_t motor_eight, uint8_t motor_tw
 
     usleep(50 * 1000);
 }
+
+
+/**
+ * 查询套餐指令
+ * 
+*/
+char* Querycombo_zhongli(void)
+{
+    char packet_recv[1024];
+    unsigned char packet[10];
+
+    packet[0] = 0xAA;
+    packet[1] = 0x10;
+    packet[2] = 0x00;
+    packet[3] = 0x00;
+    packet[4] = 0x00;
+    packet[5] = 0x00;
+    packet[6] = 0x00;
+    packet[7] = 0x00;
+    packet[8] = calculate_xor16(packet, sizeof(packet) - 2);
+    packet[9] = 0x55;
+
+    if(socketconnected(g_neutral_fd) != 0)
+        write(g_neutral_fd, packet, sizeof(packet));
+}

@@ -134,7 +134,7 @@ static void lv_event_handler(lv_event_t *e)
     //如果发生点击事件
     if (code == LV_EVENT_CLICKED)
     {   
-        password_mode_lock = false;
+        password_lock_open = false;
 
         static const char * btns[] ={""};    //不启用提示框的按钮
 

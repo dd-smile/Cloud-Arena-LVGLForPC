@@ -9,7 +9,6 @@
 #include "ui_app.h"
 
 bool password_lock_open = false;  //密码是否输入正确
-bool password_mode_lock = false; //模式转换密码是否输入正确
 lv_obj_t *pwd_main_cont = NULL; // 密码输入界面的容器
 static lv_obj_t *hint_label = NULL; // 密码提示框
 static lv_obj_t *pwd_text_area = NULL; // 密码输入框
@@ -557,7 +556,7 @@ static void confirm_mode_event_callback(lv_event_t* event)
                     {
                         lv_label_set_text(hint_label, "Password correct!");
                         lv_obj_del(pwd_main_cont);
-						password_mode_lock = true;
+						password_lock_open = true;
                         Judgmentmode();
 						lv_bar_change();
                     }

@@ -28,6 +28,9 @@ struct
     {&setting_off, &setting_on, 10, -15},    //-2
 };
 
+int g_lfd = 0;
+int g_cfd = 0;
+char *g_cBuf;   //用于存放从套接字中接收到的数据
 static bool enteredScreenMode = false; // 屏保标志位
 static bool password_flag = false;  //给第一次弹出密码框
 int g_light_fd;   //连接灯光套接字
@@ -264,6 +267,17 @@ void timer_push_callback(lv_timer_t *timer)
   OneNet_Publish("/avant/Cloud_Arena_sports/u", PUB_BUF); 
 }
 
+static void create_serverTemHum()
+{
+  //创建监听的套接字
+  g_lfd = createSocket();
+  bindSocket(g_lfd, 9266);
+  setListen(g_lfd);
+
+  pthread_t tid_listen;  //用于监听
+  pthread_create(&tid_listen, NULL, listening_temphum, NULL);
+}
+
 /**
  * 检测与灯光服务器的TCP连接是否断开，断开的话进行重新连接
  * @param parg         线程传入的参数
@@ -364,16 +378,18 @@ static void *create_client_abesn()
 void create_lv_layout(lv_obj_t *scr)
 {
 
-/******************************定时器任务*****************************/
+/*******************************开线程********************************/
 
   // pthread_t tid_mu;
   // pthread_create(&tid_mu, NULL, create_client_mu, NULL);
 
-  // // 读取屏幕配置文件
-  // updateSettingData(&setting, SCREEN_SETTING_JSON);
+/******************************定时器任务*****************************/
 
-  // // 创建屏保任务
-  // lv_timer_create(UpdateTask, 500, NULL);
+  // 读取屏幕配置文件
+  updateSettingData(&setting, SCREEN_SETTING_JSON);
+
+  // 创建屏保任务
+  lv_timer_create(UpdateTask, 500, NULL);
 
   //创建更新温湿度数据任务
   // lv_timer_create(timer_data_callback, 50000, NULL);
@@ -382,7 +398,7 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_weather_callback, 60000, NULL);
 
   // 创建ＭＱＴＴ心跳任务
-  // lv_timer_create(timer_mqtt_callback, 20000, NULL);
+  // lv_timer_create(timer_mqtt_callback, 40000, NULL);
 
   // 创建更新历史温湿度数据
   // lv_timer_create(timer_average_callback, 60000, NULL);
@@ -400,8 +416,12 @@ void create_lv_layout(lv_obj_t *scr)
   CreateModePage(home_data.mode_page);       // 模式页面
   CreateSettingPage(home_data.setting_page); // 设置页面
 
-  // lv_gui_password_keyboard_display();
-  // password_flag = true;
+  lv_gui_password_keyboard_display();
+  password_flag = true;
+
+/******************************创建服务器*****************************/
+
+  // create_serverTemHum();
 
 /******************************连接服务器*****************************/
 

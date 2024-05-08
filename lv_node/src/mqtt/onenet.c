@@ -18,6 +18,9 @@
 
 
 static int mqtt_fd;    //连接ｍｑｔｔ套接字
+static int reconnect_mqtt = 2; 
+static int heart_count = 0;
+static char heart_buf[256];
 
 static void *mqttConnection(void *parg)
 {
@@ -60,11 +63,12 @@ _Bool OneNet_DevLink(void)
 	_Bool status = 1;
 	
 	
-	if (MQTT_PacketConnect(PROID, AUTH_INFO, DEVID, 256, 0, MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) == 0)
+	if (MQTT_PacketConnect(PROID, AUTH_INFO, DEVID, 60, 1, MQTT_QOS_LEVEL0, NULL, NULL, 0, &mqttPacket) == 0)
 	{
 		write(mqtt_fd, mqttPacket._data, mqttPacket._len);			//上传平台
 		
 		MQTT_DeleteBuffer(&mqttPacket);								//删包
+		printf("连接MQTT服务器成功\n");
 	}
 	else
 		//UsartPrintf(USART_DEBUG, "WARN:	MQTT_PacketConnect Failed\r\n");
@@ -86,40 +90,45 @@ _Bool OneNet_DevLink(void)
 //==========================================================
 void OneNet_HeartBeat(void)
 {
-	
-	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};
 
 	unsigned char sCount = 3;
 	int mqtt_red = -1;
 	
-//---------------------------------------------步骤一：组包---------------------------------------------
-	if (MQTT_PacketPing(&mqttPacket))
-		return;
-	
 	while(sCount--)
 	{
-//---------------------------------------------步骤二：发送数据-----------------------------------------
 		if (socketconnected(mqtt_fd) == 0)
 		{
-			closeSocket(mqtt_fd);
-			mqtt_fd = createSocket();
-			mqtt_red = connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
-			if(mqtt_red != -1)
+			reconnect_mqtt--;
+			if (reconnect_mqtt == 0)
 			{
-				OneNet_DevLink();
-				break;
+				printf("进行重连尝试\n");
+				reconnect_mqtt = 2;
+				closeSocket(mqtt_fd);
+				mqtt_fd = createSocket();
+				mqtt_red = connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
+				if(mqtt_red != -1)
+				{
+					OneNet_DevLink();
+					break;
+				}
+
 			}
+			
 		}
 		else
 		{
-			write(mqtt_fd, mqttPacket._data, mqttPacket._len);
+			printf("正常发送心跳\n");
+			heart_count++;
+			if (heart_count >= 1000)
+			{
+				heart_count = 0;
+			}
+			snprintf(heart_buf, sizeof(heart_buf), "{\"msgId\":%d,\"devName\":%s}",heart_count, DEVID);
+			OneNet_Publish("/myherat/ycg", heart_buf);
 			break;
 		}
 
 	}
-	
-//---------------------------------------------步骤四：删包---------------------------------------------
-	MQTT_DeleteBuffer(&mqttPacket);
 
 }
 
@@ -169,6 +178,7 @@ void OneNet_Subscribe(const char *topics[], unsigned char topic_cnt)
 void OneNet_Publish(const char *topic, const char *msg)
 {
 
+	ssize_t test_flag = 0;
 	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};							//协议包
 	
 	printf("Publish Topic: %s, Msg: %s\r\n", topic, msg);
@@ -176,7 +186,8 @@ void OneNet_Publish(const char *topic, const char *msg)
 	if (MQTT_PacketPublish(MQTT_PUBLISH_ID, topic, msg, strlen(msg), MQTT_QOS_LEVEL1, 0, 1, &mqttPacket) == 0  && socketconnected(mqtt_fd) != 0)
 	{
 		lv_label_set_text(g_mqtt_detection, "");
-		write(mqtt_fd, mqttPacket._data, mqttPacket._len);					//向平台发送订阅请求
+		test_flag = write(mqtt_fd, mqttPacket._data, mqttPacket._len);					//向平台发送订阅请求
+		// printf("Publish testFlag: %d\r\n", test_flag);
 		
 		MQTT_DeleteBuffer(&mqttPacket);											//删包
 	}

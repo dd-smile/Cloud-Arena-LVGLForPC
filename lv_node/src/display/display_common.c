@@ -114,3 +114,91 @@ lv_obj_t *CreateDataBoardtxt(lv_obj_t *parent, const char *text, lv_align_t alig
 
     return txt;
 }
+
+
+/**
+ * 获取温度数据
+ * @param Buf                         要解析的文本
+ * @param Res                         解析后的温度数据
+ * @return                            执行成功返回0
+*/
+int searchTemp(char *Buf, char *Res)
+{
+	char *Begin = NULL;    //定义开始指针
+	char *End = NULL;      //定义结束指针
+
+    /*寻找第一次出现<temp>的位置  <temp>温度</temp>...
+    再偏移strlen("<temp>")个地址可以得到温度</temp>...*/
+	Begin = strstr(Buf, "<temp>");//寻找第一次出现<temp>的位置
+    End = strstr(Buf, "</temp>");//寻找第一次出现</temp>的位置
+
+	if(Begin == NULL || End == NULL || Begin > End)
+    {
+        printf("寻找错误!\n");
+    }else{
+		Begin = Begin + strlen("<temp>");//温度</temp>...
+		memcpy(Res, Begin, End-Begin);//获得Begin和End之间的值
+	}
+	return 0;
+}
+
+
+/**
+ * 获取湿度数据
+ * @param Buf                         要解析的文本
+ * @param Res                         解析后的湿度数据
+ * @return                            执行成功返回0
+*/
+int searchHum(char *Buf, char *Res)
+{
+	char *Begin = NULL;
+	char *End = NULL;
+
+	Begin = strstr(Buf, "<hum>");
+	End = strstr(Buf, "</hum>");
+
+	if(Begin == NULL || End == NULL || Begin > End)
+  {
+    printf("寻找错误!\n");
+  }else{
+		Begin = Begin + strlen("<hum>");
+		memcpy(Res, Begin, End-Begin);
+	}
+	return 0;
+}
+
+
+void *listening_temphum(void * parg)
+{
+  // 阻塞等待并接受客户端连接
+  struct sockaddr_in cliaddr;
+  int clilen = sizeof(cliaddr);
+  g_cfd = accept(g_lfd, (struct sockaddr*)&cliaddr, &clilen);
+  if(g_cfd == -1)
+  {
+      perror("accept");
+      exit(0);
+  }
+  // 打印客户端的地址信息
+  char ip[24] = {0};
+  printf("客户端的IP地址: %s, 端口: %d\n",
+          inet_ntop(AF_INET, &cliaddr.sin_addr.s_addr, ip, sizeof(ip)),
+          ntohs(cliaddr.sin_port));
+  while (1)
+  {
+    // 和客户端通信
+    // 接收数据
+    char buf[1024];
+    memset(buf, 0, sizeof(buf));
+    int len = read(g_cfd, buf, sizeof(buf));
+    if(len > 0)
+    {
+      g_cBuf = buf;
+      searchTemp(g_cBuf, temp_data);
+      searchHum(g_cBuf, hum_data);
+      printf("温度: %s, 湿度: %s\n", temp_data, hum_data);
+    }
+  }
+
+}
+

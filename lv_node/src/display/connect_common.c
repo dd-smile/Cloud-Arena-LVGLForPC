@@ -36,10 +36,20 @@ int createSocket()
  * */
 int bindSocket(int lfd, unsigned short port)
 {
+    char pp[24] = {0};
+
     struct sockaddr_in saddr;
     saddr.sin_family = AF_INET;
-    saddr.sin_port = htons(port);
+    saddr.sin_port = htons(port);   //大端端口
     saddr.sin_addr.s_addr = INADDR_ANY;  // 0 = 0.0.0.0
+
+    printf("服务器的IP地址: %s, 端口: %d\n",
+          inet_ntop(AF_INET, &saddr.sin_addr.s_addr, pp, sizeof(pp)),
+          ntohs(saddr.sin_port));
+    // 设置ＳＯ_ＲＥＵＳＥＡＤＤＲ，快速重启服务器，防止出现Address in use
+    int on = 1;
+    setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)); // 端口复用
+
     int ret = bind(lfd, (struct sockaddr*)&saddr, sizeof(saddr));
 
     if (ret == -1)

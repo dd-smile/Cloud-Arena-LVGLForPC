@@ -45,6 +45,9 @@ extern All_Data home_data;
 extern lv_setting_data_t setting;
 extern int g_light_fd;
 extern char PUB_BUF[256];
+extern int g_lfd;
+extern int g_cfd;
+extern char *g_cBuf;
 
 void create_lv_layout(lv_obj_t *scr);
 void Judgmentmode(void);

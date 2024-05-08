@@ -18,4 +18,8 @@ lv_obj_t *CreateElectricityCard(lv_obj_t *parent);
 lv_obj_t *CreateDataBoardtitle(lv_obj_t *parent, const char *text, lv_align_t align, lv_coord_t x_ofs, lv_coord_t y_ofs);
 lv_obj_t *CreateDataBoardtxt(lv_obj_t *parent, const char *text, lv_align_t align, lv_coord_t x_ofs, lv_coord_t y_ofs);
 
+int searchTemp(char *Buf, char *Res);
+int searchHum(char *Buf, char *Res);
+void *listening_temphum(void * parg);
+
 #endif // __DEVICE_H__
