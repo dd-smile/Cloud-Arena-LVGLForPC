@@ -8,18 +8,18 @@
  */
 #include "ui_app.h"
 
-bool password_lock_open = false;  //密码是否输入正确
-lv_obj_t *pwd_main_cont = NULL; // 密码输入界面的容器
-static lv_obj_t *hint_label = NULL; // 密码提示框
-static lv_obj_t *pwd_text_area = NULL; // 密码输入框
+bool g_password_lock_open = false;  //密码是否输入正确
+lv_obj_t *g_pwd_main_cont = NULL; // 密码输入界面的容器
+static lv_obj_t *s_hint_label = NULL; // 密码提示框
+static lv_obj_t *s_pwd_text_area = NULL; // 密码输入框
 
-lv_style_t style_indic;
+static lv_style_t s_style_indic;
 lv_obj_t * mask; 
 lv_obj_t * anaim_label;
 
-char password_input[6] = "123456";
+static char s_password_input[6] = "123456";
  
-static const char * keyboard_map[] =
+static const char * s_keyboard_map[] =
 {
 	"1","2", "3","\n",
 	"4", "5", "6", "\n",
@@ -28,7 +28,7 @@ static const char * keyboard_map[] =
 };
  
  
-static const lv_btnmatrix_ctrl_t keyboard_ctrl[] =
+static const lv_btnmatrix_ctrl_t s_keyboard_ctrl[] =
 {
 	LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT,
 	LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT, LV_BTNMATRIX_CTRL_NO_REPEAT,
@@ -62,9 +62,9 @@ void password_read()
         printf("open txt fail\n");
     }
 
-    len = read(fd, password_input, 6);
+    len = read(fd, s_password_input, 6);
 
-    printf("密码文本 %s\n", password_input);
+    printf("密码文本 %s\n", s_password_input);
 
     close(fd);
     
@@ -94,8 +94,8 @@ int password_write(char *password_upd)
 void lv_gui_password_keyboard_display(void)
 {
     // 当前页面的画布容器
-    pwd_main_cont = lv_obj_create(lv_scr_act()); // 基于屏幕创建了一个容器
-	if (pwd_main_cont == NULL)
+    g_pwd_main_cont = lv_obj_create(lv_scr_act()); // 基于屏幕创建了一个容器
+	if (g_pwd_main_cont == NULL)
 	{
 		printf("[%s:%d] create pwd_main_cont failed\n", __FUNCTION__, __LINE__);
 		return;
@@ -110,12 +110,12 @@ void lv_gui_password_keyboard_display(void)
 	lv_style_set_bg_opa(&main_cont_style, LV_OPA_50); // 设置样式背景的透明度，不透明
     lv_style_set_bg_color(&main_cont_style, lv_color_make(0xea, 0xea, 0xea));
     lv_style_set_pad_all(&main_cont_style, 0); // 设置样式内部填充
-    lv_obj_add_style(pwd_main_cont, &main_cont_style, 0);  // 给对象添加样式
-	lv_obj_set_size(pwd_main_cont, LV_PCT(100), LV_PCT(100)); //设置大小800x480
-    lv_obj_center(pwd_main_cont); // 对象居屏幕中间显示
+    lv_obj_add_style(g_pwd_main_cont, &main_cont_style, 0);  // 给对象添加样式
+	lv_obj_set_size(g_pwd_main_cont, LV_PCT(100), LV_PCT(100)); //设置大小800x480
+    lv_obj_center(g_pwd_main_cont); // 对象居屏幕中间显示
  
     // 键盘背景容器
-    lv_obj_t *pwd_bg_cont = lv_obj_create(pwd_main_cont);
+    lv_obj_t *pwd_bg_cont = lv_obj_create(g_pwd_main_cont);
 	if (pwd_bg_cont == NULL)
 	{
 		printf("[%s:%d] pwd_bg_cont create failed\n", __FUNCTION__, __LINE__);
@@ -168,10 +168,10 @@ void lv_gui_password_keyboard_display(void)
 	lv_label_set_text(title_label, "Input password"); // 设置文本内容
  
 	// 基于键盘背景对象创建密码框
-	pwd_text_area = lv_textarea_create(pwd_bg_cont);
-	if (pwd_text_area == NULL)
+	s_pwd_text_area = lv_textarea_create(pwd_bg_cont);
+	if (s_pwd_text_area == NULL)
     {
-        printf("[%s:%d] create pwd_text_area obj failed\n", __FUNCTION__, __LINE__);
+        printf("[%s:%d] create s_pwd_text_area obj failed\n", __FUNCTION__, __LINE__);
 		return;
     }
  
@@ -187,19 +187,19 @@ void lv_gui_password_keyboard_display(void)
 #else
 	 lv_style_set_text_font(&pwd_text_style, &lv_font_montserrat_18); //设置字体
 #endif
-	lv_textarea_set_text(pwd_text_area, ""); // 文本框置空
-	lv_textarea_set_password_mode(pwd_text_area, true); // 文本区域开启密码模式
-	lv_textarea_set_max_length(pwd_text_area, 8); // 设置可输入的文本的最大长度
-	lv_obj_add_style(pwd_text_area, &pwd_text_style, 0); // 给btn_label添加样式
+	lv_textarea_set_text(s_pwd_text_area, ""); // 文本框置空
+	lv_textarea_set_password_mode(s_pwd_text_area, true); // 文本区域开启密码模式
+	lv_textarea_set_max_length(s_pwd_text_area, 8); // 设置可输入的文本的最大长度
+	lv_obj_add_style(s_pwd_text_area, &pwd_text_style, 0); // 给btn_label添加样式
  
-    lv_obj_set_size(pwd_text_area, 295, 41); // 设置对象大小
-	lv_obj_align_to(pwd_text_area, title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 30); // 顶部居中显示
+    lv_obj_set_size(s_pwd_text_area, 295, 41); // 设置对象大小
+	lv_obj_align_to(s_pwd_text_area, title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 30); // 顶部居中显示
  
 	// 基于键盘背景对象创建密码校验提示标签
-	hint_label = lv_label_create(pwd_bg_cont);
-	if (hint_label == NULL)
+	s_hint_label = lv_label_create(pwd_bg_cont);
+	if (s_hint_label == NULL)
 	{
-		printf("[%s:%d] create hint_label obj failed\n", __FUNCTION__, __LINE__);
+		printf("[%s:%d] create s_hint_label obj failed\n", __FUNCTION__, __LINE__);
 		return;
 	}
  
@@ -215,10 +215,10 @@ void lv_gui_password_keyboard_display(void)
 #else
 	 lv_style_set_text_font(&hint_label_style, &lv_font_montserrat_12); //设置字体
 #endif
-    lv_label_set_long_mode(hint_label, LV_LABEL_LONG_SCROLL_CIRCULAR); // 长文本循环滚动
-    lv_obj_add_style(hint_label, &hint_label_style, 0); // 给btn_label添加样式
-    lv_obj_align(hint_label, LV_ALIGN_TOP_MID, 0, 110); // 顶部居中显示
-	lv_label_set_text(hint_label, ""); // 设置文本内容
+    lv_label_set_long_mode(s_hint_label, LV_LABEL_LONG_SCROLL_CIRCULAR); // 长文本循环滚动
+    lv_obj_add_style(s_hint_label, &hint_label_style, 0); // 给btn_label添加样式
+    lv_obj_align(s_hint_label, LV_ALIGN_TOP_MID, 0, 110); // 顶部居中显示
+	lv_label_set_text(s_hint_label, ""); // 设置文本内容
  
 	// 基于键盘背景对象创建键盘对象
     lv_obj_t * pwd_keyboard = lv_keyboard_create(pwd_bg_cont);
@@ -244,8 +244,8 @@ void lv_gui_password_keyboard_display(void)
  
 	lv_obj_set_size(pwd_keyboard, 300, 220); //设置键盘大小
 	lv_keyboard_set_mode(pwd_keyboard, LV_KEYBOARD_MODE_NUMBER); //设置键盘模式为数字键盘
-	lv_keyboard_set_map(pwd_keyboard, LV_KEYBOARD_MODE_NUMBER, keyboard_map, keyboard_ctrl); // 设置键盘映射
-	lv_keyboard_set_textarea(pwd_keyboard, pwd_text_area); // 键盘对象和文本框绑定
+	lv_keyboard_set_map(pwd_keyboard, LV_KEYBOARD_MODE_NUMBER, s_keyboard_map, s_keyboard_ctrl); // 设置键盘映射
+	lv_keyboard_set_textarea(pwd_keyboard, s_pwd_text_area); // 键盘对象和文本框绑定
 	lv_obj_add_style(pwd_keyboard, &pwd_kb_style, 0); // 添加样式
 	lv_obj_align(pwd_keyboard, LV_ALIGN_TOP_MID, 0, 130);
  
@@ -315,8 +315,8 @@ void lv_gui_password_keyboard_display(void)
 void lv_mode_password_keyboard_display(void)
 {
     // 当前页面的画布容器
-    pwd_main_cont = lv_obj_create(lv_scr_act()); // 基于屏幕创建了一个容器
-	if (pwd_main_cont == NULL)
+    g_pwd_main_cont = lv_obj_create(lv_scr_act()); // 基于屏幕创建了一个容器
+	if (g_pwd_main_cont == NULL)
 	{
 		printf("[%s:%d] create pwd_main_cont failed\n", __FUNCTION__, __LINE__);
 		return;
@@ -331,12 +331,12 @@ void lv_mode_password_keyboard_display(void)
 	lv_style_set_bg_opa(&main_cont_style, LV_OPA_50); // 设置样式背景的透明度，不透明
     lv_style_set_bg_color(&main_cont_style, lv_color_make(0xea, 0xea, 0xea));
     lv_style_set_pad_all(&main_cont_style, 0); // 设置样式内部填充
-    lv_obj_add_style(pwd_main_cont, &main_cont_style, 0);  // 给对象添加样式
-	lv_obj_set_size(pwd_main_cont, LV_PCT(100), LV_PCT(100)); //设置大小800x480
-    lv_obj_center(pwd_main_cont); // 对象居屏幕中间显示
+    lv_obj_add_style(g_pwd_main_cont, &main_cont_style, 0);  // 给对象添加样式
+	lv_obj_set_size(g_pwd_main_cont, LV_PCT(100), LV_PCT(100)); //设置大小800x480
+    lv_obj_center(g_pwd_main_cont); // 对象居屏幕中间显示
  
     // 键盘背景容器
-    lv_obj_t *pwd_bg_cont = lv_obj_create(pwd_main_cont);
+    lv_obj_t *pwd_bg_cont = lv_obj_create(g_pwd_main_cont);
 	if (pwd_bg_cont == NULL)
 	{
 		printf("[%s:%d] pwd_bg_cont create failed\n", __FUNCTION__, __LINE__);
@@ -389,10 +389,10 @@ void lv_mode_password_keyboard_display(void)
 	lv_label_set_text(title_label, "Input password"); // 设置文本内容
  
 	// 基于键盘背景对象创建密码框
-	pwd_text_area = lv_textarea_create(pwd_bg_cont);
-	if (pwd_text_area == NULL)
+	s_pwd_text_area = lv_textarea_create(pwd_bg_cont);
+	if (s_pwd_text_area == NULL)
     {
-        printf("[%s:%d] create pwd_text_area obj failed\n", __FUNCTION__, __LINE__);
+        printf("[%s:%d] create s_pwd_text_area obj failed\n", __FUNCTION__, __LINE__);
 		return;
     }
  
@@ -408,19 +408,19 @@ void lv_mode_password_keyboard_display(void)
 #else
 	 lv_style_set_text_font(&pwd_text_style, &lv_font_montserrat_18); //设置字体
 #endif
-	lv_textarea_set_text(pwd_text_area, ""); // 文本框置空
-	lv_textarea_set_password_mode(pwd_text_area, true); // 文本区域开启密码模式
-	lv_textarea_set_max_length(pwd_text_area, 8); // 设置可输入的文本的最大长度
-	lv_obj_add_style(pwd_text_area, &pwd_text_style, 0); // 给btn_label添加样式
+	lv_textarea_set_text(s_pwd_text_area, ""); // 文本框置空
+	lv_textarea_set_password_mode(s_pwd_text_area, true); // 文本区域开启密码模式
+	lv_textarea_set_max_length(s_pwd_text_area, 8); // 设置可输入的文本的最大长度
+	lv_obj_add_style(s_pwd_text_area, &pwd_text_style, 0); // 给btn_label添加样式
  
-    lv_obj_set_size(pwd_text_area, 295, 41); // 设置对象大小
-	lv_obj_align_to(pwd_text_area, title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 30); // 顶部居中显示
+    lv_obj_set_size(s_pwd_text_area, 295, 41); // 设置对象大小
+	lv_obj_align_to(s_pwd_text_area, title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 30); // 顶部居中显示
  
 	// 基于键盘背景对象创建密码校验提示标签
-	hint_label = lv_label_create(pwd_bg_cont);
-	if (hint_label == NULL)
+	s_hint_label = lv_label_create(pwd_bg_cont);
+	if (s_hint_label == NULL)
 	{
-		printf("[%s:%d] create hint_label obj failed\n", __FUNCTION__, __LINE__);
+		printf("[%s:%d] create s_hint_label obj failed\n", __FUNCTION__, __LINE__);
 		return;
 	}
  
@@ -436,10 +436,10 @@ void lv_mode_password_keyboard_display(void)
 #else
 	 lv_style_set_text_font(&hint_label_style, &lv_font_montserrat_12); //设置字体
 #endif
-    lv_label_set_long_mode(hint_label, LV_LABEL_LONG_SCROLL_CIRCULAR); // 长文本循环滚动
-    lv_obj_add_style(hint_label, &hint_label_style, 0); // 给btn_label添加样式
-    lv_obj_align(hint_label, LV_ALIGN_TOP_MID, 0, 110); // 顶部居中显示
-	lv_label_set_text(hint_label, ""); // 设置文本内容
+    lv_label_set_long_mode(s_hint_label, LV_LABEL_LONG_SCROLL_CIRCULAR); // 长文本循环滚动
+    lv_obj_add_style(s_hint_label, &hint_label_style, 0); // 给btn_label添加样式
+    lv_obj_align(s_hint_label, LV_ALIGN_TOP_MID, 0, 110); // 顶部居中显示
+	lv_label_set_text(s_hint_label, ""); // 设置文本内容
  
 	// 基于键盘背景对象创建键盘对象
     lv_obj_t * pwd_keyboard = lv_keyboard_create(pwd_bg_cont);
@@ -465,8 +465,8 @@ void lv_mode_password_keyboard_display(void)
  
 	lv_obj_set_size(pwd_keyboard, 300, 220); //设置键盘大小
 	lv_keyboard_set_mode(pwd_keyboard, LV_KEYBOARD_MODE_NUMBER); //设置键盘模式为数字键盘
-	lv_keyboard_set_map(pwd_keyboard, LV_KEYBOARD_MODE_NUMBER, keyboard_map, keyboard_ctrl); // 设置键盘映射
-	lv_keyboard_set_textarea(pwd_keyboard, pwd_text_area); // 键盘对象和文本框绑定
+	lv_keyboard_set_map(pwd_keyboard, LV_KEYBOARD_MODE_NUMBER, s_keyboard_map, s_keyboard_ctrl); // 设置键盘映射
+	lv_keyboard_set_textarea(pwd_keyboard, s_pwd_text_area); // 键盘对象和文本框绑定
 	lv_obj_add_style(pwd_keyboard, &pwd_kb_style, 0); // 添加样式
 	lv_obj_align(pwd_keyboard, LV_ALIGN_TOP_MID, 0, 130);
  
@@ -544,35 +544,35 @@ static void confirm_mode_event_callback(lv_event_t* event)
     if (code == LV_EVENT_CLICKED)
 	{
 		//printf("[%s:%d] confirm button clicked\n", __FUNCTION__, __LINE__);
-		if (pwd_text_area != NULL)
+		if (s_pwd_text_area != NULL)
         {
             password_read();
-            const char *pwd_txt = lv_textarea_get_text(pwd_text_area);
+            const char *pwd_txt = lv_textarea_get_text(s_pwd_text_area);
             if ((pwd_txt != NULL))
             {
-                if (strcmp(pwd_txt, password_input) == 0)
+                if (strcmp(pwd_txt, s_password_input) == 0)
                 {
-                    if (hint_label != NULL)
+                    if (s_hint_label != NULL)
                     {
-                        lv_label_set_text(hint_label, "Password correct!");
-                        lv_obj_del(pwd_main_cont);
-						password_lock_open = true;
+                        lv_label_set_text(s_hint_label, "Password correct!");
+                        lv_obj_del(g_pwd_main_cont);
+						g_password_lock_open = true;
                         Judgmentmode();
 						lv_bar_change();
                     }
                 }
                 else if (pwd_txt[0] == '\0')
                 {
-                    if (hint_label != NULL)
+                    if (s_hint_label != NULL)
                     {
-                        lv_label_set_text(hint_label, "Password can not be empty!");
+                        lv_label_set_text(s_hint_label, "Password can not be empty!");
                     }
                 }
                 else
                 {
-                    if (hint_label != NULL)
+                    if (s_hint_label != NULL)
                     {
-                        lv_label_set_text(hint_label, "Password error!");
+                        lv_label_set_text(s_hint_label, "Password error!");
                     }
                 }
             }
@@ -593,33 +593,33 @@ static void confirm_btn_event_callback(lv_event_t* event)
     if (code == LV_EVENT_CLICKED)
 	{
 		//printf("[%s:%d] confirm button clicked\n", __FUNCTION__, __LINE__);
-		if (pwd_text_area != NULL)
+		if (s_pwd_text_area != NULL)
         {
             password_read();
-            const char *pwd_txt = lv_textarea_get_text(pwd_text_area);
+            const char *pwd_txt = lv_textarea_get_text(s_pwd_text_area);
             if ((pwd_txt != NULL))
             {
-                if (strcmp(pwd_txt, password_input) == 0)
+                if (strcmp(pwd_txt, s_password_input) == 0)
                 {
-                    if (hint_label != NULL)
+                    if (s_hint_label != NULL)
                     {
-                        lv_label_set_text(hint_label, "Password correct!");
-                        lv_obj_del(pwd_main_cont);
-                        password_lock_open = true;
+                        lv_label_set_text(s_hint_label, "Password correct!");
+                        lv_obj_del(g_pwd_main_cont);
+                        g_password_lock_open = true;
                     }
                 }
                 else if (pwd_txt[0] == '\0')
                 {
-                    if (hint_label != NULL)
+                    if (s_hint_label != NULL)
                     {
-                        lv_label_set_text(hint_label, "Password can not be empty!");
+                        lv_label_set_text(s_hint_label, "Password can not be empty!");
                     }
                 }
                 else
                 {
-                    if (hint_label != NULL)
+                    if (s_hint_label != NULL)
                     {
-                        lv_label_set_text(hint_label, "Password error!");
+                        lv_label_set_text(s_hint_label, "Password error!");
                     }
                 }
             }
@@ -640,17 +640,17 @@ static void cancel_mode_event_callback(lv_event_t* event)
     if (code == LV_EVENT_CLICKED)
 	{
 		//printf("[%s:%d] cancel button clicked\n", __FUNCTION__, __LINE__);
-        if (pwd_text_area != NULL)
+        if (s_pwd_text_area != NULL)
         {
-            lv_textarea_set_text(pwd_text_area, ""); // 文本框置空
+            lv_textarea_set_text(s_pwd_text_area, ""); // 文本框置空
         }
  
-        if (hint_label != NULL)
+        if (s_hint_label != NULL)
         {
-            lv_label_set_text(hint_label, "");
+            lv_label_set_text(s_hint_label, "");
         }
 
-		lv_obj_del(pwd_main_cont);
+		lv_obj_del(g_pwd_main_cont);
 	}
 }
  
@@ -667,14 +667,14 @@ static void cancel_btn_event_callback(lv_event_t* event)
     if (code == LV_EVENT_CLICKED)
 	{
 		//printf("[%s:%d] cancel button clicked\n", __FUNCTION__, __LINE__);
-        if (pwd_text_area != NULL)
+        if (s_pwd_text_area != NULL)
         {
-            lv_textarea_set_text(pwd_text_area, ""); // 文本框置空
+            lv_textarea_set_text(s_pwd_text_area, ""); // 文本框置空
         }
  
-        if (hint_label != NULL)
+        if (s_hint_label != NULL)
         {
-            lv_label_set_text(hint_label, "");
+            lv_label_set_text(s_hint_label, "");
         }
 	}
 }
@@ -692,14 +692,14 @@ static void Scram_reset_event_cb(lv_event_t* event)
             case 0:
                 printf("急停\n");
                 OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[MASTER_SCRAM_FUNCTION_ENABLED]);
-                lv_style_reset(&style_indic);
+                lv_style_reset(&s_style_indic);
                 lv_obj_del(mask);
                 break;
             
             case 1:
                 printf("复位\n");
                 OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, USRNET_MQTT_MSH[TOTAL_REDUCTION_FUNCTION_ENABLED]);
-                lv_style_reset(&style_indic);
+                lv_style_reset(&s_style_indic);
                 lv_obj_del(mask);
                 break;
 
@@ -757,7 +757,7 @@ static void set_temp(void * bar, int32_t temp)
 */
 static void lv_example_bar_3_del_back(lv_timer_t * timer)
 {
-    lv_style_reset(&style_indic);
+    lv_style_reset(&s_style_indic);
     lv_obj_del(mask);
     if (timer)
         lv_timer_del(timer);
@@ -777,7 +777,6 @@ static void set_del_back(void)
  */
 static void lv_bar_change(void)
 {
-    static lv_style_t style_indic;
     lv_obj_t * anaim_bar;
 
     mask = lv_mode_create_mask_box(lv_scr_act());
@@ -785,14 +784,14 @@ static void lv_bar_change(void)
     create_button(mask, "急停", -50, -100, 0);
     create_button(mask, "复位", 50, -100, 1);
 
-    lv_style_init(&style_indic);
-    lv_style_set_bg_opa(&style_indic, LV_OPA_COVER);
-    lv_style_set_bg_color(&style_indic, lv_palette_main(LV_PALETTE_RED));
-    lv_style_set_bg_grad_color(&style_indic, lv_palette_main(LV_PALETTE_BLUE));
-    lv_style_set_bg_grad_dir(&style_indic, LV_GRAD_DIR_VER);
+    lv_style_init(&s_style_indic);
+    lv_style_set_bg_opa(&s_style_indic, LV_OPA_COVER);
+    lv_style_set_bg_color(&s_style_indic, lv_palette_main(LV_PALETTE_RED));
+    lv_style_set_bg_grad_color(&s_style_indic, lv_palette_main(LV_PALETTE_BLUE));
+    lv_style_set_bg_grad_dir(&s_style_indic, LV_GRAD_DIR_VER);
 
     anaim_bar = lv_bar_create(mask);
-    lv_obj_add_style(anaim_bar, &style_indic, LV_PART_INDICATOR);
+    lv_obj_add_style(anaim_bar, &s_style_indic, LV_PART_INDICATOR);
     lv_obj_set_size(anaim_bar, 200, 20);
     lv_obj_center(anaim_bar);
     lv_bar_set_range(anaim_bar, -20, 40);

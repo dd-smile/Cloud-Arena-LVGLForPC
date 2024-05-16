@@ -17,6 +17,15 @@ typedef struct {
     lv_obj_t *audio_page; // 音频控制页面
     lv_obj_t *finance_page; // 厨房页面
 } HomeData;
+
+//用于存储声光电的MQTT控制指令
+typedef struct {
+    char dev[50];   //设备类型
+    char pid[50];   //设备号
+    char vid[50];   //数值
+} Soundlight_Data;
+
+extern Soundlight_Data soundtest;
 extern HomeData device_data;    // 设备页数据
 lv_obj_t *device_page_box(lv_obj_t *parent, int num_pages, ...);
 void CreateHomePage(lv_obj_t*parent);

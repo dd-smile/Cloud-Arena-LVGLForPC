@@ -289,12 +289,15 @@ void timer_weather_callback(lv_timer_t * timer)
 */
 void timer_data_callback(lv_timer_t * timer) 
 {
-    lv_obj_t *label = (lv_obj_t *)timer->user_data;
+    // lv_obj_t *label = (lv_obj_t *)timer->user_data;
 
     char buffer_temp[20];
     char buffer_hum[20];
     snprintf(buffer_temp, sizeof(buffer_temp), "木地板温度: %s", temp_data);
     snprintf(buffer_hum, sizeof(buffer_hum), "木地板湿度: %s", hum_data);
+    snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",temp_data, hum_data);
+    
+    OneNet_Publish("/avant/Cloud_Arena_sports/u", PUB_BUF); 
 
     lv_label_set_text(sensor_data.label_temp, buffer_temp);
     lv_label_set_text(sensor_data.label_hum, buffer_hum);

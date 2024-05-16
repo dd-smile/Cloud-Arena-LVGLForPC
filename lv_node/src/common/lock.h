@@ -9,8 +9,8 @@
 #ifndef __LOCK_H__
 #define __LOCK_H__
 
-extern lv_obj_t *pwd_main_cont;
-extern bool password_lock_open;
+extern lv_obj_t *g_pwd_main_cont;
+extern bool g_password_lock_open;
 
 void lv_gui_password_keyboard_display(void);
 void lv_mode_password_keyboard_display(void);

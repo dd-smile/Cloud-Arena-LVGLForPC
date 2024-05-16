@@ -19,6 +19,9 @@ void OneNet_Subscribe(const char *topics[], unsigned char topic_cnt);
 
 void OneNet_Publish(const char *topic, const char *msg);
 
-// void OneNet_RevPro(unsigned char *cmd);
+void OneNet_RevPro(unsigned char *cmd);
+
+extern char *sub_topics[];
+extern unsigned char dataPtr[1024];
 
 #endif

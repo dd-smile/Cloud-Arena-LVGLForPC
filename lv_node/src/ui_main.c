@@ -31,8 +31,8 @@ struct
 int g_lfd = 0;
 int g_cfd = 0;
 char *g_cBuf;   //用于存放从套接字中接收到的数据
-static bool enteredScreenMode = false; // 屏保标志位
-static bool password_flag = false;  //给第一次弹出密码框
+static bool s_enteredScreenMode = false; // 屏保标志位
+static bool s_password_flag = false;  //给第一次弹出密码框
 int g_light_fd;   //连接灯光套接字
 char PUB_BUF[256];      //上传给ＭＱＴＴ服务器数据的buf
 All_Data home_data;
@@ -193,9 +193,9 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
   {
 
     lv_obj_del(obj);
-    password_lock_open = false;
+    g_password_lock_open = false;
     lv_gui_password_keyboard_display();
-    enteredScreenMode = false;
+    s_enteredScreenMode = false;
   }
 
 }
@@ -206,9 +206,9 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
  * */
 static void SettingScreenBox(lv_obj_t *parent)
 {
-  if (password_flag == true && password_lock_open == false)
+  if (s_password_flag == true && g_password_lock_open == false)
   { 
-    lv_obj_del(pwd_main_cont);
+    lv_obj_del(g_pwd_main_cont);
   }
 
   lv_img_t *img_arr[] = { &Image1_big,
@@ -237,23 +237,14 @@ void UpdateTask(lv_timer_t *timer)
     uint32_t screenModeTime = setting.screen_save_time;
     if (lv_disp_get_inactive_time(lv_disp_get_default()) >= screenModeTime)
     {
-      if (!enteredScreenMode)
+      if (!s_enteredScreenMode)
       {
         printf("进入屏保模式%ld\n",lv_disp_get_inactive_time(lv_disp_get_default()));
         SettingScreenBox(lv_scr_act());
-        enteredScreenMode = true;
+        s_enteredScreenMode = true;
       }
     }
   
-}
-
-/**
- * MQTT心跳
- * @param timer         指向定时器
- * */
-void timer_mqtt_callback(lv_timer_t *timer)
-{
-  OneNet_HeartBeat();
 }
 
 /**
@@ -327,7 +318,8 @@ void Judgmentmode(void)
   {
   case 0:
       g_mode_num = -1;
-      mode_train_Controls();
+      printf("训练模式\n");
+      // mode_train_Controls();
       break;
 
   case 1:
@@ -353,6 +345,11 @@ void Judgmentmode(void)
   default:
     break;
   }
+}
+
+void timer_mqtt_callback(lv_timer_t *timer)
+{
+  OneNet_HeartBeat();
 }
 
 /**
@@ -398,13 +395,11 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_weather_callback, 60000, NULL);
 
   // 创建ＭＱＴＴ心跳任务
-  // lv_timer_create(timer_mqtt_callback, 40000, NULL);
+  lv_timer_create(timer_mqtt_callback, 40000, NULL);
 
   // 创建更新历史温湿度数据
   // lv_timer_create(timer_average_callback, 60000, NULL);
 
-  // 创建推送数据到慧馆家平台
-  // lv_timer_create(timer_push_callback, 60000, NULL);
 
 /******************************界面UI*****************************/
 
@@ -417,7 +412,7 @@ void create_lv_layout(lv_obj_t *scr)
   CreateSettingPage(home_data.setting_page); // 设置页面
 
   lv_gui_password_keyboard_display();
-  password_flag = true;
+  s_password_flag = true;
 
 /******************************创建服务器*****************************/
 
@@ -425,7 +420,7 @@ void create_lv_layout(lv_obj_t *scr)
 
 /******************************连接服务器*****************************/
 
-  // connect_mqtt();   // 连接mqtt服务器
+  connect_mqtt();   // 连接mqtt服务器
   // create_client_light();  //　连接灯光服务器
   // create_client_abesn();  //连接艾比森ｐｌｃ服务器
 
