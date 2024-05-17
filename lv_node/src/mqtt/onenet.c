@@ -12,7 +12,7 @@
 
 #define AUTH_INFO	"public"
 
-#define DEVID		"avant_test"
+#define DEVID		"avant_ycg"
 
 #define MQTT_SERVER_IP 	"112.74.105.251"
 
@@ -22,6 +22,7 @@ static int reconnect_mqtt = 2;
 static int heart_count = 0;
 static char heart_buf[256];
 
+Soundlight_Data soundtest;
 unsigned char dataPtr[1024];
 char *sub_topics[] = {"/mytopic/sub","/mytopic/task"};   //订阅多个主题
 
@@ -48,27 +49,83 @@ static void *mqttConnection(void *parg)
 
 		if (len > 0)
 		{
-			// printf("收到订阅消息: %s\n", dataPtr);
 			OneNet_RevPro(dataPtr);
 			usleep(50 * 1000);
 		}
 	}
 }
 
-void OneNet_ParseJsonNow(char *msg, Soundlight_Data *data)
+/**
+ * 解析MQTT的JSON数据
+ * @param msg         指向JSON数据的指针
+ * @param info        指向声光电结构体的指针
+*/
+void OneNet_ParseJsonNow(char *msg, Soundlight_Data *info)
 {
-	JSON_Value  *root_value;
-    JSON_Array  *results;
+	JSON_Value *root_value;
+    JSON_Object *root_object;
+    JSON_Array *devices;
+    JSON_Object *first_device;
 
 	root_value = json_parse_string(msg);
-	if (root_value == NULL) {
-  		printf("JSON 文件为空\n");
-  	}
-	JSON_Object *root_object = json_value_get_object(root_value);
+    root_object = json_value_get_object(root_value);
 
-	// int code = json_object_get_number(root_object, "code");
-  	// printf("code is %d\n", code);
+	strncpy(info->news_type, json_object_get_string(root_object, "f"), sizeof(info->news_type) - 1);
 
+    devices = json_object_get_array(root_object, "d");
+    first_device = json_array_get_object(devices, 0);
+
+    strncpy(info->dev_type, json_object_get_string(first_device, "dev"), sizeof(info->dev_type) - 1);
+    strncpy(info->pid, json_object_get_string(first_device, "pid"), sizeof(info->pid) - 1);
+    strncpy(info->vid, json_object_get_string(first_device, "v"), sizeof(info->vid) - 1);
+
+	printf("消息类型: %s\n", info->news_type);
+    printf("设备类型: %s\n", info->dev_type);
+    printf("设备号: %s\n", info->pid);
+	printf("数值: %s\n", info->vid);
+
+    json_value_free(root_value);
+
+}
+
+/**
+ * 构建JSON数据
+ * @param info        指向声光电结构体的指针
+*/
+char* construct_json_string(const Soundlight_Data *info) 
+{
+    // 创建 JSON 结构
+    JSON_Value *root_value = json_value_init_object();
+    JSON_Object *root_object = json_value_get_object(root_value);
+
+    // 设置根对象的 "f" 字段
+    json_object_set_string(root_object, "f", info->news_type);
+
+    // 创建一个数组 "d"
+    JSON_Value *d_value = json_value_init_array();
+    JSON_Array *d_array = json_value_get_array(d_value);
+
+    // 创建数组中的第一个对象
+    JSON_Value *device_value = json_value_init_object();
+    JSON_Object *device_object = json_value_get_object(device_value);
+
+    json_object_set_string(device_object, "dev", info->dev_type);
+    json_object_set_string(device_object, "pid", info->pid);
+    json_object_set_string(device_object, "v", info->vid);
+
+    // 将对象添加到数组中
+    json_array_append_value(d_array, device_value);
+
+    // 将数组添加到根对象中
+    json_object_set_value(root_object, "d", d_value);
+
+    // 序列化 JSON 对象为字符串
+    char *serialized_string = json_serialize_to_string_pretty(root_value);
+
+    // 释放内存（根值将在 后续 中被释放）         json_free_serialized_string();
+    json_value_free(root_value);
+
+    return serialized_string;
 }
 
 /**
@@ -265,8 +322,6 @@ void OneNet_RevPro(unsigned char *cmd)
 	char numBuf[10];
 	int num = 0;
 	
-	// cJSON *json, *json_value;
-	// cJSON *json_task, *task_value;
 	
 	type = MQTT_UnPacketRecv(cmd);
 	switch(type)
@@ -282,7 +337,7 @@ void OneNet_RevPro(unsigned char *cmd)
 				{
 					printf("Tips:	Send CmdResp\r\n");
 					
-					//ESP8266_SendData(mqttPacket._data, mqttPacket._len);			//回复命令
+					write(mqtt_fd, mqttPacket._data, mqttPacket._len);			//回复命令
 					MQTT_DeleteBuffer(&mqttPacket);									//删包
 				}
 			}
@@ -296,51 +351,11 @@ void OneNet_RevPro(unsigned char *cmd)
 			{
 				printf("topic: %s, topic_len: %d, payload: %s, payload_len: %d\r\n",
 																	cmdid_topic, topic_len, req_payload, req_len);
-				 
-				// if((strcmp(cmdid_topic,led_topic) == 0))    //判断是否是led灯开关主题
-				// {
-				// 	//解析数据包
-				// 	json = cJSON_Parse(req_payload);
-				// 	if(!json)printf("Error before: [%s]\n",cJSON_GetErrorPtr());
-				// 	else
-				// 	{
-				// 		json_value = cJSON_GetObjectItem(json,"LED_SW");
-				// 		printf("json_value = %d\r\n",json_value);
-				// 		if(json_value->valueint)//json_value > 0 且为整型
-				// 		{
-				// 			//打开led
-				// 			LED2_ON();
-				// 			led_switch = 1;  //用于开关喂食系统的标志位
-				// 		}
-				// 		else
-				// 		{
-				// 			//关闭led
-				// 			LED2_OFF();
-				// 			led_switch = 0;
-				// 		}
-				// 	}
-				// 	//删json包, 防止内存炸
-				// 	cJSON_Delete(json);
-				// 	delay_ms(500);
-				// }else if((strcmp(cmdid_topic,task_topic) == 0))    //判断是否是task开关主题
-				// {
-				// 	//解析数据包
-				// 	json_task = cJSON_Parse(req_payload);
-				// 	if(!json_task)printf("Error before: [%s]\n",cJSON_GetErrorPtr());
-				// 	else
-				// 	{
-				// 		task_value = cJSON_GetObjectItem(json_task,"TASK_SW");
-				// 		printf("task_value = %d\r\n",task_value);
-				// 		if(json_value->valueint)//json_value > 0 且为整型
-				// 		{
-				// 			//UsartPrintf(USART_DEBUG,"kkkkkkkkkk json_value = %d\r\n",json_value);
-				// 			task_switch = 1;   //如果有收到TASK_SW,且值为1就把task开关置为1
-				// 		}
-				// 	//删json包, 防止内存炸
-				// 	cJSON_Delete(json_task);
-				// 	delay_ms(500);
-				// 	}
-				// }
+
+				//解析数据包
+				OneNet_ParseJsonNow(req_payload, &soundtest);													
+				//进行命令下发执行,同时执行回复命令
+
 
 			}
 		

@@ -512,6 +512,7 @@ enum Chinese_English_shift{
 #include "lv_node/src/mqtt/mqtt_common.h"
 #include "lv_node/src/mqtt/MqttKit.h"
 #include "lv_node/src/mqtt/onenet.h"
+#include "lv_node/src/mqtt/center_console.h"
 
 #include "lv_node/src/multimedia/kls.h"
 

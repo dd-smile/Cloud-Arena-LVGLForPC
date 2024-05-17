@@ -25,7 +25,11 @@ int iDataNum;
 static lv_coord_t temp_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static lv_coord_t hum_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-//解析json
+/**
+ * 解析心知天气的JSON数据
+ * @param msg    指向JSON数据的指针
+ * @param w      指向天气信息的结构体指针
+*/
 static void aita_ParseJsonNow(char *msg, weather_t *w) 
 {
     JSON_Value  *root_value;
