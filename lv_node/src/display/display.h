@@ -24,8 +24,8 @@ typedef struct {
     char last_update[50];
 } weather_t;
 
-extern char temp_data[1024];
-extern char hum_data[1024];
+extern char g_temp_data[1024];
+extern char g_hum_data[1024];
 extern lv_timer_t *timer;
 extern uint16_t hour;
 extern uint16_t last_hour;

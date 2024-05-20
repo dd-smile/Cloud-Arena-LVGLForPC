@@ -194,9 +194,13 @@ void *listening_temphum(void * parg)
     if(len > 0)
     {
       g_cBuf = buf;
-      searchTemp(g_cBuf, temp_data);
-      searchHum(g_cBuf, hum_data);
-      printf("温度: %s, 湿度: %s\n", temp_data, hum_data);
+      searchTemp(g_cBuf, g_temp_data);
+      searchHum(g_cBuf, g_hum_data);
+
+      snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",g_temp_data, g_hum_data);
+      OneNet_Publish(MQTT_HUMITURE_DATA_THEME, PUB_BUF);
+
+    //   printf("温度: %s, 湿度: %s\n", g_temp_data, g_hum_data);
     }
   }
 

@@ -8,8 +8,8 @@
  */
 #include "ui_app.h"
 
-char temp_data[1024];  //用于输出获取到的温度数据
-char hum_data[1024];   //用于输出获取到的湿度数据
+char g_temp_data[1024];  //用于输出获取到的温度数据
+char g_hum_data[1024];   //用于输出获取到的湿度数据
 lv_timer_t *timer = NULL;
 Sensor_Data sensor_data;
 uint16_t hour;   //当前时间
@@ -20,8 +20,8 @@ lv_chart_series_t * ser1; //温度数据系列
 lv_chart_series_t * ser2; //湿度数据系列
 static char buf[1024];   //用来发送get请求
 static char s_buffer[1024];   //用来接收心知天气的数据
-static int fd;   //用于与心知天气通信
-int iDataNum;
+static int s_seniverse_fd;   //用于与心知天气通信
+static int s_iDataNum;   //心知天气返回的数据长度
 static lv_coord_t temp_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static lv_coord_t hum_average_buf[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
@@ -156,7 +156,7 @@ static void chart_draww_event_cb(lv_event_t * e)
  * */
 void display_float_number(lv_obj_t *label, char *number, int type)
 {
-    char buffer[20];
+    char buffer[30];
 
     switch (type)
     {
@@ -228,7 +228,7 @@ static void display_average_data(char *temp, char *hum)
 */
 void timer_average_callback(lv_timer_t * timer) 
 {
-    display_average_data(temp_data, hum_data);
+    display_average_data(g_temp_data, g_hum_data);
 }
 
 /**
@@ -244,47 +244,34 @@ void timer_weather_callback(lv_timer_t * timer)
     {
         last_hour = hour;
         // 1. 创建通信的套接字
-        int fd = socket(AF_INET, SOCK_STREAM, 0);
-        if (fd == -1)
-        {
-            perror("socket");
-            exit(0);
-        }
+        int s_seniverse_fd = createSocket();
 
         // 2. 连接服务器
-        struct sockaddr_in addr;
-        addr.sin_family = AF_INET;
-        addr.sin_port = htons(80);   // 大端端口
-        inet_pton(AF_INET, "116.62.81.138", &addr.sin_addr.s_addr);
-
-        int ret = connect(fd, (struct sockaddr*)&addr, sizeof(addr));
-        if (ret == -1)
-        {
-            perror("connect");
-            exit(0);
-        }
+        connectToHost(s_seniverse_fd, "116.62.81.138", 80);
 
         // 3. 和服务器端通信
         // 发送数据
-        // sprintf(buf, "GET https://api.seniverse.com/v3/weather/now.json?key=SCYXqGB7ZPUSvlsZy&location=shenzhen&language=zh-Hans&unit=c\r\n\r\n");  
-        snprintf(buf, sizeof(buf), "GET https://api.seniverse.com/v3/weather/now.json?key=SCYXqGB7ZPUSvlsZy&location=shenzhen&language=zh-Hans&unit=c\r\n\r\n");
-        write(fd, buf, strlen(buf)+1);
+        if (socketconnected(s_seniverse_fd) != 0)
+        {
+            snprintf(buf, sizeof(buf), "GET https://api.seniverse.com/v3/weather/now.json?key=SCYXqGB7ZPUSvlsZy&location=shenzhen&language=zh-Hans&unit=c\r\n\r\n");
+            write(s_seniverse_fd, buf, strlen(buf)+1);
 
-        s_buffer[0] = '\0';
+            s_buffer[0] = '\0';
 
-		iDataNum = recv(fd, s_buffer, 1024, 0);
+            s_iDataNum = recv(s_seniverse_fd, s_buffer, 1024, 0);
 
-        s_buffer[iDataNum] = '\0';
+            s_buffer[s_iDataNum] = '\0';
 
-        printf("收到消息: %s\n", s_buffer);
+            printf("收到消息: %s\n", s_buffer);
 
-        aita_ParseJsonNow(s_buffer, &weatherinfo);
+            aita_ParseJsonNow(s_buffer, &weatherinfo);
 
-        snprintf(buffer_weather, sizeof(buffer_weather), "今天天气:%s,外温:%s摄氏度", weatherinfo.weather, weatherinfo.temp);
-        lv_label_set_text(sensor_data.label_weather, buffer_weather);  //调用心知天气ａｐｉ
+            snprintf(buffer_weather, sizeof(buffer_weather), "今天天气:%s,外温:%s摄氏度", weatherinfo.weather, weatherinfo.temp);
+            lv_label_set_text(sensor_data.label_weather, buffer_weather);  //调用心知天气ａｐｉ
+        }
+    
 
-
-        close(fd);
+        close(s_seniverse_fd);
     }   
 }
 
@@ -295,14 +282,11 @@ void timer_data_callback(lv_timer_t * timer)
 {
     // lv_obj_t *label = (lv_obj_t *)timer->user_data;
 
-    char buffer_temp[20];
-    char buffer_hum[20];
-    snprintf(buffer_temp, sizeof(buffer_temp), "木地板温度: %s", temp_data);
-    snprintf(buffer_hum, sizeof(buffer_hum), "木地板湿度: %s", hum_data);
-    snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",temp_data, hum_data);
-    
-    OneNet_Publish("/avant/Cloud_Arena_sports/u", PUB_BUF); 
-
+    char buffer_temp[30];
+    char buffer_hum[30];
+    snprintf(buffer_temp, sizeof(buffer_temp), "木地板温度: %s", g_temp_data);
+    snprintf(buffer_hum, sizeof(buffer_hum), "木地板湿度: %s", g_hum_data);
+ 
     lv_label_set_text(sensor_data.label_temp, buffer_temp);
     lv_label_set_text(sensor_data.label_hum, buffer_hum);
 }

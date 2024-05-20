@@ -18,9 +18,6 @@
 
 
 static int mqtt_fd;    //连接ｍｑｔｔ套接字
-static int reconnect_mqtt = 2; 
-static int heart_count = 0;
-static char heart_buf[256];
 
 Soundlight_Data soundtest;
 unsigned char dataPtr[1024];
@@ -28,6 +25,9 @@ char *sub_topics[] = {"/mytopic/sub","/mytopic/task"};   //订阅多个主题
 
 static void *mqttConnection(void *parg)
 {
+
+	int mqtt_red = -1;
+
 	// 1. 创建通信的套接字
   	mqtt_fd = createSocket();
 
@@ -52,11 +52,27 @@ static void *mqttConnection(void *parg)
 			OneNet_RevPro(dataPtr);
 			usleep(50 * 1000);
 		}
+
+		if (socketconnected(mqtt_fd) == 0)
+		{
+			printf("进行重连尝试\n");      //要正常检测重连机制，需要修改linux内核参数tcp_retries2  /proc/sys/net/ipv4/tcp_retries2
+			closeSocket(mqtt_fd);
+			mqtt_fd = createSocket();
+			mqtt_red = connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
+			if (mqtt_red != -1)
+			{
+				OneNet_DevLink();
+
+				OneNet_Subscribe(sub_topics, 2);
+			}
+		}
+		
+		usleep(1000 * 1000);
 	}
 }
 
 /**
- * 解析MQTT的JSON数据
+ * 解析MQTT的JSON数据(数组单个元素)
  * @param msg         指向JSON数据的指针
  * @param info        指向声光电结构体的指针
 */
@@ -184,44 +200,37 @@ _Bool OneNet_DevLink(void)
 void OneNet_HeartBeat(void)
 {
 
-	unsigned char sCount = 3;
-	int mqtt_red = -1;
-	
-	while(sCount--)
-	{
-		if (socketconnected(mqtt_fd) == 0)
-		{
-			reconnect_mqtt--;
-			if (reconnect_mqtt == 0)
-			{
-				printf("进行重连尝试\n");      //要正常检测重连机制，需要修改linux内核参数tcp_retries2  /proc/sys/net/ipv4/tcp_retries2
-				reconnect_mqtt = 2;
-				closeSocket(mqtt_fd);
-				mqtt_fd = createSocket();
-				mqtt_red = connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
-				if(mqtt_red != -1)
-				{
-					OneNet_DevLink();
-					break;
-				}
+	MQTT_PACKET_STRUCTURE mqttPacket = {NULL, 0, 0, 0};
 
-			}
+	unsigned char sCount = 3;
+
+	if (MQTT_PacketPing(&mqttPacket))    //组包
+		return;
+	
+	while (sCount--)
+	{
+		if (socketconnected(mqtt_fd) != 0)
+		{
+			write(mqtt_fd, mqttPacket._data, mqttPacket._len);	
+		}
+
+		if (MQTT_UnPacketRecv(dataPtr) == MQTT_PKT_PINGRESP)
+		{
+			printf("Tips:	HeartBeat OK\r\n");
 			
+			break;
 		}
 		else
 		{
-			printf("正常发送心跳\n");
-			heart_count++;
-			if (heart_count >= 1000)
-			{
-				heart_count = 0;
-			}
-			snprintf(heart_buf, sizeof(heart_buf), "{\"msgId\":%d,\"devName\":%s}",heart_count, DEVID);
-			OneNet_Publish("/myherat/ycg", heart_buf);
-			break;
+			printf("Check Device\r\n");
 		}
 
+		usleep(50 * 2000);
+
 	}
+
+	printf("删包\r\n");
+	MQTT_DeleteBuffer(&mqttPacket);
 
 }
 

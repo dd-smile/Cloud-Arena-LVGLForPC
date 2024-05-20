@@ -206,9 +206,13 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
  * */
 static void SettingScreenBox(lv_obj_t *parent)
 {
+  //打印屏保函数
   if (s_password_flag == true && g_password_lock_open == false)
   { 
-    lv_obj_del(g_pwd_main_cont);
+    if (g_pwd_main_cont != NULL)
+    {
+      lv_obj_del(g_pwd_main_cont);  //删除密码框
+    }
   }
 
   lv_img_t *img_arr[] = { &Image1_big,
@@ -248,16 +252,8 @@ void UpdateTask(lv_timer_t *timer)
 }
 
 /**
- * 推送温湿度数据到慧馆家
- * @param timer         指向定时器
+ * 创建接收温湿度数据的服务器
 */
-void timer_push_callback(lv_timer_t *timer)
-{
-  // sprintf(PUB_BUF,"{\"Temp\":%s,\"Hum\":%s}",temp_data, hum_data);
-  snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",temp_data, hum_data);
-  OneNet_Publish("/avant/Cloud_Arena_sports/u", PUB_BUF); 
-}
-
 static void create_serverTemHum()
 {
   //创建监听的套接字
@@ -391,7 +387,7 @@ void create_lv_layout(lv_obj_t *scr)
   //创建更新温湿度数据任务
   // lv_timer_create(timer_data_callback, 50000, NULL);
 
-  //创建更新天气数据任务
+  // //创建更新天气数据任务
   // lv_timer_create(timer_weather_callback, 60000, NULL);
 
   // 创建ＭＱＴＴ心跳任务
@@ -416,13 +412,13 @@ void create_lv_layout(lv_obj_t *scr)
 
 /******************************创建服务器*****************************/
 
-  // create_serverTemHum();
+  create_serverTemHum();
 
 /******************************连接服务器*****************************/
 
   connect_mqtt();   // 连接mqtt服务器
-  // create_client_light();  //　连接灯光服务器
-  // create_client_abesn();  //连接艾比森ｐｌｃ服务器
+  create_client_light();  //　连接灯光服务器
+  create_client_abesn();  //连接艾比森ｐｌｃ服务器
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
   // thp = threadpool_create(3, 10, 10);

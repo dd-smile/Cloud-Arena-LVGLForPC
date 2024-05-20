@@ -269,7 +269,8 @@ void mode_train_Controls(void)
 /*演出模式*/
 void mode_performance_Controls(void)
 {
-    unsigned char sCount = 2;
+    unsigned char sCount = 3;
+    unsigned char lCount = 3;
 
     for (uint8_t i = 0; i < 3; i++){
         OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, performance_msh[i]);
@@ -290,7 +291,11 @@ void mode_performance_Controls(void)
         write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
     }
 
-    set_Central_control_system_command(KLS_PLAY_INSTRUCTION_MOVIE("1"));
+    while (lCount--)
+    {
+        set_Central_control_system_command(KLS_PLAY_INSTRUCTION_MOVIE("1"));
+        usleep(50 * 1000);
+    }
     // set_Central_control_system_command(KLS_LOOP_PLAYBACK);
 
     lv_timer_t *sy_timer = lv_timer_create(sy_timer_handler, 60000, NULL);
