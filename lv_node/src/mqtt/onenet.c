@@ -71,78 +71,7 @@ static void *mqttConnection(void *parg)
 	}
 }
 
-/**
- * 解析MQTT的JSON数据(数组单个元素)
- * @param msg         指向JSON数据的指针
- * @param info        指向声光电结构体的指针
-*/
-void OneNet_ParseJsonNow(char *msg, Soundlight_Data *info)
-{
-	JSON_Value *root_value;
-    JSON_Object *root_object;
-    JSON_Array *devices;
-    JSON_Object *first_device;
 
-	root_value = json_parse_string(msg);
-    root_object = json_value_get_object(root_value);
-
-	strncpy(info->news_type, json_object_get_string(root_object, "f"), sizeof(info->news_type) - 1);
-
-    devices = json_object_get_array(root_object, "d");
-    first_device = json_array_get_object(devices, 0);
-
-    strncpy(info->dev_type, json_object_get_string(first_device, "dev"), sizeof(info->dev_type) - 1);
-    strncpy(info->pid, json_object_get_string(first_device, "pid"), sizeof(info->pid) - 1);
-    strncpy(info->vid, json_object_get_string(first_device, "v"), sizeof(info->vid) - 1);
-
-	printf("消息类型: %s\n", info->news_type);
-    printf("设备类型: %s\n", info->dev_type);
-    printf("设备号: %s\n", info->pid);
-	printf("数值: %s\n", info->vid);
-
-    json_value_free(root_value);
-
-}
-
-/**
- * 构建JSON数据
- * @param info        指向声光电结构体的指针
-*/
-char* construct_json_string(const Soundlight_Data *info) 
-{
-    // 创建 JSON 结构
-    JSON_Value *root_value = json_value_init_object();
-    JSON_Object *root_object = json_value_get_object(root_value);
-
-    // 设置根对象的 "f" 字段
-    json_object_set_string(root_object, "f", info->news_type);
-
-    // 创建一个数组 "d"
-    JSON_Value *d_value = json_value_init_array();
-    JSON_Array *d_array = json_value_get_array(d_value);
-
-    // 创建数组中的第一个对象
-    JSON_Value *device_value = json_value_init_object();
-    JSON_Object *device_object = json_value_get_object(device_value);
-
-    json_object_set_string(device_object, "dev", info->dev_type);
-    json_object_set_string(device_object, "pid", info->pid);
-    json_object_set_string(device_object, "v", info->vid);
-
-    // 将对象添加到数组中
-    json_array_append_value(d_array, device_value);
-
-    // 将数组添加到根对象中
-    json_object_set_value(root_object, "d", d_value);
-
-    // 序列化 JSON 对象为字符串
-    char *serialized_string = json_serialize_to_string_pretty(root_value);
-
-    // 释放内存（根值将在 后续 中被释放）         json_free_serialized_string();
-    json_value_free(root_value);
-
-    return serialized_string;
-}
 
 /**
  * 创建MQTT连接
@@ -222,14 +151,14 @@ void OneNet_HeartBeat(void)
 		}
 		else
 		{
-			printf("Check Device\r\n");
+			// printf("Check Device\r\n");
 		}
 
 		usleep(50 * 2000);
 
 	}
 
-	printf("删包\r\n");
+	// printf("删包\r\n");
 	MQTT_DeleteBuffer(&mqttPacket);
 
 }
@@ -358,14 +287,29 @@ void OneNet_RevPro(unsigned char *cmd)
 			result = MQTT_UnPacketPublish(cmd, &cmdid_topic, &topic_len, &req_payload, &req_len, &qos, &pkt_id);
 			if(result == 0)
 			{
-				printf("topic: %s, topic_len: %d, payload: %s, payload_len: %d\r\n",
-																	cmdid_topic, topic_len, req_payload, req_len);
+				// printf("topic: %s, topic_len: %d, payload: %s, payload_len: %d\r\n",
+				// 													cmdid_topic, topic_len, req_payload, req_len);
 
-				//解析数据包
-				OneNet_ParseJsonNow(req_payload, &soundtest);													
+				Soundlight_Data *devices = NULL;  //创建 Soundlight_Data 数组
+    			size_t device_count = 0;
+				int dev = 0;
+				//解析数据包		
+				OneNet_ParseJsonMulti(req_payload, &devices, &device_count);
+
+				// 输出解析结果
+				for (size_t i = 0; i < device_count; ++i) {
+					printf("Device %zu:\n", i + 1);
+					printf("  Device: %s\n", devices[i].dev_type);
+					dev = Query_Device_type(devices[i].dev_type);
+					TICS_Issue_instruction(dev, devices[i].pid, devices[i].vid);
+					printf("  Dev: %d\n", dev);
+					printf("  PID: %s\n", devices[i].pid);
+					printf("  Version: %s\n", devices[i].vid);
+				}			
+												
 				//进行命令下发执行,同时执行回复命令
 
-
+				free(devices);
 			}
 		
 		break;
