@@ -651,6 +651,7 @@ static void cancel_mode_event_callback(lv_event_t* event)
         }
 
 		lv_obj_del(g_pwd_main_cont);
+        g_pwd_main_cont = NULL;
 	}
 }
  

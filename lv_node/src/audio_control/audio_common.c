@@ -267,10 +267,6 @@ static void *LedControl(lv_obj_t *parent)
     lv_obj_t *popup_page = create_popup_page(scr, "LED大屏控制", 0, 0);
 
 
-    //连接服务器
-    // create_client_led();
-    // create_client_kls();
-
     create_big_button(popup_page, "播放云场馆宣传片", -400, -150, led_Controls_event_cb, 0);
     create_big_button(popup_page, "播放演唱会demo", -200, -150, led_Controls_event_cb, 1);
     create_big_button(popup_page, "播放云场馆PPT", 200, -150, led_Controls_event_cb, 2);

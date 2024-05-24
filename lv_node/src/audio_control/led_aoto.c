@@ -91,7 +91,7 @@ void *create_client_led(void)
         if (led_fd == -1)
         {
             perror("socket");
-            exit(0);
+            // exit(0);
         }
         
         seraddr.sin_family = AF_INET;

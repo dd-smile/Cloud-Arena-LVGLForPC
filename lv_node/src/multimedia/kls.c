@@ -37,7 +37,7 @@ void *create_client_kls(void)
         if (kls_fd == -1)
         {
             perror("socket");
-            exit(0);
+            // exit(0);
         }
         
         kls_seraddr.sin_family = AF_INET;

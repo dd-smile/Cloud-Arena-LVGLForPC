@@ -37,6 +37,13 @@ int g_light_fd;   //连接灯光套接字
 char PUB_BUF[256];      //上传给ＭＱＴＴ服务器数据的buf
 All_Data home_data;
 
+static const lv_img_dsc_t *img_arr[] = { &Image1_big,
+                          &Image2_big,
+                          &Image3_big, 
+                          &Image4_big, 
+                          &Image5_big, 
+                          &Image6_big};
+
 /**
  * 滑动页面时切换页面
  * @param e            指向事件描述符的指针
@@ -212,15 +219,10 @@ static void SettingScreenBox(lv_obj_t *parent)
     if (g_pwd_main_cont != NULL)
     {
       lv_obj_del(g_pwd_main_cont);  //删除密码框
+      g_pwd_main_cont = NULL;
     }
   }
 
-  lv_img_t *img_arr[] = { &Image1_big,
-                          &Image2_big,
-                          &Image3_big, 
-                          &Image4_big, 
-                          &Image5_big, 
-                          &Image6_big};
   lv_obj_t *screensaverCard = lv_img_create(parent);
   lv_img_set_src(screensaverCard, img_arr[setting.ScreenSaveid]);
   lv_obj_add_flag(screensaverCard, LV_OBJ_FLAG_CLICKABLE);
@@ -353,7 +355,6 @@ void timer_mqtt_callback(lv_timer_t *timer)
  * */
 static void *create_client_light()
 {   
-
     pthread_t tid;
     pthread_create(&tid, NULL, JudgmentConnection, NULL);
 }
@@ -363,7 +364,6 @@ static void *create_client_light()
 */
 static void *create_client_abesn()
 {  
-
   pthread_t tid;
   pthread_create(&tid, NULL, abesnConnection, NULL);
 }
@@ -419,6 +419,8 @@ void create_lv_layout(lv_obj_t *scr)
   connect_mqtt();   // 连接mqtt服务器
   create_client_light();  //　连接灯光服务器
   create_client_abesn();  //连接艾比森ｐｌｃ服务器
+  create_client_kls();   //连接播控软件
+  create_client_led();   //连接led大屏
 
   /* 创建线程池，池里最小3个线程，最大10，队列最大10 */
   // thp = threadpool_create(3, 10, 10);
