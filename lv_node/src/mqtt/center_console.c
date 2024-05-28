@@ -224,7 +224,8 @@ void handle_input(const char *input) {
     } else if (strcmp(type, "auto") == 0) {
         handle_auto(number);
     } else {
-        printf("未知类型: %s\n", type);
+        printf("未知类型: %s\n", input);
+        set_Central_control_system_command(input);
     }
 }
 

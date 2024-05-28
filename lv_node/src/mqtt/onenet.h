@@ -31,6 +31,8 @@ void OneNet_RevPro(unsigned char *cmd);
 
 void OneNet_ParseJsonNow(char *msg, Soundlight_Data *info);
 
+void *recvMqttNews(void *parg);
+
 extern char *sub_topics[];
 extern unsigned char dataPtr[1024];
 

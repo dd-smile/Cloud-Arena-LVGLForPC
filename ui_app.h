@@ -455,6 +455,7 @@ enum Chinese_English_shift{
 #include <netinet/ip.h>
 #include <sys/types.h>   
 #include <sys/socket.h>
+#include <sys/select.h>
 #include <libgen.h>
 #include <linux/tcp.h>
 #include <fcntl.h>

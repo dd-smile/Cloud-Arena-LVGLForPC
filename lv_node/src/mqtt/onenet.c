@@ -27,6 +27,9 @@ static void *mqttConnection(void *parg)
 {
 
 	int mqtt_red = -1;
+	fd_set readfds;
+    struct timeval tv;
+	int retval;
 
 	// 1. 创建通信的套接字
   	mqtt_fd = createSocket();
@@ -40,18 +43,34 @@ static void *mqttConnection(void *parg)
 		OneNet_Subscribe(sub_topics, 2);
 	}
 
-	//接收MQTT消息
 	while (1)
 	{
-		dataPtr[0] = '\0';
-		int len = recv(mqtt_fd, dataPtr, 1024, 0);
-		dataPtr[len] = '\0';
+		 // 初始化文件描述符集合
+        FD_ZERO(&readfds);
+        FD_SET(mqtt_fd, &readfds);
 
-		if (len > 0)
+        // 设置超时时间
+        tv.tv_sec = 5;  // 设置秒
+    	tv.tv_usec = 0; // 设置微秒
+
+        retval = select(mqtt_fd + 1, &readfds, NULL, NULL, &tv);
+
+		if (retval > 0)
 		{
-			OneNet_RevPro(dataPtr);
-			usleep(50 * 1000);
+			if (FD_ISSET(mqtt_fd, &readfds)) 
+			{
+				dataPtr[0] = '\0';
+				int len = recv(mqtt_fd, dataPtr, 1024, 0);
+				dataPtr[len] = '\0';
+
+				if (len > 0)
+				{
+					OneNet_RevPro(dataPtr);
+					usleep(50 * 1000);
+				}
+			}
 		}
+
 
 		if (socketconnected(mqtt_fd) == 0)
 		{
@@ -66,7 +85,7 @@ static void *mqttConnection(void *parg)
 				OneNet_Subscribe(sub_topics, 2);
 			}
 		}
-		
+
 		usleep(1000 * 1000);
 	}
 }
