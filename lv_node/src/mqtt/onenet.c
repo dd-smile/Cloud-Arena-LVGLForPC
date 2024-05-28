@@ -315,7 +315,7 @@ void OneNet_RevPro(unsigned char *cmd)
 				//解析数据包		
 				OneNet_ParseJsonMulti(req_payload, &devices, &device_count);
 
-				// 输出解析结果
+				// 输出解析结果  进行命令下发执行,同时执行回复命令
 				for (size_t i = 0; i < device_count; ++i) {
 					printf("Device %zu:\n", i + 1);
 					printf("  Device: %s\n", devices[i].dev_type);
@@ -326,8 +326,8 @@ void OneNet_RevPro(unsigned char *cmd)
 					printf("  Version: %s\n", devices[i].vid);
 				}			
 												
-				//进行命令下发执行,同时执行回复命令
-
+				
+				//释放内存
 				free(devices);
 			}
 		

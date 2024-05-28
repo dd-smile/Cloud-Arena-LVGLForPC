@@ -224,7 +224,7 @@ void handle_input(const char *input) {
     } else if (strcmp(type, "auto") == 0) {
         handle_auto(number);
     } else {
-        printf("未知类型: %s\n", input);
+        printf("其他类型: %s\n", input);
         set_Central_control_system_command(input);
     }
 }
@@ -314,11 +314,16 @@ static void handle_auto(int auto_number) {
 }
 
 
-
+/**
+ * 根据不同的命令执行对应设备操作
+ * @param dev         设备类型
+ * @param pid         设备号
+ * @param vid         设备控制值
+*/
 void TICS_Issue_instruction(int dev, const char *pid, const char *vid)
 {
-    uint8_t ppid;
-    uint8_t vvid;
+    uint8_t ppid;  //16进制，用于发送第几路
+    uint8_t vvid;  //16进制，用于发送控制数值
     switch (dev)
     {
     case 1:  //Vsu
@@ -344,7 +349,26 @@ void TICS_Issue_instruction(int dev, const char *pid, const char *vid)
         break;
 
     case 4:  //Leyard
-        /* code */
+        if (strcmp(vid, "daziran") == 0)
+        {
+            snprintf(buf_audio, sizeof(buf_audio), "daziran@5F");  //播放
+            audio_working();
+        }
+        else if (strcmp(vid, "stop") == 0)
+        {
+            snprintf(buf_audio, sizeof(buf_audio), "stop@5F");  //停止
+            audio_working();
+        }
+        else if (strcmp(vid, "turnup") == 0)
+        {
+            snprintf(buf_audio, sizeof(buf_audio), "V+@5F");  //音量增大
+            audio_working();
+        }
+        else if (strcmp(vid, "turndown") == 0)
+        {
+            snprintf(buf_audio, sizeof(buf_audio), "V-@5F");  //音量减小
+            audio_working();
+        }
         break;
 
     case 5:  //Ezpro
@@ -352,7 +376,22 @@ void TICS_Issue_instruction(int dev, const char *pid, const char *vid)
         break;
 
     case 6:  //Aoto
-        /* code */
+        if (strcmp(vid, "HDMI1") == 0)
+        {
+            SetLedinputsource_aoto(0x01, 0x01, 0x00);   //图层２，卡槽２，第１路输入   HDMI1
+        }
+        else if (strcmp(vid, "HDMI2") == 0)
+        {
+            SetLedinputsource_aoto(0x01, 0x01, 0x01);
+        }
+        else if (strcmp(vid, "HDMI3") == 0)
+        {
+            SetLedinputsource_aoto(0x01, 0x01, 0x02);
+        }
+        else if (strcmp(vid, "HDMI4") == 0)
+        {
+            SetLedinputsource_aoto(0x01, 0x01, 0x03);
+        }
         break;
 
     case 7:  //Nova

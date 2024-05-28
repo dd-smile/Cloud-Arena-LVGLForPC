@@ -18,6 +18,7 @@ void *create_client_mu(void * parg);
 void multitrack_Controls_event_cb(lv_event_t *e);
 void synchronous_mutework();
 void synchronous_unmutework();
+void audio_working();
 
 
 
