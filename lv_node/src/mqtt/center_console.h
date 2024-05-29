@@ -13,6 +13,7 @@
 void OneNet_ParseJsonNow(char *msg, Soundlight_Data *info);
 void OneNet_ParseJsonMulti(const char *json_string, Soundlight_Data **devices, size_t *device_count);
 char* construct_json_string(const Soundlight_Data *info);
+char* construct_json_stringMulti(const Soundlight_Data *devices, size_t device_count);
 
 int Query_Device_type(const char *device_type);
 void TICS_Issue_instruction(int dev, const char *pid, const char *vid);

@@ -320,14 +320,16 @@ void OneNet_RevPro(unsigned char *cmd)
 					printf("Device %zu:\n", i + 1);
 					printf("  Device: %s\n", devices[i].dev_type);
 					dev = Query_Device_type(devices[i].dev_type);
-					TICS_Issue_instruction(dev, devices[i].pid, devices[i].vid);
+					TICS_Issue_instruction(dev, devices[i].eid, devices[i].vid);
 					printf("  Dev: %d\n", dev);
-					printf("  PID: %s\n", devices[i].pid);
+					printf("  EID: %s\n", devices[i].eid);
 					printf("  Version: %s\n", devices[i].vid);
 				}			
-												
+				char *json_public = construct_json_stringMulti(devices, device_count);	
+				OneNet_Publish("/mytest/ycg", json_public);						
 				
 				//释放内存
+				json_free_serialized_string(json_public);
 				free(devices);
 			}
 		

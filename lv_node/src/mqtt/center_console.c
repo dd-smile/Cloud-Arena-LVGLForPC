@@ -35,12 +35,12 @@ void OneNet_ParseJsonNow(char *msg, Soundlight_Data *info)
     first_device = json_array_get_object(devices, 0);
 
     strncpy(info->dev_type, json_object_get_string(first_device, "dev"), sizeof(info->dev_type) - 1);
-    strncpy(info->pid, json_object_get_string(first_device, "pid"), sizeof(info->pid) - 1);
+    strncpy(info->eid, json_object_get_string(first_device, "eid"), sizeof(info->eid) - 1);
     strncpy(info->vid, json_object_get_string(first_device, "v"), sizeof(info->vid) - 1);
 
 	printf("消息类型: %s\n", info->news_type);
     printf("设备类型: %s\n", info->dev_type);
-    printf("设备号: %s\n", info->pid);
+    printf("设备号: %s\n", info->eid);
 	printf("数值: %s\n", info->vid);
 
     json_value_free(root_value);
@@ -84,7 +84,7 @@ void OneNet_ParseJsonMulti(const char *json_string, Soundlight_Data **devices, s
 
         // 获取设备数组中的字段
         strncpy((*devices)[i].dev_type, json_object_get_string(device_object, "dev"), sizeof((*devices)[i].dev_type) - 1);
-        strncpy((*devices)[i].pid, json_object_get_string(device_object, "pid"), sizeof((*devices)[i].pid) - 1);
+        strncpy((*devices)[i].eid, json_object_get_string(device_object, "eid"), sizeof((*devices)[i].eid) - 1);
         strncpy((*devices)[i].vid, json_object_get_string(device_object, "v"), sizeof((*devices)[i].vid) - 1);
     }
 
@@ -93,8 +93,9 @@ void OneNet_ParseJsonMulti(const char *json_string, Soundlight_Data **devices, s
 
 
 /**
- * 构建JSON数据
+ * 构建JSON数据(单个元素)
  * @param info        指向声光电结构体的指针
+ * @return            返回json字符串     
 */
 char* construct_json_string(const Soundlight_Data *info) 
 {
@@ -114,7 +115,7 @@ char* construct_json_string(const Soundlight_Data *info)
     JSON_Object *device_object = json_value_get_object(device_value);
 
     json_object_set_string(device_object, "dev", info->dev_type);
-    json_object_set_string(device_object, "pid", info->pid);
+    json_object_set_string(device_object, "eid", info->eid);
     json_object_set_string(device_object, "v", info->vid);
 
     // 将对象添加到数组中
@@ -127,6 +128,50 @@ char* construct_json_string(const Soundlight_Data *info)
     char *serialized_string = json_serialize_to_string_pretty(root_value);
 
     // 释放内存（根值将在 后续 中被释放）         json_free_serialized_string();
+    json_value_free(root_value);
+
+    return serialized_string;
+}
+
+/**
+ * 构建JSON数据(多个元素)
+ * @param devices          指向声光电结构体数组的指针
+ * @param device_count     声光电结构体数组的大小
+ * @return                 返回json字符串
+*/
+char* construct_json_stringMulti(const Soundlight_Data *devices, size_t device_count) 
+{
+    // 创建 JSON 结构
+    JSON_Value *root_value = json_value_init_object();
+    JSON_Object *root_object = json_value_get_object(root_value);
+
+    // 所有设备的 "f" 字段值相同，使用第一个设备的 "f" 值
+    // json_object_set_string(root_object, "f", devices[0].news_type);
+    json_object_set_string(root_object, "f", "sa");
+
+    // 创建一个数组 "d"
+    JSON_Value *d_value = json_value_init_array();
+    JSON_Array *d_array = json_value_get_array(d_value);
+
+    // 遍历设备数组并将每个设备对象添加到数组中
+    for (size_t i = 0; i < device_count; ++i) {
+        JSON_Value *device_value = json_value_init_object();
+        JSON_Object *device_object = json_value_get_object(device_value);
+
+        json_object_set_string(device_object, "dev", devices[i].dev_type);
+        json_object_set_string(device_object, "eid", devices[i].eid);
+        json_object_set_string(device_object, "v", devices[i].vid);
+
+        json_array_append_value(d_array, device_value);
+    }
+
+    // 将数组添加到根对象中
+    json_object_set_value(root_object, "d", d_value);
+
+    // 序列化 JSON 对象为字符串
+    char *serialized_string = json_serialize_to_string_pretty(root_value);
+
+    // 释放内存（根值将在 后续 中被释放）            json_free_serialized_string();
     json_value_free(root_value);
 
     return serialized_string;
@@ -175,6 +220,10 @@ int Query_Device_type(const char *device_type)
     else if(strcmp(device_type, "MultimediaKls") == 0)
     {
         return 9;
+    }
+    else if(strcmp(device_type, "mode") == 0)
+    {
+        return 10;
     }
     else 
     {
@@ -317,12 +366,12 @@ static void handle_auto(int auto_number) {
 /**
  * 根据不同的命令执行对应设备操作
  * @param dev         设备类型
- * @param pid         设备号
+ * @param eid         设备号
  * @param vid         设备控制值
 */
-void TICS_Issue_instruction(int dev, const char *pid, const char *vid)
+void TICS_Issue_instruction(int dev, const char *eid, const char *vid)
 {
-    uint8_t ppid;  //16进制，用于发送第几路
+    uint8_t eeid;  //16进制，用于发送第几路
     uint8_t vvid;  //16进制，用于发送控制数值
     switch (dev)
     {
@@ -338,10 +387,10 @@ void TICS_Issue_instruction(int dev, const char *pid, const char *vid)
         break;
 
     case 2:  //Runsound
-        ppid = transition_Char_array(pid); 
+        eeid = transition_Char_array(eid); 
         vvid = transition_Char_array(vid);
         // printf("The vvid value is: 0x%x\n", vvid); 
-        Setdimming_runshen(0x01, ppid, vvid);
+        Setdimming_runshen(0x01, eeid, vvid);
         break;
 
     case 3:  //Ulaide
@@ -404,6 +453,25 @@ void TICS_Issue_instruction(int dev, const char *pid, const char *vid)
 
     case 9:  //Kls
         handle_input(vid);
+        break;
+
+    case 10: //模式转换
+        if (strcmp(vid, "halfcourtmode") == 0)  //3vs3
+        {
+            mode_halfcourt_Controls();
+        }
+        else if (strcmp(vid, "competitionmode") == 0)  //比赛模式
+        {
+            mode_competition_Controls();
+        }
+        else if (strcmp(vid, "performancemode") == 0)  //演出模式
+        {
+            mode_performance_Controls();
+        }
+        else if (strcmp(vid, "trainmode") == 0)   //训练模式
+        {
+            mode_train_Controls();
+        }
         break;
     
     default:

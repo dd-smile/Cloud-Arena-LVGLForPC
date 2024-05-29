@@ -13,7 +13,7 @@
 typedef struct {
     char news_type[10];   //消息类型
     char dev_type[50];   //设备类型
-    char pid[50];   //设备号
+    char eid[50];   //设备号
     char vid[50];   //数值
 } Soundlight_Data;
 
