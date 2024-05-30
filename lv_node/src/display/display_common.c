@@ -158,9 +158,9 @@ int searchHum(char *Buf, char *Res)
 	End = strstr(Buf, "</hum>");
 
 	if(Begin == NULL || End == NULL || Begin > End)
-  {
-    printf("寻找错误!\n");
-  }else{
+    {
+    printf("寻找错误!\n"); 
+    }else{
 		Begin = Begin + strlen("<hum>");
 		memcpy(Res, Begin, End-Begin);
 	}
@@ -170,39 +170,40 @@ int searchHum(char *Buf, char *Res)
 
 void *listening_temphum(void * parg)
 {
-  // 阻塞等待并接受客户端连接
-  struct sockaddr_in cliaddr;
-  int clilen = sizeof(cliaddr);
-  g_cfd = accept(g_lfd, (struct sockaddr*)&cliaddr, &clilen);
-  if(g_cfd == -1)
-  {
-      perror("accept");
-      exit(0);
-  }
-  // 打印客户端的地址信息
-  char ip[24] = {0};
-  printf("客户端的IP地址: %s, 端口: %d\n",
-          inet_ntop(AF_INET, &cliaddr.sin_addr.s_addr, ip, sizeof(ip)),
-          ntohs(cliaddr.sin_port));
-  while (1)
-  {
-    // 和客户端通信
-    // 接收数据
+    int len;
     char buf[1024];
-    memset(buf, 0, sizeof(buf));
-    int len = read(g_cfd, buf, sizeof(buf));
-    if(len > 0)
+    // 阻塞等待并接受客户端连接
+    struct sockaddr_in cliaddr;
+    int clilen = sizeof(cliaddr);
+    g_cfd = accept(g_lfd, (struct sockaddr*)&cliaddr, &clilen);
+    if(g_cfd == -1)
     {
-      g_cBuf = buf;
-      searchTemp(g_cBuf, g_temp_data);
-      searchHum(g_cBuf, g_hum_data);
-
-      snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",g_temp_data, g_hum_data);
-      OneNet_Publish(MQTT_HUMITURE_DATA_THEME, PUB_BUF);
-
-    //   printf("温度: %s, 湿度: %s\n", g_temp_data, g_hum_data);
+        perror("accept");
+        exit(0);
     }
-  }
+    // 打印客户端的地址信息
+    char ip[24] = {0};
+    printf("客户端的IP地址: %s, 端口: %d\n",
+            inet_ntop(AF_INET, &cliaddr.sin_addr.s_addr, ip, sizeof(ip)),
+            ntohs(cliaddr.sin_port));
+    while (1)
+    {
+        // 和客户端通信
+        // 接收数据
+        memset(buf, 0, sizeof(buf));
+        len = read(g_cfd, buf, sizeof(buf));
+        if(len > 0)
+        {
+        g_cBuf = buf;
+        searchTemp(g_cBuf, g_temp_data);
+        searchHum(g_cBuf, g_hum_data);
+
+        snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",g_temp_data, g_hum_data);
+        OneNet_Publish(MQTT_HUMITURE_DATA_THEME, PUB_BUF);
+
+        //   printf("温度: %s, 湿度: %s\n", g_temp_data, g_hum_data);
+        }
+    }
 
 }
 

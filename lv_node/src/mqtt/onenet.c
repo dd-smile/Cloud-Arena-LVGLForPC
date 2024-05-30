@@ -45,7 +45,7 @@ static void *mqttConnection(void *parg)
 
 	while (1)
 	{
-		 // 初始化文件描述符集合
+		// 初始化文件描述符集合
         FD_ZERO(&readfds);
         FD_SET(mqtt_fd, &readfds);
 

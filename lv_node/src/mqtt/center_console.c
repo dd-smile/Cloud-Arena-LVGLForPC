@@ -27,12 +27,31 @@ void OneNet_ParseJsonNow(char *msg, Soundlight_Data *info)
     JSON_Object *first_device;
 
 	root_value = json_parse_string(msg);
+    if (root_value == NULL) {
+        printf("JSON 解析失败\n");
+        return;
+    }
     root_object = json_value_get_object(root_value);
+    if (root_object == NULL) {
+        printf("获取 JSON 对象失败\n");
+        json_value_free(root_value);
+        return;
+    }
 
 	strncpy(info->news_type, json_object_get_string(root_object, "f"), sizeof(info->news_type) - 1);
 
     devices = json_object_get_array(root_object, "d");
+    if (devices == NULL) {
+        printf("获取 JSON 数组失败\n");
+        json_value_free(root_value);
+        return;
+    }
     first_device = json_array_get_object(devices, 0);
+    if (first_device == NULL) {
+        printf("获取 JSON 数组中的第一个对象失败\n");
+        json_value_free(root_value);
+        return;
+    }
 
     strncpy(info->dev_type, json_object_get_string(first_device, "dev"), sizeof(info->dev_type) - 1);
     strncpy(info->eid, json_object_get_string(first_device, "eid"), sizeof(info->eid) - 1);
@@ -63,29 +82,92 @@ void OneNet_ParseJsonMulti(const char *json_string, Soundlight_Data **devices, s
     size_t i, count;
 
     root_value = json_parse_string(json_string);
+    if (root_value == NULL) {
+        printf("JSON 解析失败\n");
+        *devices = NULL;
+        *device_count = 0;
+        return;
+    }
     root_object = json_value_get_object(root_value);
+    if (root_object == NULL) {
+        printf("获取 JSON 对象失败\n");
+        json_value_free(root_value);
+        *devices = NULL;
+        *device_count = 0;
+        return;
+    }
 
     // 获取 "f" 字段
     const char *f_value = json_object_get_string(root_object, "f");
+    if (f_value == NULL) {
+        printf("获取 \"f\" 字段失败\n");
+        json_value_free(root_value);
+        *devices = NULL;
+        *device_count = 0;
+        return;
+    }
+
 
     // 获取 "d" 数组
     d_array = json_object_get_array(root_object, "d");
+    if (d_array == NULL) {
+        printf("获取 \"d\" 数组失败\n");
+        json_value_free(root_value);
+        *devices = NULL;
+        *device_count = 0;
+        return;
+    }
     count = json_array_get_count(d_array);
     *device_count = count;
 
     // 动态分配结构体数组
     *devices = (Soundlight_Data *)malloc(count * sizeof(Soundlight_Data));
+    if (*devices == NULL) {
+        printf("内存分配失败\n");
+        json_value_free(root_value);
+        *device_count = 0;
+        return;
+    }
 
     for (i = 0; i < count; ++i) {
         JSON_Object *device_object = json_array_get_object(d_array, i);
+        if (device_object == NULL) {
+            printf("获取设备对象失败\n");
+            free(*devices); // 释放已经分配的内存
+            json_value_free(root_value);
+            *devices = NULL;
+            *device_count = 0;
+            return;
+        }
 
         // 将 "f" 字段的值赋给每个设备
         strncpy((*devices)[i].news_type, f_value, sizeof((*devices)[i].news_type) - 1);
 
         // 获取设备数组中的字段
-        strncpy((*devices)[i].dev_type, json_object_get_string(device_object, "dev"), sizeof((*devices)[i].dev_type) - 1);
-        strncpy((*devices)[i].eid, json_object_get_string(device_object, "eid"), sizeof((*devices)[i].eid) - 1);
-        strncpy((*devices)[i].vid, json_object_get_string(device_object, "v"), sizeof((*devices)[i].vid) - 1);
+        const char *dev = json_object_get_string(device_object, "dev");
+        const char *eid = json_object_get_string(device_object, "eid");
+        const char *vid = json_object_get_string(device_object, "v");
+
+        if (dev != NULL) {
+            strncpy((*devices)[i].dev_type, dev, sizeof((*devices)[i].dev_type) - 1);
+            (*devices)[i].dev_type[sizeof((*devices)[i].dev_type) - 1] = '\0';
+        } else {
+            (*devices)[i].dev_type[0] = '\0'; // 确保字符串以空字符结尾
+        }
+
+        if (eid != NULL) {
+            strncpy((*devices)[i].eid, eid, sizeof((*devices)[i].eid) - 1);
+            (*devices)[i].eid[sizeof((*devices)[i].eid) - 1] = '\0';
+        } else {
+            (*devices)[i].eid[0] = '\0';
+        }
+
+        if (vid != NULL) {
+            strncpy((*devices)[i].vid, vid, sizeof((*devices)[i].vid) - 1);
+            (*devices)[i].vid[sizeof((*devices)[i].vid) - 1] = '\0';
+        } else {
+            (*devices)[i].vid[0] = '\0';
+        }
     }
 
     json_value_free(root_value);
