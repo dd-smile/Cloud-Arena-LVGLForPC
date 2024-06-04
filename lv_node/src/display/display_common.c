@@ -172,6 +172,11 @@ void *listening_temphum(void * parg)
 {
     int len;
     char buf[1024];
+    fd_set readfds;
+    struct timeval tv;
+	int retval;
+
+
     // 阻塞等待并接受客户端连接
     struct sockaddr_in cliaddr;
     int clilen = sizeof(cliaddr);
@@ -179,7 +184,7 @@ void *listening_temphum(void * parg)
     if(g_cfd == -1)
     {
         perror("accept");
-        exit(0);
+        // exit(0);
     }
     // 打印客户端的地址信息
     char ip[24] = {0};
@@ -188,21 +193,41 @@ void *listening_temphum(void * parg)
             ntohs(cliaddr.sin_port));
     while (1)
     {
-        // 和客户端通信
-        // 接收数据
-        memset(buf, 0, sizeof(buf));
-        len = read(g_cfd, buf, sizeof(buf));
-        if(len > 0)
+
+        // 初始化文件描述符集合
+        FD_ZERO(&readfds);
+        FD_SET(g_cfd, &readfds);
+
+        // 设置超时时间
+        tv.tv_sec = 5;  // 设置秒
+    	tv.tv_usec = 0; // 设置微秒
+
+        retval = select(g_cfd + 1, &readfds, NULL, NULL, &tv);
+
+        if (retval > 0)
         {
-        g_cBuf = buf;
-        searchTemp(g_cBuf, g_temp_data);
-        searchHum(g_cBuf, g_hum_data);
+            if (FD_ISSET(g_cfd, &readfds)) 
+			{
+				buf[0] = '\0';
+				int len = recv(g_cfd, buf, 1024, 0);
+				buf[len] = '\0';
 
-        snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",g_temp_data, g_hum_data);
-        OneNet_Publish(MQTT_HUMITURE_DATA_THEME, PUB_BUF);
+				if (len > 0)
+				{
+					g_cBuf = buf;
+                    searchTemp(g_cBuf, g_temp_data);
+                    searchHum(g_cBuf, g_hum_data);
 
-        //   printf("温度: %s, 湿度: %s\n", g_temp_data, g_hum_data);
+                    // snprintf(PUB_BUF, sizeof(PUB_BUF), "{\"Temp\":%s,\"Hum\":%s}",g_temp_data, g_hum_data);
+                    // OneNet_Publish(MQTT_HUMITURE_DATA_THEME, PUB_BUF);
+
+                    //   printf("温度: %s, 湿度: %s\n", g_temp_data, g_hum_data);
+				}
+			}
         }
+
+
+        
     }
 
 }

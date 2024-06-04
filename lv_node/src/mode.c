@@ -152,31 +152,7 @@ static void lv_event_handler(lv_event_t *e)
             }
         }
         
-        switch (num)
-        {
-        case 0:
-            g_mode_num = 0;
-            break;
-
-        case 1:
-            g_mode_num = 1;
-            break;
-
-        case 2:
-            g_mode_num = 2;
-            break;
-
-        case 3:
-            g_mode_num = 3;
-            break;
-
-        case 4:
-            g_mode_num = 4;
-            break;
-
-        default:
-            break;
-        }
+        g_mode_num = num;
         
         if (g_mode_num != 4)
         {
