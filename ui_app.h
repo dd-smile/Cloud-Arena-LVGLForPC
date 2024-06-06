@@ -224,6 +224,9 @@
 #define AOTO_SERVER_IP 	                        "192.168.17.20"
 #define AOTO_SERVER_PORT 	                    50000
 
+#define ZHONGLI_SERVER_IP 	                    "192.168.17.20"
+#define ZHONGLI_SERVER_PORT 	                8899
+
 
 
 

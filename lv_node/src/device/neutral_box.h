@@ -20,6 +20,7 @@ void Setoutput_zhongli(uint8_t motor_four, uint8_t motor_eight, uint8_t motor_tw
 void Setcombo_neutral(uint8_t motor_four, uint8_t motor_eight, uint8_t motor_twelve, uint8_t motor_fifteen, uint8_t load_eight, uint8_t load_ten);
 void Setoutput_neutral(uint8_t motor_four, uint8_t motor_eight, uint8_t motor_twelve, uint8_t motor_fifteen, uint8_t load_eight, uint8_t load_ten);
 
-
+void hex_to_bin(char *hex, char *bin);
+void print_switch_states(char *bin_data, int start, char *description);
 
 #endif

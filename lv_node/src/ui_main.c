@@ -8,6 +8,8 @@
  */
 #include "ui_app.h"
 
+#define BUFFER_SIZE 1024
+
 //要切换导航页按钮的名字
 static const enum Chinese_English_shift language_obj_buttons_id[] = {
     facility,
@@ -287,6 +289,87 @@ static void *JudgmentConnection(void *parg)
   }
 }
 
+static void *JudgmentZhongliConnection(void *parg)
+{
+
+  fd_set readfds;
+  struct timeval tv;
+	int retval;
+  char buffer[BUFFER_SIZE] = {0};
+  char hex_data[BUFFER_SIZE] = {0};
+  char bin_data[BUFFER_SIZE] = {0};
+
+  g_neutral_fd = createSocket();  //创建套接字
+  connectToHost(g_neutral_fd, ZHONGLI_SERVER_IP, ZHONGLI_SERVER_PORT);  //连接服务器
+  while (1)
+  {
+
+    // 初始化文件描述符集合
+    FD_ZERO(&readfds);
+    FD_SET(g_neutral_fd, &readfds);
+
+    // 设置超时时间
+    tv.tv_sec = 5;  // 设置秒
+    tv.tv_usec = 0; // 设置微秒
+
+    retval = select(g_neutral_fd + 1, &readfds, NULL, NULL, &tv);
+
+
+    if (retval > 0)
+		{
+			if (FD_ISSET(g_neutral_fd, &readfds)) 
+			{
+				
+				int len = recv(g_neutral_fd, buffer, 1024, 0);
+        
+				if (len > 0)
+				{
+					printf("接收到的16进制数据: %s\n", buffer);
+
+          // 提取第2到第5个数据
+          strncpy(hex_data, buffer + 6, 11);
+          hex_data[11] = '\0';
+
+          // 转换为二进制
+          hex_to_bin(hex_data, bin_data);
+
+          printf("二进制数据：%s\n", bin_data);
+
+          // 分别提取4组二进制数据
+          char pos_8_1[9], pos_15_9[9], rev_8_1[9], rev_15_9[9];
+          strncpy(pos_8_1, bin_data, 8);
+          pos_8_1[8] = '\0';
+          strncpy(pos_15_9, bin_data + 8, 8);
+          pos_15_9[8] = '\0';
+          strncpy(rev_8_1, bin_data + 16, 8);
+          rev_8_1[8] = '\0';
+          strncpy(rev_15_9, bin_data + 24, 8);
+          rev_15_9[8] = '\0';
+
+          // 打印二进制数据
+          printf("正转8-1 ");
+          print_switch_states(pos_8_1, 1, "正转8-1");
+          printf("正转15-9 ");
+          print_switch_states(pos_15_9, 8, "正转15-9");
+          printf("反转8-1 ");
+          print_switch_states(rev_8_1, 1, "反转8-1");
+          printf("反转15-9 ");
+          print_switch_states(rev_15_9, 8, "反转15-9");
+				}
+			}
+		}
+
+
+    if (socketconnected(g_neutral_fd) == 0)
+    {
+      closeSocket(g_neutral_fd);
+      g_neutral_fd = createSocket();  //创建套接字
+      connectToHost(g_neutral_fd, VSU_SERVER_IP, VSU_SERVER_PORT);  //连接服务器
+    }
+    usleep(50 * 1000);
+  }
+}
+
 /**
  * 检测与艾比森ｐｌｃ服务器的TCP连接是否断开，断开的话进行重新连接
  * @param parg         线程传入的参数
@@ -360,6 +443,15 @@ static void *create_client_light()
 }
 
 /**
+ * 创建modbus TCP灯光连接
+ * */
+static void *create_client_zhongli()
+{   
+    pthread_t tid;
+    pthread_create(&tid, NULL, JudgmentZhongliConnection, NULL);
+}
+
+/**
  * 创建modbus TCP 艾比森的ｌｅｄ电源控制
 */
 static void *create_client_abesn()
@@ -373,8 +465,8 @@ void create_lv_layout(lv_obj_t *scr)
 
 /*******************************开线程********************************/
 
-  // pthread_t tid_mu;
-  // pthread_create(&tid_mu, NULL, create_client_mu, NULL);
+  pthread_t tid_mu;
+  pthread_create(&tid_mu, NULL, create_client_mu, NULL);
 
 /******************************定时器任务*****************************/
 
@@ -388,7 +480,7 @@ void create_lv_layout(lv_obj_t *scr)
   // lv_timer_create(timer_data_callback, 50000, NULL);
 
   // //创建更新天气数据任务
-  // lv_timer_create(timer_weather_callback, 60000, NULL);
+  lv_timer_create(timer_weather_callback, 60000, NULL);
 
   // 创建ＭＱＴＴ心跳任务
   lv_timer_create(timer_mqtt_callback, 40000, NULL);
@@ -418,6 +510,7 @@ void create_lv_layout(lv_obj_t *scr)
 
   connect_mqtt();   // 连接mqtt服务器
   create_client_light();  //　连接灯光服务器
+  // create_client_zhongli();
   create_client_abesn();  //连接艾比森ｐｌｃ服务器
   create_client_kls();   //连接播控软件
   create_client_led();   //连接led大屏

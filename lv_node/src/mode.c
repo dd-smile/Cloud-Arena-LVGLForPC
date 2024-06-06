@@ -38,8 +38,11 @@ static void sy_timer_handler(lv_timer_t * timer)
     if ((s_performance_timer++) == 6)
     {
         s_performance_timer = 0;
-        snprintf(buf_audio, sizeof(buf_audio), "stop@5F");
-        write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
+        if (multitrack_red != -1)
+        {
+            snprintf(buf_audio, sizeof(buf_audio), "stop@5F");
+            write(multitrack_fd, buf_audio, strlen(buf_audio)+1);
+        }
         if (timer)
         {
             lv_timer_del(timer);

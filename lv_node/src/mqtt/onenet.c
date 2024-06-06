@@ -61,6 +61,17 @@ static void *mqttConnection(void *parg)
 			{
 				dataPtr[0] = '\0';
 				int len = recv(mqtt_fd, dataPtr, 1024, 0);
+
+				if (len < 0)
+				{
+					perror("recv failed");
+					break;
+				}else if (len == 0)
+				{
+					printf("connect close\n");
+					break;
+				}
+
 				dataPtr[len] = '\0';
 
 				if (len > 0)
@@ -70,6 +81,15 @@ static void *mqttConnection(void *parg)
 				}
 			}
 		}
+		else if (retval == 0)
+		{
+			printf("select timeout\n");
+		}
+		else
+		{
+			perror("select failed");
+			break;
+		} 
 
 
 		if (socketconnected(mqtt_fd) == 0)
@@ -273,12 +293,7 @@ void OneNet_RevPro(unsigned char *cmd)
 	unsigned char qos = 0;
 	static unsigned short pkt_id = 0;
 	
-	short result = 0;
-
-	char *dataPtr = NULL;
-	char numBuf[10];
-	int num = 0;
-	
+	short result = -1;
 	
 	type = MQTT_UnPacketRecv(cmd);
 	switch(type)
@@ -400,14 +415,14 @@ void OneNet_RevPro(unsigned char *cmd)
 		break;
 		
 		default:
-			result = -1;
+			// result = -1;
 		break;
 	}
 	
 	// ESP8266_Clear();									//清空缓存
 	
-	if(result == -1)
-		return;
+	// if(result == -1)
+	// 	return;
 
 	if(type == MQTT_PKT_CMD || type == MQTT_PKT_PUBLISH)
 	{
