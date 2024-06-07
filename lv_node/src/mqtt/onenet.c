@@ -45,6 +45,21 @@ static void *mqttConnection(void *parg)
 
 	while (1)
 	{
+
+		if (socketconnected(mqtt_fd) == 0)
+		{
+			printf("进行重连尝试\n");      //要正常检测重连机制，需要修改linux内核参数tcp_retries2  /proc/sys/net/ipv4/tcp_retries2
+			closeSocket(mqtt_fd);
+			mqtt_fd = createSocket();
+			mqtt_red = connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
+			if (mqtt_red != -1)
+			{
+				OneNet_DevLink();
+
+				OneNet_Subscribe(sub_topics, 2);
+			}
+		}
+
 		// 初始化文件描述符集合
         FD_ZERO(&readfds);
         FD_SET(mqtt_fd, &readfds);
@@ -65,11 +80,13 @@ static void *mqttConnection(void *parg)
 				if (len < 0)
 				{
 					perror("recv failed");
-					break;
+					usleep(1000 * 1000);
+					continue;
 				}else if (len == 0)
 				{
 					printf("connect close\n");
-					break;
+					usleep(1000 * 1000);
+					continue;
 				}
 
 				dataPtr[len] = '\0';
@@ -88,26 +105,22 @@ static void *mqttConnection(void *parg)
 		else
 		{
 			perror("select failed");
-			break;
+			usleep(1000 * 1000);
+			continue;
 		} 
-
-
-		if (socketconnected(mqtt_fd) == 0)
-		{
-			printf("进行重连尝试\n");      //要正常检测重连机制，需要修改linux内核参数tcp_retries2  /proc/sys/net/ipv4/tcp_retries2
-			closeSocket(mqtt_fd);
-			mqtt_fd = createSocket();
-			mqtt_red = connectToHost(mqtt_fd, MQTT_SERVER_IP, 1883);
-			if (mqtt_red != -1)
-			{
-				OneNet_DevLink();
-
-				OneNet_Subscribe(sub_topics, 2);
-			}
-		}
 
 		usleep(1000 * 1000);
 	}
+}
+
+
+/**
+ * Mqtt心跳定时任务
+ * @param timer         指向定时器
+*/
+void timer_mqtt_callback(lv_timer_t *timer)
+{
+  OneNet_HeartBeat();
 }
 
 

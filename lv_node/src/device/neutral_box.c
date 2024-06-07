@@ -270,7 +270,12 @@ void hex_to_bin(char *hex, char *bin)
     }
 }
 
-
+/**
+ * 打印电机开关状态
+ * @param bin_data                                二进制数据
+ * @param start                                   起始位置
+ * @param description                             描述
+*/
 void print_switch_states(char *bin_data, int start, char *description)
 {
     printf("%s二进制数据:%s\n", description, bin_data);

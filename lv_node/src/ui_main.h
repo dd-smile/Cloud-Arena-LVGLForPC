@@ -50,6 +50,5 @@ extern int g_cfd;
 extern char *g_cBuf;
 
 void create_lv_layout(lv_obj_t *scr);
-void Judgmentmode(void);
 
 #endif

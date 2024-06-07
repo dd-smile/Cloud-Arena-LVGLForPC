@@ -556,6 +556,7 @@ static void confirm_mode_event_callback(lv_event_t* event)
                     {
                         lv_label_set_text(s_hint_label, "Password correct!");
                         lv_obj_del(g_pwd_main_cont);
+                        g_pwd_main_cont = NULL;
 						g_password_lock_open = true;
                         Judgmentmode();
 						lv_bar_change();
@@ -605,6 +606,7 @@ static void confirm_btn_event_callback(lv_event_t* event)
                     {
                         lv_label_set_text(s_hint_label, "Password correct!");
                         lv_obj_del(g_pwd_main_cont);
+                        g_pwd_main_cont = NULL;
                         g_password_lock_open = true;
                     }
                 }

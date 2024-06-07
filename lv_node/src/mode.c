@@ -159,8 +159,8 @@ static void lv_event_handler(lv_event_t *e)
         
         if (g_mode_num != 4)
         {
-            lv_mode_password_keyboard_display();
             g_password_lock_open = false;
+            lv_mode_password_keyboard_display();
         }
         else
         {
@@ -294,6 +294,45 @@ void mode_halfcourt_Controls(void)
     sprintf(PUB_BUF,"{\"f\":\"s\",\"d\":[{\"sid\":\"FX3U_128MT_sports\",\"pid\":\"variable4\",\"v\":\"%d\"}]}",1);
     OneNet_Publish(MQTT_PUBLIC_SPORTS_DEVICE_THEME, PUB_BUF);
 
+}
+
+
+/**
+ * 检测是否有点击模式转换
+ * */
+void Judgmentmode(void)
+{
+  switch (g_mode_num)
+  {
+  case 0:
+      g_mode_num = -1;
+      printf("训练模式\n");
+      // mode_train_Controls();
+      break;
+
+  case 1:
+      g_mode_num = -1;
+      mode_competition_Controls();
+      break;
+
+  case 2:
+      g_mode_num = -1;
+      mode_performance_Controls();
+      break;
+
+  case 3:
+      g_mode_num = -1;
+      mode_halfcourt_Controls();
+      break;
+
+  case 4:
+      g_mode_num = -1;
+      printf("退场模式\n");
+      break;
+
+  default:
+    break;
+  }
 }
 
 /**

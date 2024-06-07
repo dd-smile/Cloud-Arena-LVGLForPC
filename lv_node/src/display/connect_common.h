@@ -1,5 +1,5 @@
 /*
- * @Description: 建立socket, 进行数据处理
+ * @Description: socket通用库与线程池
  * @Author: da
  * @LastEditors: da
  * @Date: 2023-09-21 11:28:17
@@ -41,6 +41,7 @@ typedef struct threadpool_s {
 #define DEFAULT_TIME 			60
 #define MIN_WAIT_TASK_NUM  		10
 #define DEFAULT_THREAD_VERY  	5
+#define NEUTRAL_BUFFER_SIZE 1024
 extern threadpool_t *thp;
 
 int createSocket();  
@@ -64,6 +65,11 @@ int threadpool_free(threadpool_t *pool);
 int is_thread_alive(pthread_t tid);
 
 int socketconnected(int sockfd);
+
+
+void *create_client_light();
+void *create_client_zhongli();
+void *create_client_abesn();
 
 
 

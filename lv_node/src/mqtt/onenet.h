@@ -29,6 +29,7 @@ void OneNet_Publish(const char *topic, const char *msg);
 
 void OneNet_RevPro(unsigned char *cmd);
 
+void timer_mqtt_callback(lv_timer_t *timer);
 
 extern unsigned char dataPtr[1024];
 

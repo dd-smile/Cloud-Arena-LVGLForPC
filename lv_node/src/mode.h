@@ -19,6 +19,7 @@ void mode_performance_Controls(void);
 void mode_competition_Controls(void);
 void mode_halfcourt_Controls(void);
 
+void Judgmentmode(void);
 
 
 #endif
