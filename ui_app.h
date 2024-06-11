@@ -486,6 +486,7 @@ enum Chinese_English_shift{
 #include "lv_node/src/common/lock.h"
 #include "lv_node/src/common/time_wifi.h"
 #include "lv_node/src/common/parson.h"
+#include "lv_node/src/common/logprintf.h"
 
 #include "lv_node/src/setting/settings.h"
 #include "lv_node/src/setting/Time/time_setting.h"

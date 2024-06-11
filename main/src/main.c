@@ -88,6 +88,8 @@ int main(int argc, char **argv)
 
   hal_init();                   //硬件初始化：包括显示设备、输入设备   
 
+  init_logprintf_file();        //初始化日志
+
   // lv_obj_t *scr = lv_disp_get_scr_act(NULL);
   // pcr_obj = lv_obj_create(scr);
   // lv_obj_remove_style_all(pcr_obj);

@@ -30,6 +30,7 @@ static void *mqttConnection(void *parg)
 	fd_set readfds;
     struct timeval tv;
 	int retval;
+	char *err;
 
 	// 1. 创建通信的套接字
   	mqtt_fd = createSocket();
@@ -79,7 +80,9 @@ static void *mqttConnection(void *parg)
 
 				if (len < 0)
 				{
-					perror("recv failed");
+					// perror("recv failed");
+					err = strerror(errno);
+					log_err_printf(err);
 					usleep(1000 * 1000);
 					continue;
 				}else if (len == 0)
@@ -104,7 +107,8 @@ static void *mqttConnection(void *parg)
 		}
 		else
 		{
-			perror("select failed");
+			err = strerror(errno);
+			log_err_printf(err);
 			usleep(1000 * 1000);
 			continue;
 		} 

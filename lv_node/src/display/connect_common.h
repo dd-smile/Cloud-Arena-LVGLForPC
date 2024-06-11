@@ -67,6 +67,8 @@ int is_thread_alive(pthread_t tid);
 int socketconnected(int sockfd);
 
 
+void create_serverTemHum();
+
 void *create_client_light();
 void *create_client_zhongli();
 void *create_client_abesn();

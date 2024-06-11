@@ -213,16 +213,18 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
  * */
 static void SettingScreenBox(lv_obj_t *parent)
 {
-  //打印屏保函数
+  log_printf("屏保函数");
   if (s_password_flag == true && g_password_lock_open == false)
   { 
     if (g_pwd_main_cont != NULL)
     {
+      log_printf("删除密码框");
       lv_obj_del(g_pwd_main_cont);  //删除密码框
       g_pwd_main_cont = NULL;
     }
   }
 
+  log_printf("设置屏保图片源");
   lv_obj_t *screensaverCard = lv_img_create(parent);
   lv_img_set_src(screensaverCard, img_arr[setting.ScreenSaveid]);
   lv_obj_add_flag(screensaverCard, LV_OBJ_FLAG_CLICKABLE);
@@ -245,28 +247,13 @@ void UpdateTask(lv_timer_t *timer)
     {
       if (!s_enteredScreenMode)
       {
-        printf("进入屏保模式%ld\n",lv_disp_get_inactive_time(lv_disp_get_default()));
+        log_printf("进入屏保模式%ld",lv_disp_get_inactive_time(lv_disp_get_default()));
         SettingScreenBox(lv_scr_act());
         s_enteredScreenMode = true;
       }
     }
   
 }
-
-/**
- * 创建接收温湿度数据的服务器
-*/
-static void create_serverTemHum()
-{
-  //创建监听的套接字
-  g_lfd = createSocket();
-  bindSocket(g_lfd, 9266);
-  setListen(g_lfd);
-
-  pthread_t tid_listen;  //用于监听
-  pthread_create(&tid_listen, NULL, listening_temphum, NULL);
-}
-
 
 
 void create_lv_layout(lv_obj_t *scr)

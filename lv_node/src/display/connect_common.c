@@ -10,6 +10,7 @@
 #include "ui_app.h"
 
 threadpool_t *thp;
+static char *s_common_connect_err;
 
 /**
  * 创建套接字
@@ -21,7 +22,9 @@ int createSocket()
 
     if (fd == -1)
     {
-        perror("socket");
+        s_common_connect_err = strerror(errno);
+		log_err_printf(s_common_connect_err);
+        // perror("socket");
         return -1;
     }
 
@@ -54,7 +57,9 @@ int bindSocket(int lfd, unsigned short port)
 
     if (ret == -1)
     {
-        perror("bind");
+        s_common_connect_err = strerror(errno);
+		log_err_printf(s_common_connect_err);
+        // perror("bind");
         return -1;
     }
 
@@ -72,7 +77,9 @@ int setListen(int lfd)
     int ret = listen(lfd, 128);
     if (ret == -1)
     {
-        perror("listen");
+        s_common_connect_err = strerror(errno);
+		log_err_printf(s_common_connect_err);
+        // perror("listen");
         return -1;
     }
 
@@ -101,7 +108,9 @@ int acceptConn(int lfd, struct sockaddr_in *addr)
 
     if (cfd == -1)
     {
-        perror("accept");
+        s_common_connect_err = strerror(errno);
+		log_err_printf(s_common_connect_err);
+        // perror("accept");
         return -1;
     }   
 
@@ -126,6 +135,8 @@ int connectToHost(int fd, const char* ip, unsigned short port)
 
     if (ret == -1)
     {
+        s_common_connect_err = strerror(errno);
+		log_err_printf(s_common_connect_err);
         //perror("connect");
         return -1;
     }
@@ -144,7 +155,9 @@ int closeSocket(int fd)
 
     if (ret == -1)
     {
-        perror("close");
+        s_common_connect_err = strerror(errno);
+		log_err_printf(s_common_connect_err);
+        // perror("close");
     }
 
     return ret;
@@ -298,8 +311,25 @@ int recvMsg(int cfd, char** msg)
 }
 
 
+/*--------------------------------创建服务器执行线程--------------------------------*/
 
-/*--------------------------------执行线程--------------------------------*/
+/**
+ * 创建接收温湿度数据的服务器
+*/
+void create_serverTemHum()
+{
+  //创建监听的套接字
+  g_lfd = createSocket();
+  bindSocket(g_lfd, 9266);
+  setListen(g_lfd);
+
+  pthread_t tid_listen;  //用于监听
+  pthread_create(&tid_listen, NULL, listening_temphum, NULL);
+}
+
+
+
+/*--------------------------------连接服务器执行线程--------------------------------*/
 
 
 
