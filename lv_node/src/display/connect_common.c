@@ -135,8 +135,8 @@ int connectToHost(int fd, const char* ip, unsigned short port)
 
     if (ret == -1)
     {
-        s_common_connect_err = strerror(errno);
-		log_err_printf(s_common_connect_err);
+        // s_common_connect_err = strerror(errno);
+		// log_err_printf(s_common_connect_err);
         //perror("connect");
         return -1;
     }

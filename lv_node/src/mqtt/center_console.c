@@ -469,10 +469,19 @@ void TICS_Issue_instruction(int dev, const char *eid, const char *vid)
         break;
 
     case 2:  //Runsound
-        eeid = transition_Char_array(eid); 
-        vvid = transition_Char_array(vid);
-        // printf("The vvid value is: 0x%x\n", vvid); 
-        Setdimming_runshen(0x01, eeid, vvid);
+        if (strcmp(eid, "all") == 0)
+        {
+            vvid = transition_Char_array(vid);
+            printf("The all vvid value is: 0x%x\n", vvid); 
+        }
+        else
+        {
+            eeid = transition_Char_array(eid); 
+            vvid = transition_Char_array(vid);
+            printf("The vvid value is: 0x%x\n", vvid); 
+            printf("The eeid value is: %d\n", --eeid); 
+            // Setdimming_runshen(0x01, eeid, vvid);
+        }
         break;
 
     case 3:  //Ulaide

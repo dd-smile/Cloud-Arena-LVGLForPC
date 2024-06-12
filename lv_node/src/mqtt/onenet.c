@@ -274,6 +274,7 @@ void OneNet_Publish(const char *topic, const char *msg)
 	{
 		lv_label_set_text(g_mqtt_detection, "");
 		test_flag = write(mqtt_fd, mqttPacket._data, mqttPacket._len);					//向平台发送订阅请求
+		log_printf("Publish Topic: %s, Msg: %s", topic, msg);
 		// printf("Publish testFlag: %d\r\n", test_flag);
 		
 		MQTT_DeleteBuffer(&mqttPacket);											//删包
@@ -358,6 +359,7 @@ void OneNet_RevPro(unsigned char *cmd)
 					printf("  Version: %s\n", devices[i].vid);
 				}			
 				char *json_public = construct_json_stringMulti(devices, device_count);	
+				// printf("json_public: %s\r\n", json_public);
 				OneNet_Publish("/mytest/ycg", json_public);						
 				
 				//释放内存
