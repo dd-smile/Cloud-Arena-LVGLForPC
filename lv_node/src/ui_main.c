@@ -36,6 +36,8 @@ static bool s_password_flag = false;  //给第一次弹出密码框
 int g_light_fd;   //连接灯光套接字
 char PUB_BUF[256];      //上传给ＭＱＴＴ服务器数据的buf
 All_Data home_data;
+static bool s_click_status_event = false;  //屏幕亮度标志位
+static lv_obj_t *s_screensaverCard;
 
 static const lv_img_dsc_t *img_arr[] = { &Image1_big,
                           &Image2_big,
@@ -203,6 +205,26 @@ static void SettingScreenBack_event_cb(lv_event_t *e)
     g_password_lock_open = false;
     lv_gui_password_keyboard_display();
     s_enteredScreenMode = false;
+
+    // if (s_click_status_event == true)
+    // {
+    //   s_click_status_event = false;
+    //   lv_obj_del(obj);
+    //   s_screensaverCard = NULL; 
+    //   g_password_lock_open = false;
+    //   lv_gui_password_keyboard_display();
+    // }
+    // else
+    // {
+    //   s_click_status_event = true;
+    //   char cmd[128];
+    //   sprintf(cmd, "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle", 100);
+    //   system(cmd);
+    // }
+
+    // s_enteredScreenMode = false;
+
+
   }
 
 }
@@ -218,17 +240,30 @@ static void SettingScreenBox(lv_obj_t *parent)
   { 
     if (g_pwd_main_cont != NULL)
     {
-      log_printf("删除密码框");
+      // log_printf("删除密码框");
       lv_obj_del(g_pwd_main_cont);  //删除密码框
       g_pwd_main_cont = NULL;
     }
   }
 
+  // char cmd[128];
+  // sprintf(cmd, "echo %d > /sys/class/pwm/pwmchip0/pwm0/duty_cycle", 0);
+  // system(cmd);
+
+  // if (s_click_status_event == true)
+  // {
+  //   log_printf("亮屏了但是无操作，先删掉之前屏保图片");
+  //   lv_obj_del(s_screensaverCard);
+  //   s_screensaverCard = NULL;
+  // }
+
   log_printf("设置屏保图片源");
-  lv_obj_t *screensaverCard = lv_img_create(parent);
-  lv_img_set_src(screensaverCard, img_arr[setting.ScreenSaveid]);
-  lv_obj_add_flag(screensaverCard, LV_OBJ_FLAG_CLICKABLE);
-  lv_obj_add_event_cb(screensaverCard, SettingScreenBack_event_cb, LV_EVENT_CLICKED, NULL);
+  s_screensaverCard = lv_img_create(parent);
+  lv_img_set_src(s_screensaverCard, img_arr[setting.ScreenSaveid]);
+  lv_obj_add_flag(s_screensaverCard, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_add_event_cb(s_screensaverCard, SettingScreenBack_event_cb, LV_EVENT_CLICKED, NULL);
+
+  // s_click_status_event = false;
 }
 
 /**
